@@ -1,0 +1,15 @@
+services:
+  oracle_db:
+    image: gvenzl/oracle-xe
+    container_name: oracle_db
+    ports:
+      - 1521:1521
+    environment:
+      ORACLE_PASSWORD: admin
+      APP_USER: DAPE
+      APP_USER_PASSWORD: pesippar24
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+
+volumes:
+  oracle_data:
