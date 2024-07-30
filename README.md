@@ -36,5 +36,5 @@ de dados de sua escolha e realize a conexão com as seguintes propriedades:
 - Host: localhost
 - Port: 1521
 - Service: XEPDB1
-- User: DAPE
+- User: DAPE_ADM
 - Password: pesippar24
