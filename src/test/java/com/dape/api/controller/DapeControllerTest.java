@@ -10,8 +10,8 @@ class DapeControllerTest {
 
     @Test
     void helloWorld(){
-        String result = dapeController.helloWorld();
-        String expected = "Hello World!";
+        final String result = dapeController.helloWorld();
+        final String expected = "Hello World!";
         assertNotNull(result);
         assertEquals(expected, result);
     }
