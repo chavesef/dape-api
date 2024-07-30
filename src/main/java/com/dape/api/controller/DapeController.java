@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/dape")
 public class DapeController {
-    @GetMapping("/helloword")
-    public String helloWord(){
-        return "Hello Word!";
+    @GetMapping("/helloworld")
+    public String helloWorld(){
+        return "Hello World!";
     }
 }
