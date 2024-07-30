@@ -1,7 +1,7 @@
 services:
-  oracle_db:
+  dape-oracledb:
     image: gvenzl/oracle-xe
-    container_name: oracle_db
+    container_name: dape-oracledb
     ports:
       - 1521:1521
     environment:
@@ -9,7 +9,7 @@ services:
       APP_USER: DAPE
       APP_USER_PASSWORD: pesippar24
     volumes:
-      - oracle_data:/opt/oracle/oradata
+      - dape-oradata:/opt/oracle/oradata
 
 volumes:
-  oracle_data:
+  dape-oradata:
