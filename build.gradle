@@ -1,0 +1,52 @@
+plugins {
+	id 'java'
+	id 'jacoco'
+	id("org.springframework.boot") version "3.3.2"
+	id("io.spring.dependency-management") version "1.1.6"
+}
+
+group = "com.dape"
+version = "0.0.1-SNAPSHOT"
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+def h2Version = '2.3.230'
+
+dependencies {
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+	runtimeOnly group: 'com.oracle.database.jdbc', name: 'ojdbc11'
+	testImplementation group: 'com.h2database', name: 'h2', version: h2Version
+	developmentOnly group: 'org.springframework.boot', name: 'spring-boot-devtools'
+	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+	testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+tasks.test {
+	finalizedBy tasks.jacocoTestReport
+}
+
+tasks.jacocoTestReport {
+	dependsOn tasks.test
+	reports {
+		xml.required.set(true)
+		csv.required.set(false)
+		html.outputLocation.set(layout.buildDirectory.dir('jacocoHtml'))
+	}
+}
