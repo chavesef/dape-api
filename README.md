@@ -7,7 +7,13 @@ banco de dados. O tipo da aposta pode ser definido como 'simples' ou 'múltipla'
 enquanto o status da aposta é definido como 'em andamento'(pending), 'vencida'(green)
 ou 'perdida'(red).
 
+## Arquitetura
+![arquitetura](/src/main/resources/images/arquitetura.png)
 
+A API REST realiza as operações CRUD(Create, Retrieve, Update e Delete) no banco de dados Oracle
+
+## Modelagem do banco de dados
+![modelagem](/src/main/resources/images/modelagem.png)
 
 ## Ambiente de desenvolvimento
 O ambiente de desenvolvimento é configurado utilizando o Docker para criar e gerenciar
