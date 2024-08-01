@@ -28,6 +28,7 @@ dependencies {
 	developmentOnly group: 'org.springframework.boot', name: 'spring-boot-devtools'
 	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 	testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher'
+	implementation group: 'org.flywaydb', name: 'flyway-database-oracle'
 }
 
 tasks.named('test') {
