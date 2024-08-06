@@ -1,0 +1,377 @@
+openapi: 3.0.3
+
+info:
+  title: DAPE
+  description: DAPE API contract - Declaração de Apostas Esportivas
+  contact:
+    email: efchaves@uolinc.com
+  version: 1.0.0
+
+paths:
+  /bets:
+    post:
+      tags:
+        - bet
+      summary: Cadastrar aposta
+      description: Realizar o cadastro de uma nova aposta na base de dados
+      operationId: cadastrarAposta
+      requestBody:
+        description: Cadastro de uma nova aposta no banco de dados
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Created, Aposta cadastrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetCreateResponse'
+        '400':
+          description: Bad Request, Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - bet
+      summary: Consultar apostas
+      description: Consultar as apostas disponíveis no banco de dados
+      operationId: consultarAposta
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetListResponse'
+
+  /bets/{idt_bet}:
+    patch:
+      tags:
+        - bet
+      summary: Atualizar aposta
+      description: Realizar atualização de aposta disponível na base de dados
+      operationId: atualizarAposta
+      parameters:
+        - name: idt_bet
+          in: path
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        description: Atualização de uma aposta no banco de dados
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK, Aposta Atualizada
+        '400':
+          description: Bad Request, Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found, Aposta não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /bets/status/{idt_bet}:
+    patch:
+      tags:
+        - bet
+      summary: Atualizar status
+      description: Realizar atualização do status da aposta
+      operationId: atualizarStatusAposta
+      parameters:
+        - name: idt_bet
+          in: path
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        description: Atualização do status de uma aposta no banco de dados
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK, Status Atualizada
+        '400':
+          description: Bad Request, Status inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found, Aposta não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tickets:
+    post:
+      tags:
+        - ticket
+      summary: Registrar bilhete
+      description: Realizar o registro de um bilhete de apostas
+      operationId: registrarAposta
+      requestBody:
+        description: Registro de um novo bilhete de apostas
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Created, Bilhete registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketCreateResponse'
+        '400':
+          description: Bad Request, Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      tags:
+        - ticket
+      summary: Consultar bilhetes
+      description: Consultar os bilhetes com as apostas realizadas
+      operationId: consultarBilhete
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketListResponse'
+
+
+components:
+  schemas:
+    BetCreateRequest:
+      required:
+        - num_odd
+        - dat_created
+        - dat_updated
+        - des_bet
+      type: object
+      properties:
+        num_odd:
+          type: number
+          format: double
+          example: 2.19
+        dat_created:
+          type: string
+          format: date
+          example: "2025-07-21"
+        dat_updated:
+          type: string
+          format: date
+          example: "2025-08-06"
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
+      xml:
+        name: BetCreateRequest
+
+    BetCreateResponse:
+      type: object
+      properties:
+        cod_bet_status:
+          type: integer
+          format: int32
+          example: 1
+        idt_bet:
+          type: integer
+          format: int32
+          example: 2
+        num_odd:
+          type: number
+          format: double
+          example: 2.19
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
+      xml:
+        name: BetCreateRequest
+
+    BetUpdateRequest:
+      required:
+        - num_odd
+        - dat_updated
+        - des_bet
+      properties:
+        num_odd:
+          type: number
+          format: double
+          example: 1.90
+        dat_updated:
+          type: string
+          format: date
+          example: "2025-08-07"
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
+      xml:
+        name: BetUpdateRequest
+
+    StatusUpdateRequest:
+      type: object
+      properties:
+        cod_bet_status:
+          type: string
+          example: 'GREEN'
+      xml:
+        name: StatusUpdateRequest
+
+    BetListResponse:
+      type: object
+      properties:
+        bets:
+          type: array
+          items:
+            type: object
+            properties:
+              num_odd:
+                type: number
+                format: double
+                example: 2.19
+              des_bet:
+                type: string
+                example: "Vitória do Botafogo"
+              cod_bet_status:
+                type: integer
+                format: int32
+                example: 1
+      xml:
+        name: BetListResponse
+
+    TicketCreateRequest:
+      required:
+        - num_amount
+        - dat_created
+        - dat_updated
+        - cod_ticket_type
+        - idt_client
+      type: object
+      properties:
+        num_amount:
+          type: integer
+          format: double
+          example: 100.01
+        dat_created:
+          type: string
+          format: date
+          example: "2025-07-21"
+        dat_updated:
+          type: string
+          format: date
+          example: "2025-08-06"
+        cod_ticket_type:
+          type: integer
+          format: int32
+          example: 2
+        idt_client:
+          type: integer
+          format: int32
+          example: 8
+      xml:
+        name: TicketCreateRequest
+
+    TicketCreateResponse:
+      type: object
+      properties:
+        cod_ticket_status:
+          type: integer
+          format: int32
+          example: 1
+        idt_ticket:
+          type: integer
+          format: int32
+          example: 2
+        num_amount:
+          type: integer
+          format: double
+          example: 100.01
+        cod_ticket_type:
+          type: integer
+          format: int32
+          example: 2
+        idt_client:
+          type: integer
+          format: int32
+          example: 8
+        num_final_odd:
+          type: integer
+          format: double
+          example: 5.76
+      xml:
+        name: TicketCreateResponse
+
+    TicketListResponse:
+      type: object
+      properties:
+        bets:
+          type: array
+          items:
+            type: object
+            properties:
+              num_amount:
+                type: integer
+                format: double
+                example: 100.01
+              dat_created:
+                type: string
+                format: date
+                example: "2025-07-21"
+              cod_ticket_type:
+                type: integer
+                format: int32
+                example: 2
+              idt_client:
+                type: integer
+                format: int32
+                example: 8
+              num_final_odd:
+                type: integer
+                format: double
+                example: 5.76
+
+      xml:
+        name: TicketListResponse
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 400
+        message:
+          type: string
+          example: "Não encontrado"
+      xml:
+        name: ErrorResponse
+
+
