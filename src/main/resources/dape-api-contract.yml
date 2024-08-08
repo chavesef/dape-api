@@ -74,6 +74,10 @@ paths:
       responses:
         '200':
           description: OK, Aposta Atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetUpdateResponse'
         '400':
           description: Bad Request, Dados inválidos
           content:
@@ -110,7 +114,11 @@ paths:
         required: true
       responses:
         '200':
-          description: OK, Status Atualizada
+          description: OK, Status Atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusUpdateResponse'
         '400':
           description: Bad Request, Status inválido
           content:
@@ -172,8 +180,6 @@ components:
     BetCreateRequest:
       required:
         - num_odd
-        - dat_created
-        - dat_updated
         - des_bet
       type: object
       properties:
@@ -181,14 +187,6 @@ components:
           type: number
           format: double
           example: 2.19
-        dat_created:
-          type: string
-          format: date
-          example: "2025-07-21"
-        dat_updated:
-          type: string
-          format: date
-          example: "2025-08-06"
         des_bet:
           type: string
           example: "Vitória do Botafogo"
@@ -213,28 +211,47 @@ components:
         des_bet:
           type: string
           example: "Vitória do Botafogo"
+        dat_created:
+          type: string
+          format: date
+          example: "2025-07-21"
       xml:
         name: BetCreateRequest
 
     BetUpdateRequest:
       required:
         - num_odd
-        - dat_updated
         - des_bet
       properties:
         num_odd:
           type: number
           format: double
           example: 1.90
-        dat_updated:
-          type: string
-          format: date
-          example: "2025-08-07"
         des_bet:
           type: string
           example: "Vitória do Botafogo"
       xml:
         name: BetUpdateRequest
+
+    BetUpdateResponse:
+      properties:
+        num_odd:
+          type: number
+          format: double
+          example: 1.90
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
+        dat_created:
+          type: string
+          format: date
+          example: "2025-07-21"
+        dat_updated:
+          type: string
+          format: date
+          example: "2025-08-06"
+      xml:
+        name: BetUpdateResponse
 
     StatusUpdateRequest:
       type: object
@@ -244,6 +261,29 @@ components:
           example: 'GREEN'
       xml:
         name: StatusUpdateRequest
+
+    StatusUpdateResponse:
+      properties:
+        num_odd:
+          type: number
+          format: double
+          example: 1.90
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
+        cod_bet_status:
+          type: string
+          example: 'GREEN'
+        dat_created:
+          type: string
+          format: date
+          example: "2025-07-21"
+        dat_updated:
+          type: string
+          format: date
+          example: "2025-08-06"
+      xml:
+        name: StatusUpdateResponse
 
     BetListResponse:
       type: object
@@ -280,14 +320,6 @@ components:
           type: integer
           format: double
           example: 100.01
-        dat_created:
-          type: string
-          format: date
-          example: "2025-07-21"
-        dat_updated:
-          type: string
-          format: date
-          example: "2025-08-06"
         cod_ticket_type:
           type: integer
           format: int32
@@ -326,6 +358,14 @@ components:
           type: integer
           format: double
           example: 5.76
+        dat_created:
+          type: string
+          format: date
+          example: "2025-07-21"
+        dat_updated:
+          type: string
+          format: date
+          example: "2025-08-06"
       xml:
         name: TicketCreateResponse
 
