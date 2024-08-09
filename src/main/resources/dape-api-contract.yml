@@ -41,6 +41,15 @@ paths:
       summary: Consultar apostas
       description: Consultar as apostas disponíveis no banco de dados
       operationId: consultarAposta
+      parameters:
+        - name: page
+          in: query
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 0
       responses:
         '200':
           description: OK
@@ -48,6 +57,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BetListResponse'
+
+  /bets/status/{idt_bet}:
+    patch:
+      tags:
+        - bet
+      summary: Atualizar status
+      description: Realizar atualização do status da aposta
+      operationId: atualizarStatusAposta
+      parameters:
+        - name: idt_bet
+          in: path
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        description: Atualização do status de uma aposta no banco de dados
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK, Status Atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusUpdateResponse'
+        '400':
+          description: Bad Request, Status inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found, Aposta não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /bets/{idt_bet}:
     patch:
@@ -118,48 +169,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /bets/status/{idt_bet}:
-    patch:
-      tags:
-        - bet
-      summary: Atualizar status
-      description: Realizar atualização do status da aposta
-      operationId: atualizarStatusAposta
-      parameters:
-        - name: idt_bet
-          in: path
-          required: true
-          explode: true
-          schema:
-            type: string
-            example: "1"
-      requestBody:
-        description: Atualização do status de uma aposta no banco de dados
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/StatusUpdateRequest'
-        required: true
-      responses:
-        '200':
-          description: OK, Status Atualizado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusUpdateResponse'
-        '400':
-          description: Bad Request, Status inválido
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Not found, Aposta não encontrada
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
   /tickets:
     post:
       tags:
@@ -194,6 +203,15 @@ paths:
       summary: Consultar bilhetes
       description: Consultar os bilhetes com as apostas realizadas
       operationId: consultarBilhete
+      parameters:
+        - name: page
+          in: query
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 0
       responses:
         '200':
           description: OK
@@ -224,7 +242,7 @@ components:
     BetCreateResponse:
       type: object
       properties:
-        cod_bet_status:
+        bet_status:
           type: string
           example: "PENDING"
         idt_bet:
@@ -277,7 +295,7 @@ components:
           type: string
           format: date
           example: "2025-08-06"
-        cod_bet_status:
+        bet_status:
           type: string
           example: "PENDING"
       xml:
@@ -286,7 +304,7 @@ components:
     StatusUpdateRequest:
       type: object
       properties:
-        cod_bet_status:
+        bet_status:
           type: string
           example: 'GREEN'
       xml:
@@ -301,7 +319,7 @@ components:
         des_bet:
           type: string
           example: "Vitória do Botafogo"
-        cod_bet_status:
+        bet_status:
           type: string
           example: 'GREEN'
         dat_created:
@@ -332,7 +350,7 @@ components:
           type: string
           format: date
           example: "2025-08-06"
-        cod_bet_status:
+        bet_status:
           type: string
           example: "PENDING"
       xml:
@@ -370,7 +388,7 @@ components:
               des_bet:
                 type: string
                 example: "Vitória do Botafogo"
-              cod_bet_status:
+              bet_status:
                 type: string
                 example: 'PENDING'
       xml:
@@ -379,7 +397,7 @@ components:
     TicketCreateRequest:
       required:
         - num_amount
-        - cod_ticket_type
+        - ticket_type
         - idt_client
       type: object
       properties:
@@ -387,7 +405,7 @@ components:
           type: integer
           format: double
           example: 100.01
-        cod_ticket_type:
+        ticket_type:
           type: string
           example: 'SIMPLE'
         idt_client:
@@ -400,7 +418,7 @@ components:
     TicketCreateResponse:
       type: object
       properties:
-        cod_ticket_status:
+        ticket_status:
           type: string
           example: 'PENDING'
         idt_ticket:
@@ -411,7 +429,7 @@ components:
           type: integer
           format: double
           example: 100.01
-        cod_ticket_type:
+        ticket_type:
           type: string
           example: 'SIMPLE'
         idt_client:
@@ -466,7 +484,7 @@ components:
                 type: string
                 format: date
                 example: "2025-07-21"
-              cod_ticket_type:
+              ticket_type:
                 type: string
                 example: 'SIMPLE'
               idt_client:
@@ -477,7 +495,7 @@ components:
                 type: integer
                 format: double
                 example: 5.76
-              cod_ticket_status:
+              ticket_status:
                 type: string
                 example: 'PENDING'
       xml:
