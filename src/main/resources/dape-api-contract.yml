@@ -197,9 +197,8 @@ components:
       type: object
       properties:
         cod_bet_status:
-          type: integer
-          format: int32
-          example: 1
+          type: string
+          example: "PENDING"
         idt_bet:
           type: integer
           format: int32
@@ -288,7 +287,24 @@ components:
     BetListResponse:
       type: object
       properties:
-        bets:
+        size:
+          type: integer
+          format: int32
+          example: 10
+        total_size:
+          type: integer
+          format: int32
+          example: 1000
+        page:
+          type: integer
+          format: int32
+          example: 0
+          default: 0
+        total_pages:
+          type: integer
+          format: int32
+          example: 100
+        content:
           type: array
           items:
             type: object
@@ -301,17 +317,14 @@ components:
                 type: string
                 example: "Vitória do Botafogo"
               cod_bet_status:
-                type: integer
-                format: int32
-                example: 1
+                type: string
+                example: 'PENDING'
       xml:
         name: BetListResponse
 
     TicketCreateRequest:
       required:
         - num_amount
-        - dat_created
-        - dat_updated
         - cod_ticket_type
         - idt_client
       type: object
@@ -321,9 +334,8 @@ components:
           format: double
           example: 100.01
         cod_ticket_type:
-          type: integer
-          format: int32
-          example: 2
+          type: string
+          example: 'SIMPLE'
         idt_client:
           type: integer
           format: int32
@@ -335,9 +347,8 @@ components:
       type: object
       properties:
         cod_ticket_status:
-          type: integer
-          format: int32
-          example: 1
+          type: string
+          example: 'PENDING'
         idt_ticket:
           type: integer
           format: int32
@@ -347,9 +358,8 @@ components:
           format: double
           example: 100.01
         cod_ticket_type:
-          type: integer
-          format: int32
-          example: 2
+          type: string
+          example: 'SIMPLE'
         idt_client:
           type: integer
           format: int32
@@ -372,7 +382,24 @@ components:
     TicketListResponse:
       type: object
       properties:
-        bets:
+        size:
+          type: integer
+          format: int32
+          example: 10
+        total_size:
+          type: integer
+          format: int32
+          example: 1000
+        page:
+          type: integer
+          format: int32
+          example: 0
+          default: 0
+        total_pages:
+          type: integer
+          format: int32
+          example: 100
+        content:
           type: array
           items:
             type: object
@@ -386,9 +413,8 @@ components:
                 format: date
                 example: "2025-07-21"
               cod_ticket_type:
-                type: integer
-                format: int32
-                example: 2
+                type: string
+                example: 'SIMPLE'
               idt_client:
                 type: integer
                 format: int32
@@ -397,7 +423,9 @@ components:
                 type: integer
                 format: double
                 example: 5.76
-
+              cod_ticket_status:
+                type: string
+                example: 'PENDING'
       xml:
         name: TicketListResponse
 
