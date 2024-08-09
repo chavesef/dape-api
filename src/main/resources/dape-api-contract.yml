@@ -90,6 +90,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - bet
+      summary: Deletar aposta
+      description: Deletar uma aposta disponível no banco de dados
+      operationId: deletarAposta
+      parameters:
+        - name: idt_bet
+          in: path
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        '200':
+          description: OK, Aposta Deletada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetDeleteResponse'
+        '404':
+          description: Not found, Aposta não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /bets/status/{idt_bet}:
     patch:
       tags:
@@ -249,6 +277,9 @@ components:
           type: string
           format: date
           example: "2025-08-06"
+        cod_bet_status:
+          type: string
+          example: "PENDING"
       xml:
         name: BetUpdateResponse
 
@@ -283,6 +314,29 @@ components:
           example: "2025-08-06"
       xml:
         name: StatusUpdateResponse
+
+    BetDeleteResponse:
+      properties:
+        num_odd:
+          type: number
+          format: double
+          example: 1.90
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
+        dat_created:
+          type: string
+          format: date
+          example: "2025-07-21"
+        dat_updated:
+          type: string
+          format: date
+          example: "2025-08-06"
+        cod_bet_status:
+          type: string
+          example: "PENDING"
+      xml:
+        name: BetDeleteResponse
 
     BetListResponse:
       type: object
