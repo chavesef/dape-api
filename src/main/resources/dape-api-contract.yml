@@ -486,10 +486,6 @@ components:
           type: string
           format: date
           example: "2025-07-21"
-        dat_updated:
-          type: string
-          format: date
-          example: "2025-08-06"
         client:
           type: object
           properties:
