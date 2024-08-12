@@ -50,6 +50,26 @@ paths:
             type: integer
             format: int32
             example: 0
+        - name: bet_status
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "PENDING"
+        - name: dat_created
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2025-07-21"
+        - name: dat_updated
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2025-08-07"
       responses:
         '200':
           description: OK
@@ -158,10 +178,6 @@ paths:
       responses:
         '200':
           description: OK, Aposta Deletada
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetDeleteResponse'
         '404':
           description: Not found, Aposta não encontrada
           content:
@@ -212,6 +228,39 @@ paths:
             type: integer
             format: int32
             example: 0
+        - name: ticket_status
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "PENDING"
+        - name: ticket_type
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "MULTIPLE"
+        - name: idt_client
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 7
+        - name: dat_created
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2025-07-21"
+        - name: dat_updated
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2025-08-07"
       responses:
         '200':
           description: OK
@@ -219,7 +268,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TicketListResponse'
-
 
 components:
   schemas:
@@ -332,29 +380,6 @@ components:
           example: "2025-08-06"
       xml:
         name: StatusUpdateResponse
-
-    BetDeleteResponse:
-      properties:
-        num_odd:
-          type: number
-          format: double
-          example: 1.90
-        des_bet:
-          type: string
-          example: "Vitória do Botafogo"
-        dat_created:
-          type: string
-          format: date
-          example: "2025-07-21"
-        dat_updated:
-          type: string
-          format: date
-          example: "2025-08-06"
-        bet_status:
-          type: string
-          example: "PENDING"
-      xml:
-        name: BetDeleteResponse
 
     BetListResponse:
       type: object
