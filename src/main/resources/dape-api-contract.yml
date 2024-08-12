@@ -7,6 +7,16 @@ info:
     email: efchaves@uolinc.com
   version: 1.0.0
 
+servers:
+  - url: http://localhost:8080
+    description: Servidor local
+
+tags:
+  - name: bet
+    description: Operações relacionadas a apostas
+  - name: ticket
+    description: Operações relacionadas a bilhetes de apostas
+
 paths:
   /bets:
     post:
@@ -44,7 +54,7 @@ paths:
       parameters:
         - name: page
           in: query
-          required: true
+          required: false
           explode: true
           schema:
             type: integer
@@ -222,7 +232,7 @@ paths:
       parameters:
         - name: page
           in: query
-          required: true
+          required: false
           explode: true
           schema:
             type: integer
@@ -416,27 +426,38 @@ components:
               bet_status:
                 type: string
                 example: 'PENDING'
+              dat_created:
+                type: string
+                format: date
+                example: "2025-07-21"
+              dat_updated:
+                type: string
+                format: date
+                example: "2025-08-06"
       xml:
         name: BetListResponse
 
     TicketCreateRequest:
       required:
         - num_amount
-        - ticket_type
         - idt_client
+        - idt_bet
       type: object
       properties:
         num_amount:
           type: integer
           format: double
           example: 100.01
-        ticket_type:
-          type: string
-          example: 'SIMPLE'
         idt_client:
           type: integer
           format: int32
           example: 8
+        idt_bet:
+          type: array
+          items:
+            type: integer
+            format: int32
+          example: [1, 4, 6]
       xml:
         name: TicketCreateRequest
 
@@ -456,11 +477,7 @@ components:
           example: 100.01
         ticket_type:
           type: string
-          example: 'SIMPLE'
-        idt_client:
-          type: integer
-          format: int32
-          example: 8
+          example: 'MULTIPLE'
         num_final_odd:
           type: integer
           format: double
@@ -473,6 +490,23 @@ components:
           type: string
           format: date
           example: "2025-08-06"
+        client:
+          type: object
+          properties:
+            idt_client:
+              type: integer
+              format: int32
+              example: 7
+            nam_client:
+              type: string
+              example: "Ted Lasso"
+            num_document:
+              type: string
+              example: "123.456.789-00"
+            num_balance:
+              type: integer
+              format: double
+              example: 200.00
       xml:
         name: TicketCreateResponse
 
@@ -512,10 +546,6 @@ components:
               ticket_type:
                 type: string
                 example: 'SIMPLE'
-              idt_client:
-                type: integer
-                format: int32
-                example: 8
               num_final_odd:
                 type: integer
                 format: double
@@ -523,6 +553,23 @@ components:
               ticket_status:
                 type: string
                 example: 'PENDING'
+              client:
+                type: object
+                properties:
+                  idt_client:
+                    type: integer
+                    format: int32
+                    example: 7
+                  nam_client:
+                    type: string
+                    example: "Ted Lasso"
+                  num_document:
+                    type: string
+                    example: "123.456.789-00"
+                  num_balance:
+                    type: integer
+                    format: double
+                    example: 200.00
       xml:
         name: TicketListResponse
 
@@ -535,7 +582,7 @@ components:
           example: 400
         message:
           type: string
-          example: "Não encontrado"
+          example: "Mensagem de erro"
       xml:
         name: ErrorResponse
 
