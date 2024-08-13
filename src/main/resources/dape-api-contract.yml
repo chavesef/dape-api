@@ -60,6 +60,13 @@ paths:
             type: integer
             format: int32
             example: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 5
         - name: bet_status
           in: query
           required: false
@@ -238,6 +245,13 @@ paths:
             type: integer
             format: int32
             example: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 5
         - name: ticket_status
           in: query
           required: false
