@@ -18,7 +18,7 @@ tags:
     description: Operações relacionadas a bilhetes de apostas
 
 paths:
-  /bets:
+  /bet:
     post:
       tags:
         - bet
@@ -100,7 +100,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /bets/status/{idt_bet}:
+  /bet/{idt_bet}/status:
     patch:
       tags:
         - bet
@@ -142,7 +142,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /bets/{idt_bet}:
+  /bet/{idt_bet}:
     patch:
       tags:
         - bet
@@ -207,7 +207,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /tickets:
+  /ticket:
     post:
       tags:
         - ticket
