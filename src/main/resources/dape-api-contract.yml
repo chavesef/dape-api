@@ -71,8 +71,7 @@ paths:
           in: query
           required: false
           schema:
-            type: string
-            example: "PENDING"
+            $ref: '#/components/schemas/StatusEnum'
         - name: dat_created
           in: query
           required: false
@@ -262,14 +261,12 @@ paths:
           in: query
           required: false
           schema:
-            type: string
-            example: "PENDING"
+            $ref: '#/components/schemas/StatusEnum'
         - name: ticket_type
           in: query
           required: false
           schema:
-            type: string
-            example: "MULTIPLE"
+            $ref: '#/components/schemas/TicketTypeEnum'
         - name: idt_client
           in: query
           required: false
@@ -327,8 +324,7 @@ components:
       type: object
       properties:
         bet_status:
-          type: string
-          example: "PENDING"
+          $ref: '#/components/schemas/StatusEnum'
         idt_bet:
           type: integer
           format: int32
@@ -380,8 +376,7 @@ components:
           format: date
           example: "2025-08-06"
         bet_status:
-          type: string
-          example: "PENDING"
+          $ref: '#/components/schemas/StatusEnum'
       xml:
         name: BetUpdateResponse
 
@@ -389,8 +384,7 @@ components:
       type: object
       properties:
         bet_status:
-          type: string
-          example: 'GREEN'
+          $ref: '#/components/schemas/StatusEnum'
       xml:
         name: StatusUpdateRequest
 
@@ -404,8 +398,7 @@ components:
           type: string
           example: "Vitória do Botafogo"
         bet_status:
-          type: string
-          example: 'GREEN'
+          $ref: '#/components/schemas/StatusEnum'
         dat_created:
           type: string
           format: date
@@ -450,8 +443,7 @@ components:
                 type: string
                 example: "Vitória do Botafogo"
               bet_status:
-                type: string
-                example: 'PENDING'
+                $ref: '#/components/schemas/StatusEnum'
               dat_created:
                 type: string
                 format: date
@@ -491,8 +483,7 @@ components:
       type: object
       properties:
         ticket_status:
-          type: string
-          example: 'PENDING'
+          $ref: '#/components/schemas/StatusEnum'
         idt_ticket:
           type: integer
           format: int32
@@ -502,8 +493,7 @@ components:
           format: double
           example: 100.01
         ticket_type:
-          type: string
-          example: 'MULTIPLE'
+          $ref: '#/components/schemas/TicketTypeEnum'
         num_final_odd:
           type: integer
           format: double
@@ -566,15 +556,13 @@ components:
                 format: date
                 example: "2025-07-21"
               ticket_type:
-                type: string
-                example: 'SIMPLE'
+                $ref: '#/components/schemas/TicketTypeEnum'
               num_final_odd:
                 type: integer
                 format: double
                 example: 5.76
               ticket_status:
-                type: string
-                example: 'PENDING'
+                $ref: '#/components/schemas/StatusEnum'
               client:
                 type: object
                 properties:
@@ -594,6 +582,23 @@ components:
                     example: 200.00
       xml:
         name: TicketListResponse
+
+    StatusEnum:
+      type: string
+      enum:
+        - PENDING
+        - GREEN
+        - RED
+      xml:
+        name: StatusEnum
+
+    TicketTypeEnum:
+      type: string
+      enum:
+        - MULTIPLE
+        - SIMPLE
+      xml:
+        name: TicketTypeEnum
 
     ErrorResponse:
       type: object
