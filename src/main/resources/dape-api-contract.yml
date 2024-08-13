@@ -94,6 +94,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BetListResponse'
+        '400':
+          description: Bad Request, Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /bets/status/{idt_bet}:
     patch:
@@ -292,6 +298,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TicketListResponse'
+        '400':
+          description: Bad Request, Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
