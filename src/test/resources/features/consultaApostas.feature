@@ -1,5 +1,6 @@
 #language: pt
 
+@ConsultaAposta
 Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
 
   Contexto:
@@ -30,6 +31,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
       | 2    | 2    | 12         | 2           |
       | 3    | 0    | 12         | 2           |
 
+  @ConsultaApostaSucesso
   Cenario: Consulta de apostas com sucesso
     Quando uma requisição de consulta de apostas for realizada
     Entao o serviço de listagem deve retornar o status code 200
@@ -51,6 +53,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
       | 11       | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12       | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
 
+  @ConsultaApostaPaginaSucesso
   Cenario: Consulta de apostas por página
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "page" valor "1"
     Entao o serviço de listagem deve retornar o status code 200
@@ -67,6 +70,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
       | 9        | 2.91    | 0            | 2024-08-20  | 2024-08-21  | Vitória do Grêmio           | PENDING    |
       | 10       | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
 
+  @ConsultaApostaStatusSucesso
   Cenario: Consulta de apostas pelo status
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "bet_status" valor "GREEN"
     Entao o serviço de listagem deve retornar o status code 200
@@ -76,6 +80,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
       | 6        | 1.56    | 1            | 2024-08-17  | 2024-08-18  | Vitória do Botafogo         | GREEN      |
       | 10       | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
 
+  @ConsultaApostaDataCriacaoSucesso
   Cenario: Consulta de apostas pelo dat_created
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "dat_created" valor "2024-08-20"
     Entao o serviço de listagem deve retornar o status code 200
@@ -86,6 +91,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
       | 11       | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12       | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
 
+  @ConsultaApostaDataAtualizacaoSucesso
   Cenario: Consulta de apostas pelo dat_updated
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "dat_updated" valor "2024-08-18"
     Entao o serviço de listagem deve retornar o status code 200
@@ -94,6 +100,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
       | 6        | 1.56    | 1            | 2024-08-17  | 2024-08-18  | Vitória do Botafogo         | GREEN      |
       | 7        | 2.67    | 0            | 2024-08-18  | 2024-08-18  | Vitória do Bahia            | RED        |
 
+  @ConsultaApostaMultiplosParametrosSucesso
   Cenario: Consulta de apostas pelo status e dat_created
     Quando uma requisição de consulta de apostas for realizada com os parâmetros "dat_created" valor "2024-08-20" e "bet_status" valor "RED"
     Entao o serviço de listagem deve retornar o status code 200
@@ -102,15 +109,18 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
       | 11       | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12       | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
 
+  @ConsultaApostaDadosInexistentes
   Cenario: Consulta de apostas com dados inexistentes
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "dat_updated" valor "2023-07-20"
     Entao o serviço de listagem deve retornar o status code 200
     E o conteúdo de resposta deve ser vazio
 
+  @ConsultaApostaDadosInvalidos
   Cenario: Consulta de apostas com dados inválidos
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "bet_status" valor "VENCIDA"
     Entao o serviço de listagem deve retornar o status code 400
 
+  @ConsultaApostaServicoIndisponivel
   Cenário: Consulta de apostas com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de consulta de apostas for realizada com os parâmetros "dat_created" valor "2024-08-20" e "bet_status" valor "RED"
