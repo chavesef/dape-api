@@ -51,11 +51,11 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
 
   Cenario: Cadastro de um novo bilhete com idt_client inexistente
     Quando uma requisição de criação de bilhetes for realizada com num_ammount 99.99 e idt_client 15 e idt_bet [4]
-    Entao o serviço de cadastro de bilhetes deve retornar o status code 404
+    Entao o serviço de cadastro de bilhetes deve retornar o status code 400
 
   Cenario: Cadastro de um novo bilhete com idt_bet inexistente
     Quando uma requisição de criação de bilhetes for realizada com num_ammount 99.99 e idt_client 1 e idt_bet [4, 2024]
-    Entao o serviço de cadastro de bilhetes deve retornar o status code 404
+    Entao o serviço de cadastro de bilhetes deve retornar o status code 400
 
   Cenário: Cadastro de um novo bilhete com serviço indisponível
     Dado que o serviço esteja indisponível
