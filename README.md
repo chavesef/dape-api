@@ -10,6 +10,7 @@ ou 'perdida'(red).
 ## Sumário
 - [Arquitetura](#arquitetura)
 - [Modelagem do banco de dados](#modelagem-do-banco-de-dados)
+- [Máquina de estados](#status)
 - [Ambiente de desenvolvimento](#ambiente-de-desenvolvimento)
   - [Tecnologias Utilizadas](#tecnologias-utilizadas)
   - [Configurando ambiente de desenvolvimento](#configurando-ambiente-de-desenvolvimento)
@@ -22,6 +23,12 @@ ou 'perdida'(red).
 
 ## Modelagem do banco de dados
 ![modelagem](/src/main/resources/images/modelagem.png)
+
+## Máquina de estados do status de uma aposta ou bilhete
+![status](/src/main/resources/images/status.png)
+
+Toda aposta e bilhetes cadastrados recebem o status inicial PENDING(aposta pendente). Posteriormente esse
+status poderá ser alterado para GREEN(aposta vencida) ou RED(aposta perdida) e não poderá ter seu status alterado novamente.
 
 ## Ambiente de desenvolvimento
 O ambiente de desenvolvimento é configurado utilizando o Docker para criar e gerenciar
