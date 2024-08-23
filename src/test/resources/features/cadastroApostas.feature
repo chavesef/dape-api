@@ -20,27 +20,27 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
 
   @CadastroApostaSucesso
-  Cenario: Cadastro de uma nova aposta com sucesso
+  Cenario: Cadastrar uma nova aposta com sucesso
     Quando uma requisição de criação de aposta for realizada com odd 2.19 e descrição "Vitória do Bahia"
-    Entao o serviço de cadastro deve retornar o status code 201
+    Entao o serviço de cadastro deve retornar o status code 201 - "Created"
     E os seguintes dados devem ser cadastrados no banco de dados
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 13      | 2.19    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Bahia            | PENDING    |
 
   @CadastroApostaOddInvalida
-  Cenario: Erro no cadastro de uma nova aposta por odd inválida
+  Cenario: Cadastrar uma nova aposta com odd inválida
     Quando uma requisição de criação de aposta for realizada com odd -2.19 e descrição "Vitória do Bahia"
-    Entao o serviço de cadastro deve retornar o status code 400
+    Entao o serviço de cadastro deve retornar o status code 400 - "Bad Request"
 
   @CadastroApostaDescricaoInvalida
-  Cenario: Erro no cadastro de uma nova aposta por descricao invalida
+  Cenario: Cadastrar uma nova aposta com descricao invalida
     Quando uma requisição de criação de aposta for realizada com odd 2.19 e descrição ""
-    Entao o serviço de cadastro deve retornar o status code 400
+    Entao o serviço de cadastro deve retornar o status code 400 - "Bad Request"
 
   @CadastroApostaServicoIndisponivel
-  Cenário: Cadastro de uma nova aposta com serviço indisponível
+  Cenário: Cadastrar uma nova aposta com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de criação de aposta for realizada com odd 2.19 e descrição "Vitória do Bahia"
-    Então o serviço de cadastro deve retornar o status code 500
+    Então o serviço de cadastro deve retornar o status code 500 - "Internal Server Error"
 
 

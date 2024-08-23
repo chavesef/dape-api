@@ -20,20 +20,20 @@ Funcionalidade: Deletar apostas disponíveis no banco de dados
       | 12       | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
 
   @RemocaoApostaSucesso
-  Cenario: Remoção de uma aposta no banco de dados com sucesso
+  Cenario: Remover uma aposta no banco de dados com sucesso
     Quando uma requisição de remoção de aposta for realizada com o parâmetro "idt_bet" valor 5
-    Entao o serviço de remoção deve retornar o status code 200
+    Entao o serviço de remoção deve retornar o status code 200 - "OK"
     E o seguinte dado deve ser deletado da tabela
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 5        | 1.19    | 0            | 2024-08-17  | 2024-08-17  | Vitória do Real Madrid      | RED        |
 
   @RemocaoApostaInexistente
-  Cenario: Remoção de uma aposta no banco de dados com idt_bet inexistente
+  Cenario: Remover uma aposta no banco de dados com idt_bet inexistente
     Quando uma requisição de remoção de aposta for realizada com o parâmetro "idt_bet" valor 2024
-    Entao o serviço de remoção deve retornar o status code 404
+    Entao o serviço de remoção deve retornar o status code 404 - "Not Found"
 
   @RemocaoApostaServicoIndisponivel
-  Cenário: Remoção de uma aposta com serviço indisponível
+  Cenário: Remover uma aposta com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de remoção de aposta for realizada com o parâmetro "idt_bet" valor 5
-    Então o serviço de remoção deve retornar o status code 500
+    Então o serviço de remoção deve retornar o status code 500 - "Internal Server Error"

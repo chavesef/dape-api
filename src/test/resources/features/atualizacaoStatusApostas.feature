@@ -20,25 +20,25 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
 
   @AtualizacaoStatusApostaSucesso
-  Cenario: Atualização de status de aposta com sucesso
+  Cenario: Atualizar o status de uma aposta com sucesso
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 1
-    Entao o serviço de atualização deve retornar o status code 200
+    Entao o serviço de atualização deve retornar o status code 200 - "OK"
     E o seguinte dado deve ser atualizado na tabela
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1        | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | GREEN      |
 
   @AtualizacaoStatusInvalidoAposta
-  Cenario: Atualização de status de aposta com status inválido
+  Cenario: Atualizar o status de uma aposta com status inválido
     Quando uma requisição de atualização de aposta for realizada com status "VENCIDA" e idt_bet 2
-    Entao o serviço de cadastro deve retornar o status code 400
+    Entao o serviço de cadastro deve retornar o status code 400 - "Bad Request"
 
   @AtualizacaoStatusApostaInexistente
-  Cenario: Atualização de status de aposta inexistente
+  Cenario: Atualizar o status de uma aposta inexistente
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 2024
-    Entao o serviço de cadastro deve retornar o status code 404
+    Entao o serviço de cadastro deve retornar o status code 404 - "Not Found"
 
   @AtualizacaoStatusApostaServicoIndisponivel
-  Cenário: Atualização de status de aposta com serviço indisponível
+  Cenário: Atualizar o status de uma aposta com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 1
-    Então o serviço de atualização deve retornar o status code 500
+    Então o serviço de atualização deve retornar o status code 500 - "Internal Server Error"

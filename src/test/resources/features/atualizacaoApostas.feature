@@ -20,30 +20,30 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
 
   @AtualizacaoApostaSucesso
-  Cenario: Atualização de aposta com sucesso
+  Cenario: Atualizar uma aposta existente com sucesso
     Quando uma requisição de atualização de aposta for realizada com odd 3.20 e descrição "Vitória do Juventude" e idt_bet 2
-    Entao o serviço de atualização deve retornar o status code 200
+    Entao o serviço de atualização deve retornar o status code 200 - "OK"
     E o seguinte dado deve ser atualizado na tabela
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
 
   @AtualizacaoApostaInexistente
-  Cenario: Atualização de aposta inexistente
-    Quando uma requisição de atualização de aposta for realizada com odd 2.20 e descrição "Vitória do Vitória" e idt_bet 2024
-    Entao o serviço de atualização deve retornar o status code 404
+  Cenario: Atualizar uma aposta inexistente
+    Quando uma requisição de atualização de aposta for realizada com odd 2.20, descrição "Vitória do Vitória" e idt_bet 2024
+    Entao o serviço de atualização deve retornar o status code 404 - "Not Found"
 
   @AtualizacaoApostaOddInvalida
-  Cenario: Atualização de aposta com odd inválida
+  Cenario: Atualizar uma aposta com odd inválida
     Quando uma requisição de atualização de aposta for realizada com odd -2.20 e descrição "Vitória do Vitória" e idt_bet 2
-    Entao o serviço de atualização deve retornar o status code 400
+    Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
 
   @AtualizacaoApostaDescricaoInvalida
-  Cenario: Atualização de aposta com descricao inválida
+  Cenario: Atualizar uma aposta com descricao inválida
     Quando uma requisição de atualização de aposta for realizada com odd 2.20 e descrição "" e idt_bet 2
-    Entao o serviço de atualização deve retornar o status code 400
+    Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
 
   @AtualizacaoApostaServicoIndisponivel
-  Cenário: Atualização de aposta com serviço indisponível
+  Cenário: Atualizar uma aposta com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de atualização de aposta for realizada com odd 2.20 e descrição "Vitória do Vitória" e idt_bet 2
-    Então o serviço de listagem deve retornar o status code 500
+    Então o serviço de listagem deve retornar o status code 500 - "Internal Server Error"
