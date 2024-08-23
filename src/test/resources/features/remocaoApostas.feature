@@ -32,6 +32,11 @@ Funcionalidade: Deletar apostas disponíveis no banco de dados
     Quando uma requisição de remoção de aposta for realizada com o parâmetro "idt_bet" valor 2024
     Entao o serviço de remoção deve retornar o status code 404 - "Not Found"
 
+  @RemocaoApostaSelected
+  Cenario: Remover uma aposta no banco de dados que já foi selecionada
+    Quando uma requisição de remoção de aposta for realizada com o parâmetro "idt_bet" valor 12
+    Entao o serviço de remoção deve retornar o status code 400 - "Bad Request"
+
   @RemocaoApostaServicoIndisponivel
   Cenário: Remover uma aposta com serviço indisponível
     Dado que o serviço esteja indisponível

@@ -27,6 +27,16 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
 
+  @AtualizacaoApostaSelecionada
+  Cenario: Atualizar uma aposta que já foi selecionada
+    Quando uma requisição de atualização de aposta for realizada com odd 3.20 e descrição "Vitória do Juventude" e idt_bet 8
+    Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
+
+  @AtualizacaoApostaResolvida
+  Cenario: Atualizar uma aposta que não está com status PENDING
+    Quando uma requisição de atualização de aposta for realizada com odd 3.20 e descrição "Vitória do Juventude" e idt_bet 6
+    Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
+
   @AtualizacaoApostaInexistente
   Cenario: Atualizar uma aposta inexistente
     Quando uma requisição de atualização de aposta for realizada com odd 2.20, descrição "Vitória do Vitória" e idt_bet 2024
