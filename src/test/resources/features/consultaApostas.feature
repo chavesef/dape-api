@@ -34,7 +34,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
   @ConsultaApostaSucesso
   Cenario: Consultar apostas com sucesso
     Quando uma requisição de consulta de apostas for realizada
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de apostas deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1        | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
@@ -56,7 +56,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
   @ConsultaApostaPaginaSucesso
   Cenario: Consultar apostas por página
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "page" valor "1"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de apostas deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1        | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
@@ -73,7 +73,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
   @ConsultaApostaStatusSucesso
   Cenario: Consultar apostas pelo status
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "bet_status" valor "GREEN"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de apostas deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 4        | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
@@ -83,7 +83,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
   @ConsultaApostaDataCriacaoSucesso
   Cenario: Consultar apostas pelo dat_created
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "dat_created" valor "2024-08-20"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de apostas deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 9        | 2.91    | 0            | 2024-08-20  | 2024-08-21  | Vitória do Grêmio           | PENDING    |
@@ -94,7 +94,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
   @ConsultaApostaDataAtualizacaoSucesso
   Cenario: Consultar apostas pelo dat_updated
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "dat_updated" valor "2024-08-18"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de apostas deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 6        | 1.56    | 1            | 2024-08-17  | 2024-08-18  | Vitória do Botafogo         | GREEN      |
@@ -103,7 +103,7 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
   @ConsultaApostaMultiplosParametrosSucesso
   Cenario: Consultar apostas pelo status e dat_created
     Quando uma requisição de consulta de apostas for realizada com os parâmetros "dat_created" valor "2024-08-20" e "bet_status" valor "RED"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de apostas deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 11       | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
@@ -112,16 +112,16 @@ Funcionalidade: Realizar consulta de apostas disponíveis no banco de dados
   @ConsultaApostaDadosInexistentes
   Cenario: Consultar apostas com dados inexistentes
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "dat_updated" valor "2023-07-20"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de apostas deve retornar o status code 200 - "OK"
     E o conteúdo de resposta deve ser vazio
 
   @ConsultaApostaDadosInvalidos
   Cenario: Consultar apostas com dados inválidos
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "bet_status" valor "VENCIDA"
-    Entao o serviço de listagem deve retornar o status code 400 - "Bad Request"
+    Entao o serviço de listagem de apostas deve retornar o status code 400 - "Bad Request"
 
   @ConsultaApostaServicoIndisponivel
   Cenário: Consultar apostas com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de consulta de apostas for realizada com os parâmetros "dat_created" valor "2024-08-20" e "bet_status" valor "RED"
-    Então o serviço de listagem deve retornar o status code 500 - "Internal Server Error"
+    Então o serviço de listagem de apostas deve retornar o status code 500 - "Internal Server Error"

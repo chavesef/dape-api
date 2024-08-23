@@ -34,7 +34,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteSucesso
   Cenario: Consultar bilhetes com sucesso
     Quando uma requisição de consulta de bilhetes for realizada
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 1          | 100.01      | 2024-08-21  | 2024-08-21  | MULTIPLE    | PENDING           | 1          | 4.08          |
@@ -56,7 +56,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilhetePaginaSucesso
   Cenario: Consultar bilhetes por página
     Quando uma requisição de consulta de bilhetes for realizada com o parâmetro "page" valor "1"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 1          | 100.01      | 2024-08-21  | 2024-08-21  | MULTIPLE    | PENDING           | 1          | 4.08          |
@@ -73,7 +73,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteStatusSucesso
   Cenario: Consultar bilhetes pelo status
     Quando uma requisição de consulta de bilhetes for realizada com o parâmetro "ticket_status" valor "RED"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 6          | 50.00       | 2024-08-25  | 2024-08-25  | SIMPLE      | RED               | 9          | 2.19          |
@@ -83,7 +83,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteTipoSucesso
   Cenario: Consultar bilhetes pelo tipo
     Quando uma requisição de consulta de bilhetes for realizada com o parâmetro "ticket_type" valor "SIMPLE"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 2          | 99.99       | 2024-08-21  | 2024-08-21  | SIMPLE      | PENDING           | 3          | 4.12          |
@@ -97,7 +97,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteClienteSucesso
   Cenario: Consultar bilhetes pelo idt_client
     Quando uma requisição de consulta de bilhetes for realizada com o parâmetro "idt_client" valor "10"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 7          | 22.22       | 2024-08-26  | 2024-08-26  | MULTIPLE    | RED               | 10         | 16.79         |
@@ -105,7 +105,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteDataCriacaoSucesso
   Cenario: Consultar bilhetes pelo dat_created
     Quando uma requisição de consulta de bilhetes for realizada com o parâmetro "dat_created" valor "2024-08-22"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 3          | 12.87       | 2024-08-22  | 2024-08-22  | SIMPLE      | PENDING           | 1          | 3.12          |
@@ -113,7 +113,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteDataAtualizacaoSucesso
   Cenario: Consultar bilhetes pelo dat_updated
     Quando uma requisição de consulta de bilhetes for realizada com o parâmetro "dat_updated" valor "2024-08-28"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 11         | 112.12      | 2024-08-28  | 2024-08-28  | MULTIPLE    | PENDING           | 2          | 4.08          |
@@ -122,7 +122,7 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteMultiplosParametrosSucesso
   Cenario: Consultar bilhetes pelo status e tipo
     Quando uma requisição de consulta de apostas for realizada com os parâmetros "ticket_type" valor "MULTIPLE" e "ticket_status" valor "PENDING"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E os seguintes dados devem ser retornados para a página 1
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 1          | 100.01      | 2024-08-21  | 2024-08-21  | MULTIPLE    | PENDING           | 1          | 4.08          |
@@ -131,16 +131,16 @@ Funcionalidade: Realizar consulta de bilhetes cadastrados no banco de dados
   @ConsultaBilheteDadosInexistentes
   Cenario: Consultar bilhetes com dados inexistentes
     Quando uma requisição de consulta de bilhetes for realizada com o parâmetro "idt_client" valor "2024"
-    Entao o serviço de listagem deve retornar o status code 200 - "OK"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 200 - "OK"
     E o conteúdo de resposta deve ser vazio
 
   @ConsultaBilheteDadosInvalidos
   Cenario: Consultar bilhetes com dados inválidos
     Quando uma requisição de consulta de apostas for realizada com o parâmetro "bet_status" valor "VENCIDA"
-    Entao o serviço de listagem deve retornar o status code 400 - "Bad Request"
+    Entao o serviço de listagem de bilhetes deve retornar o status code 400 - "Bad Request"
 
   @ConsultaBilheteServicoIndisponivel
   Cenário: Consultar bilhetes com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de consulta de apostas for realizada com os parâmetros "ticket_type" valor "MULTIPLE" e "ticket_status" valor "PENDING"
-    Então o serviço de listagem deve retornar o status code 500 - "Internal Server Error"
+    Então o serviço de listagem de bilhetes deve retornar o status code 500 - "Internal Server Error"
