@@ -21,7 +21,6 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
 
   @AtualizacaoApostaSucesso
   Cenario: Atualizar uma aposta existente com sucesso
-    Dado que uma aposta esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com odd 3.20 e descrição "Vitória do Juventude" e idt_bet 2
     Entao o serviço de atualização deve retornar o status code 200 - "OK"
     E o seguinte dado deve ser atualizado na tabela
@@ -30,19 +29,16 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
 
   @AtualizacaoApostaInexistente
   Cenario: Atualizar uma aposta inexistente
-    Dado que uma aposta esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com odd 2.20, descrição "Vitória do Vitória" e idt_bet 2024
     Entao o serviço de atualização deve retornar o status code 404 - "Not Found"
 
   @AtualizacaoApostaOddInvalida
   Cenario: Atualizar uma aposta com odd inválida
-    Dado que uma aposta esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com odd -2.20 e descrição "Vitória do Vitória" e idt_bet 2
     Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
 
   @AtualizacaoApostaDescricaoInvalida
   Cenario: Atualizar uma aposta com descricao inválida
-    Dado que uma aposta esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com odd 2.20 e descrição "" e idt_bet 2
     Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
 

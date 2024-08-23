@@ -21,7 +21,6 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
 
   @AtualizacaoStatusApostaSucesso
   Cenario: Atualizar o status de uma aposta com sucesso
-    Dado que uma aposta esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 1
     Entao o serviço de atualização de status deve retornar o status code 200 - "OK"
     E o seguinte dado deve ser atualizado na tabela
@@ -30,19 +29,16 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
 
   @AtualizacaoStatusInvalidoAposta
   Cenario: Atualizar o status de uma aposta com status inválido
-    Dado que uma aposta esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com status "VENCIDA" e idt_bet 2
     Entao o serviço de atualização de status deve retornar o status code 400 - "Bad Request"
 
   @AtualizacaoStatusApostaNaoPermitido
   Cenario: Atualizar o status de uma aposta que não esteja com o status PENDING
-    Dado que uma aposta esteja com o status GREEN
-    Quando uma requisição de atualização de aposta for realizada com status "RED" e idt_bet 2
+    Quando uma requisição de atualização de aposta for realizada com status "RED" e idt_bet 4
     Entao o serviço de atualização de status deve retornar o status code 400 - "Bad Request"
 
   @AtualizacaoStatusApostaInexistente
   Cenario: Atualizar o status de uma aposta inexistente
-    Dado que uma aposta esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 2024
     Entao o serviço de atualização de status deve retornar o status code 404 - "Not Found"
 
