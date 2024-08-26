@@ -27,6 +27,14 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
 
+  @AtualizacaoApostaMesmaDescricaoSucesso
+  Cenario: Atualizar uma aposta com descrição já existente para vitória de um time em partidas diferentes com sucesso
+    Quando uma requisição de atualização de aposta for realizada com odd 1.87 e descrição "Vitória do Botafogo" e idt_bet 3
+    Entao o serviço de atualização deve retornar o status code 200 - "OK"
+    E o seguinte dado deve ser atualizado na tabela
+      | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
+      | 3       | 1.87    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Botafogo         | PENDING    |
+
   @AtualizacaoApostaSelecionada
   Cenario: Atualizar uma aposta que já foi selecionada
     Quando uma requisição de atualização de aposta for realizada com odd 3.20 e descrição "Vitória do Juventude" e idt_bet 8
@@ -51,7 +59,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
       | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
-      | 3       | 1.45    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Palmeiras        | PENDING    |
+      | 3       | 1.87    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Botafogo         | PENDING    |
       | 4       | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
       | 5       | 1.19    | 0            | 2024-08-17  | 2024-08-17  | Vitória do Real Madrid      | RED        |
       | 6       | 1.56    | 1            | 2024-08-17  | 2024-08-18  | Vitória do Botafogo         | GREEN      |
@@ -87,7 +95,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
       | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
-      | 3       | 1.45    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Palmeiras        | PENDING    |
+      | 3       | 1.87    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Botafogo         | PENDING    |
       | 4       | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
       | 5       | 1.19    | 0            | 2024-08-17  | 2024-08-17  | Vitória do Real Madrid      | RED        |
       | 6       | 1.56    | 1            | 2024-08-17  | 2024-08-18  | Vitória do Botafogo         | GREEN      |
