@@ -50,7 +50,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
     E o banco de dados deve se manter
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
-      | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
+      | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
       | 3       | 1.45    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Palmeiras        | PENDING    |
       | 4       | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
       | 5       | 1.19    | 0            | 2024-08-17  | 2024-08-17  | Vitória do Real Madrid      | RED        |
@@ -68,7 +68,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
     Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
     E o seguinte dado deve se manter o mesmo na tabela
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
-      | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
+      | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
 
   @AtualizacaoApostaDescricaoInvalida
   Cenario: Atualizar uma aposta com descricao inválida
@@ -76,7 +76,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
     Entao o serviço de atualização deve retornar o status code 400 - "Bad Request"
     E o seguinte dado deve se manter o mesmo na tabela
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
-      | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
+      | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
 
   @AtualizacaoApostaServicoIndisponivel
   Cenário: Atualizar uma aposta com serviço indisponível
@@ -86,7 +86,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
     E o banco de dados deve se manter
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
-      | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
+      | 2       | 3.20    | 0            | 2024-08-15  | 2024-08-16  | Vitória do Juventude        | PENDING    |
       | 3       | 1.45    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Palmeiras        | PENDING    |
       | 4       | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
       | 5       | 1.19    | 0            | 2024-08-17  | 2024-08-17  | Vitória do Real Madrid      | RED        |

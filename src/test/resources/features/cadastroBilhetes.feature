@@ -32,19 +32,6 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
       | 9          | Sam Obisanya   | 333.222.111-00 | 450.00      | sobisanya@richmond.com | teste9       | 2024-08-14  | 2024-08-14  |
       | 10         | Dani Rojas     | 989.898.989-11 | 500.00      | drojas@richmond.com    | teste10      | 2024-08-14  | 2024-08-14  |
 
-  @CadastroBilheteMultiploSucesso
-  Cenario: Cadastrar um novo bilhete múltiplo com sucesso
-    Quando uma requisição de criação de bilhetes for realizada com num_ammount 100.01 e idt_client 1 e idt_bet [1, 2, 3]
-    Entao o serviço de cadastro de bilhetes deve retornar o status code 201 - "Created"
-    E o seguinte bilhete deve ser cadastrado no banco de dados
-      | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
-      | 1          | 100.01      | 2024-08-21  | 2024-08-21  | MULTIPLE    | PENDING           | 1          | 4.08          |
-    E os seguintes dados devem ser cadastrados na tabela ticket_bet
-      | idt_ticket_bet | idt_ticket | idt_bet |
-      | 1              | 1          | 1       |
-      | 2              | 1          | 2       |
-      | 3              | 1          | 3       |
-
   @CadastroBilheteSimplesSucesso
   Cenario: Cadastrar um novo bilhete simples com sucesso
     Quando uma requisição de criação de bilhetes for realizada com num_ammount 99.99 e idt_client 3 e idt_bet [4]
@@ -55,6 +42,19 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
     E o seguinte dado deve ser cadastrado na tabela ticket_bet
       | idt_ticket_bet | idt_ticket | idt_bet |
       | 1              | 1          | 4       |
+
+  @CadastroBilheteMultiploSucesso
+  Cenario: Cadastrar um novo bilhete múltiplo com sucesso
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 100.01 e idt_client 1 e idt_bet [1, 2, 3]
+    Entao o serviço de cadastro de bilhetes deve retornar o status code 201 - "Created"
+    E o seguinte bilhete deve ser cadastrado no banco de dados
+      | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
+      | 2          | 100.01      | 2024-08-21  | 2024-08-21  | MULTIPLE    | PENDING           | 1          | 4.08          |
+    E os seguintes dados devem ser cadastrados na tabela ticket_bet
+      | idt_ticket_bet | idt_ticket | idt_bet |
+      | 2              | 2          | 1       |
+      | 3              | 2          | 2       |
+      | 4              | 2          | 3       |
 
   @CadastroBilheteValorApostaInvalida
   Cenario: Cadastrar um novo bilhete com num_ammount inválido

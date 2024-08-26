@@ -45,6 +45,7 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
       | 10      | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
       | 11      | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
+      | 13      | 2.19    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Bahia            | PENDING    |
 
   @CadastroApostaDescricaoInvalida
   Cenario: Cadastrar uma nova aposta com descricao invalida
@@ -64,6 +65,7 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
       | 10      | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
       | 11      | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
+      | 13      | 2.19    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Bahia            | PENDING    |
 
   @CadastroApostaServicoIndisponivel
   Cenário: Cadastrar uma nova aposta com serviço indisponível
@@ -84,5 +86,6 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
       | 10      | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
       | 11      | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
+      | 13      | 2.19    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Bahia            | PENDING    |
 
 

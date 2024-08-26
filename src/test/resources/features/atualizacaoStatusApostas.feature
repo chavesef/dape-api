@@ -24,8 +24,8 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 1
     Entao o serviço de atualização de status deve retornar o status code 200 - "OK"
     E o seguinte dado deve ser atualizado na tabela
-      | idt_bet  | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
-      | 1        | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | GREEN      |
+      | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
+      | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | GREEN      |
 
   @AtualizacaoStatusInvalidoAposta
   Cenario: Atualizar o status de uma aposta com status inválido
@@ -49,7 +49,7 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
     Entao o serviço de atualização de status deve retornar o status code 404 - "Not Found"
     E o banco de dados deve se manter
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
-      | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
+      | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | GREEN      |
       | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
       | 3       | 1.45    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Palmeiras        | PENDING    |
       | 4       | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
@@ -69,7 +69,7 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
     Então o serviço de atualização de status deve retornar o status code 500 - "Internal Server Error"
     E o banco de dados deve se manter
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
-      | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
+      | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | GREEN      |
       | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
       | 3       | 1.45    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Palmeiras        | PENDING    |
       | 4       | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
