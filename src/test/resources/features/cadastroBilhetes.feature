@@ -52,19 +52,23 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
   Cenario: Cadastrar um novo bilhete com num_ammount inválido
     Quando uma requisição de criação de bilhetes for realizada com num_ammount -99.99 e idt_client 3 e idt_bet [4]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 400 - "Bad Request"
+    E o bilhete não deve ser cadastrado
 
   @CadastroBilheteClienteInexistente
   Cenario: Cadastrar um novo bilhete com idt_client inexistente
     Quando uma requisição de criação de bilhetes for realizada com num_ammount 99.99 e idt_client 15 e idt_bet [4]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 400 - "Bad Request"
+    E o bilhete não deve ser cadastrado
 
   @CadastroBilheteApostaInexistente
   Cenario: Cadastrar um novo bilhete com idt_bet inexistente
     Quando uma requisição de criação de bilhetes for realizada com num_ammount 99.99 e idt_client 1 e idt_bet [4, 2024]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 400 - "Bad Request"
+    E o bilhete não deve ser cadastrado
 
   @CadastroBilheteServicoIndisponivel
   Cenário: Cadastrar um novo bilhete com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de criação de bilhetes for realizada com num_ammount 99.99 e idt_client 3 e idt_bet [4]
     Então o serviço de cadastro de bilhetes deve retornar o status code 500 - "Internal Server Error"
+    E o bilhete não deve ser cadastrado
