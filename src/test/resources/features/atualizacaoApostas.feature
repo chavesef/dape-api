@@ -82,7 +82,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
   Cenário: Atualizar uma aposta com serviço indisponível
     Dado que o serviço esteja indisponível
     Quando uma requisição de atualização de aposta for realizada com odd 2.20 e descrição "Vitória do Vitória" e idt_bet 2
-    Então o serviço de listagem deve retornar o status code 500 - "Internal Server Error"
+    Então o serviço de atualização deve retornar o status code 500 - "Internal Server Error"
     E o banco de dados deve se manter
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
