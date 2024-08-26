@@ -39,6 +39,11 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
     E o seguinte bilhete deve ser cadastrado no banco de dados
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 1          | 100.01      | 2024-08-21  | 2024-08-21  | MULTIPLE    | PENDING           | 1          | 4.08          |
+    E os seguintes dados devem ser cadastrados na tabela ticket_bet
+      | idt_ticket_bet | idt_ticket | idt_bet |
+      | 1              | 1          | 1       |
+      | 2              | 1          | 2       |
+      | 3              | 1          | 3       |
 
   @CadastroBilheteSimplesSucesso
   Cenario: Cadastrar um novo bilhete simples com sucesso
@@ -47,6 +52,9 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
     E o seguinte bilhete deve ser cadastrado no banco de dados
       | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 1          | 99.99       | 2024-08-21  | 2024-08-21  | SIMPLE      | PENDING           | 3          | 4.12          |
+    E o seguinte dado deve ser cadastrado na tabela ticket_bet
+      | idt_ticket_bet | idt_ticket | idt_bet |
+      | 1              | 1          | 4       |
 
   @CadastroBilheteValorApostaInvalida
   Cenario: Cadastrar um novo bilhete com num_ammount inválido
