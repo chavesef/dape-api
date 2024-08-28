@@ -32,4 +32,10 @@ class TicketTypeEnumConverterTest {
         final TicketTypeEnum ticketTypeEnum = ticketTypeEnumConverter.convertToEntityAttribute(null);
         Assertions.assertNull(ticketTypeEnum);
     }
+
+    @Test
+    void testConvertToEntityAttributeException(){
+        final Integer code = 4;
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {ticketTypeEnumConverter.convertToEntityAttribute(code);});
+    }
 }

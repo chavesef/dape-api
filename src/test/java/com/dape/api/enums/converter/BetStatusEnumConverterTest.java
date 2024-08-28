@@ -33,4 +33,11 @@ class BetStatusEnumConverterTest {
         final BetStatusEnum betStatusEnum = betStatusEnumConverter.convertToEntityAttribute(null);
         Assertions.assertNull(betStatusEnum);
     }
+
+    //test that returns exception
+    @Test
+    void testConvertToEntityAttributeException(){
+        final Integer code = 4;
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {betStatusEnumConverter.convertToEntityAttribute(code);});
+    }
 }
