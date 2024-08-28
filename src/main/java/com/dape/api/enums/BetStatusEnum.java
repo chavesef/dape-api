@@ -7,7 +7,7 @@ public enum BetStatusEnum {
 
     private final int codBetStatus;
 
-    private BetStatusEnum(int codBetStatus) {
+    BetStatusEnum(int codBetStatus) {
         this.codBetStatus = codBetStatus;
     }
 

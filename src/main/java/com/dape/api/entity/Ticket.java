@@ -17,7 +17,7 @@ public class Ticket {
     @Column(name = "IDT_TICKET", nullable = false)
     private Long idtTicket;
 
-    @Column(name = "NUM_AMMOUNT", nullable = false)
+    @Column(name = "NUM_AMOUNT", nullable = false)
     private double numAmmount;
 
     @Column(name = "DAT_CREATED", nullable = false)
