@@ -6,6 +6,7 @@ import com.dape.api.enums.converter.TicketStatusEnumConverter;
 import com.dape.api.enums.converter.TicketTypeEnumConverter;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -18,7 +19,7 @@ public class Ticket {
     private Long idtTicket;
 
     @Column(name = "NUM_AMOUNT", nullable = false)
-    private double numAmmount;
+    private BigDecimal numAmmount;
 
     @Column(name = "DAT_CREATED", nullable = false)
     private LocalDate datCreated;
@@ -38,11 +39,11 @@ public class Ticket {
     @JoinColumn(name = "IDT_CLIENT", nullable = false)
     private Client idtClient;
 
-    public double getNumAmmount() {
+    public BigDecimal getNumAmmount() {
         return numAmmount;
     }
 
-    public void setNumAmmount(double numAmmount) {
+    public void setNumAmmount(BigDecimal numAmmount) {
         this.numAmmount = numAmmount;
     }
 

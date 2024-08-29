@@ -4,6 +4,7 @@ import com.dape.api.enums.BetStatusEnum;
 import com.dape.api.enums.converter.BetStatusEnumConverter;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -16,7 +17,7 @@ public class Bet {
     private Long idtBet;
 
     @Column(name = "NUM_ODD", nullable = false)
-    private double numOdd;
+    private BigDecimal numOdd;
 
     @Column(name = "FLG_SELECTED", nullable = false)
     private int flgSelected;
@@ -42,11 +43,11 @@ public class Bet {
         this.idtBet = idtBet;
     }
 
-    public double getNumOdd() {
+    public BigDecimal getNumOdd() {
         return numOdd;
     }
 
-    public void setNumOdd(double numOdd) {
+    public void setNumOdd(BigDecimal numOdd) {
         this.numOdd = numOdd;
     }
 

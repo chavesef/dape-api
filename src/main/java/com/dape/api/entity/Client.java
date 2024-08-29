@@ -2,6 +2,7 @@ package com.dape.api.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -20,7 +21,7 @@ public class Client {
     private String numDocument;
 
     @Column(name = "NUM_BALANCE", nullable = false)
-    private double numBalance;
+    private BigDecimal numBalance;
 
     @Column(name = "DES_EMAIL", nullable = false)
     private String desEmail;
@@ -58,11 +59,11 @@ public class Client {
         this.numDocument = numDocument;
     }
 
-    public double getNumBalance() {
+    public BigDecimal getNumBalance() {
         return numBalance;
     }
 
-    public void setNumBalance(double numBalance) {
+    public void setNumBalance(BigDecimal numBalance) {
         this.numBalance = numBalance;
     }
 
