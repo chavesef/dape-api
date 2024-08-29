@@ -1,6 +1,5 @@
 package com.dape.api.adapter.controller;
 
-import com.dape.api.adapter.controller.DapeController;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
