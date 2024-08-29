@@ -4,7 +4,7 @@ import com.dape.api.enums.BetStatusEnum;
 import com.dape.api.enums.converter.BetStatusEnumConverter;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "BET")
@@ -22,10 +22,10 @@ public class Bet {
     private int flgSelected;
 
     @Column(name = "DAT_CREATED", nullable = false)
-    private Date datCreated;
+    private LocalDate datCreated;
 
     @Column(name = "DAT_UPDATED", nullable = false)
-    private Date datUpdated;
+    private LocalDate datUpdated;
 
     @Column(name = "DES_BET", nullable = false)
     private String desBet;
@@ -50,11 +50,11 @@ public class Bet {
         this.numOdd = numOdd;
     }
 
-    public Date getDatCreated() {
+    public LocalDate getDatCreated() {
         return datCreated;
     }
 
-    public void setDatCreated(Date datCreated) {
+    public void setDatCreated(LocalDate datCreated) {
         this.datCreated = datCreated;
     }
 
@@ -66,11 +66,11 @@ public class Bet {
         this.flgSelected = flgSelected;
     }
 
-    public Date getDatUpdated() {
+    public LocalDate getDatUpdated() {
         return datUpdated;
     }
 
-    public void setDatUpdated(Date datUpdated) {
+    public void setDatUpdated(LocalDate datUpdated) {
         this.datUpdated = datUpdated;
     }
 

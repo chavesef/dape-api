@@ -2,7 +2,7 @@ package com.dape.api.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "CLIENT")
@@ -29,10 +29,10 @@ public class Client {
     private String numPassword;
 
     @Column(name = "DAT_CREATED", nullable = false)
-    private Date datCreated;
+    private LocalDate datCreated;
 
     @Column(name = "DAT_UPDATED", nullable = false)
-    private Date datUpdated;
+    private LocalDate datUpdated;
 
     public Long getIdtClient() {
         return idtClient;
@@ -82,19 +82,19 @@ public class Client {
         this.numPassword = numPassword;
     }
 
-    public Date getDatCreated() {
+    public LocalDate getDatCreated() {
         return datCreated;
     }
 
-    public void setDatCreated(Date datCreated) {
+    public void setDatCreated(LocalDate datCreated) {
         this.datCreated = datCreated;
     }
 
-    public Date getDatUpdated() {
+    public LocalDate getDatUpdated() {
         return datUpdated;
     }
 
-    public void setDatUpdated(Date datUpdated) {
+    public void setDatUpdated(LocalDate datUpdated) {
         this.datUpdated = datUpdated;
     }
 }
