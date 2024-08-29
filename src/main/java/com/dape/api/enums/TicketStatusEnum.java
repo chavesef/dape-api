@@ -1,18 +1,24 @@
 package com.dape.api.enums;
 
 public enum TicketStatusEnum {
-    PENDING(1),
-    GREEN(2),
-    RED(3);
+    PENDING(1, "Bilhete pendente"),
+    GREEN(2, "Bilhete vencido"),
+    RED(3, "Bilhete perdido"),;
 
     private final int codTicketStatus;
+    private final String desTicketStatus;
 
-    TicketStatusEnum(int codTicketStatus) {
+    TicketStatusEnum(int codTicketStatus, String desTicketStatus) {
         this.codTicketStatus = codTicketStatus;
+        this.desTicketStatus = desTicketStatus;
     }
 
     public int getCodTicketStatus() {
         return codTicketStatus;
+    }
+
+    public String getDesTicketStatus() {
+        return desTicketStatus;
     }
 
     public static TicketStatusEnum fromCode(int codTicketStatus) {

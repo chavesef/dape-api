@@ -1,17 +1,23 @@
 package com.dape.api.enums;
 
 public enum TicketTypeEnum {
-    SIMPLE(1),
-    MULTIPLE(2);
+    SIMPLE(1, "Bilhete simples"),
+    MULTIPLE(2, "Bilhete múltiplo"),;
 
     private final int codTicketType;
+    private final String desTicketType;
 
-    TicketTypeEnum(int codTicketType) {
+    TicketTypeEnum(int codTicketType, String desTicketType) {
         this.codTicketType = codTicketType;
+        this.desTicketType = desTicketType;
     }
 
     public int getCodTicketType() {
         return codTicketType;
+    }
+
+    public String getDesTicketType() {
+        return desTicketType;
     }
 
     public static TicketTypeEnum fromCode(int codTicketType) {
