@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "BET")
@@ -30,10 +30,10 @@ public class Bet {
     private int flgSelected;
 
     @Column(name = "DAT_CREATED", nullable = false)
-    private LocalDate datCreated;
+    private LocalDateTime datCreated;
 
     @Column(name = "DAT_UPDATED", nullable = false)
-    private LocalDate datUpdated;
+    private LocalDateTime datUpdated;
 
     @Column(name = "DES_BET", nullable = false)
     private String desBet;
@@ -58,11 +58,11 @@ public class Bet {
         this.numOdd = numOdd;
     }
 
-    public LocalDate getDatCreated() {
+    public LocalDateTime getDatCreated() {
         return datCreated;
     }
 
-    public void setDatCreated(LocalDate datCreated) {
+    public void setDatCreated(LocalDateTime datCreated) {
         this.datCreated = datCreated;
     }
 
@@ -74,11 +74,11 @@ public class Bet {
         this.flgSelected = flgSelected;
     }
 
-    public LocalDate getDatUpdated() {
+    public LocalDateTime getDatUpdated() {
         return datUpdated;
     }
 
-    public void setDatUpdated(LocalDate datUpdated) {
+    public void setDatUpdated(LocalDateTime datUpdated) {
         this.datUpdated = datUpdated;
     }
 

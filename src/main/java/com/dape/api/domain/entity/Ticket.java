@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TICKET")
@@ -31,10 +31,10 @@ public class Ticket {
     private BigDecimal numAmmount;
 
     @Column(name = "DAT_CREATED", nullable = false)
-    private LocalDate datCreated;
+    private LocalDateTime datCreated;
 
     @Column(name = "DAT_UPDATED", nullable = false)
-    private LocalDate datUpdated;
+    private LocalDateTime datUpdated;
 
     @Column(name = "COD_TICKET_TYPE", nullable = false)
     @Convert(converter = TicketTypeEnumConverter.class)
@@ -56,11 +56,11 @@ public class Ticket {
         this.numAmmount = numAmmount;
     }
 
-    public LocalDate getDatCreated() {
+    public LocalDateTime getDatCreated() {
         return datCreated;
     }
 
-    public void setDatCreated(LocalDate datCreated) {
+    public void setDatCreated(LocalDateTime datCreated) {
         this.datCreated = datCreated;
     }
 
@@ -72,11 +72,11 @@ public class Ticket {
         this.idtTicket = idtTicket;
     }
 
-    public LocalDate getDatUpdated() {
+    public LocalDateTime getDatUpdated() {
         return datUpdated;
     }
 
-    public void setDatUpdated(LocalDate datUpdated) {
+    public void setDatUpdated(LocalDateTime datUpdated) {
         this.datUpdated = datUpdated;
     }
 

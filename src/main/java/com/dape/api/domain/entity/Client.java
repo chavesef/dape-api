@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "CLIENT")
@@ -35,10 +35,10 @@ public class Client {
     private String numPassword;
 
     @Column(name = "DAT_CREATED", nullable = false)
-    private LocalDate datCreated;
+    private LocalDateTime datCreated;
 
     @Column(name = "DAT_UPDATED", nullable = false)
-    private LocalDate datUpdated;
+    private LocalDateTime datUpdated;
 
     public Long getIdtClient() {
         return idtClient;
@@ -88,19 +88,19 @@ public class Client {
         this.numPassword = numPassword;
     }
 
-    public LocalDate getDatCreated() {
+    public LocalDateTime getDatCreated() {
         return datCreated;
     }
 
-    public void setDatCreated(LocalDate datCreated) {
+    public void setDatCreated(LocalDateTime datCreated) {
         this.datCreated = datCreated;
     }
 
-    public LocalDate getDatUpdated() {
+    public LocalDateTime getDatUpdated() {
         return datUpdated;
     }
 
-    public void setDatUpdated(LocalDate datUpdated) {
+    public void setDatUpdated(LocalDateTime datUpdated) {
         this.datUpdated = datUpdated;
     }
 }
