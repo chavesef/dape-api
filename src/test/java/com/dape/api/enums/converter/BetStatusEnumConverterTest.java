@@ -34,7 +34,6 @@ class BetStatusEnumConverterTest {
         Assertions.assertNull(betStatusEnum);
     }
 
-    //test that returns exception
     @Test
     void testConvertToEntityAttributeException(){
         final Integer code = 4;
