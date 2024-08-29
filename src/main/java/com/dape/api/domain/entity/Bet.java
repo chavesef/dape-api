@@ -1,7 +1,7 @@
-package com.dape.api.entity;
+package com.dape.api.domain.entity;
 
-import com.dape.api.enums.BetStatusEnum;
-import com.dape.api.enums.converter.BetStatusEnumConverter;
+import com.dape.api.domain.enums.BetStatusEnum;
+import com.dape.api.domain.enums.converter.BetStatusEnumConverter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

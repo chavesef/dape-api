@@ -1,4 +1,4 @@
-package com.dape.api.entity;
+package com.dape.api.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,9 +1,9 @@
-package com.dape.api.entity;
+package com.dape.api.domain.entity;
 
-import com.dape.api.enums.TicketStatusEnum;
-import com.dape.api.enums.TicketTypeEnum;
-import com.dape.api.enums.converter.TicketStatusEnumConverter;
-import com.dape.api.enums.converter.TicketTypeEnumConverter;
+import com.dape.api.domain.enums.TicketStatusEnum;
+import com.dape.api.domain.enums.TicketTypeEnum;
+import com.dape.api.domain.enums.converter.TicketStatusEnumConverter;
+import com.dape.api.domain.enums.converter.TicketTypeEnumConverter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

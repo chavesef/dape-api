@@ -1,6 +1,6 @@
-package com.dape.api.enums.converter;
+package com.dape.api.domain.enums.converter;
 
-import com.dape.api.enums.TicketTypeEnum;
+import com.dape.api.domain.enums.TicketTypeEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

@@ -1,6 +1,7 @@
-package com.dape.api.enums.converter;
+package com.dape.api.domain.enums.converter;
 
-import com.dape.api.enums.BetStatusEnum;
+import com.dape.api.domain.enums.BetStatusEnum;
+import com.dape.api.domain.enums.converter.BetStatusEnumConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

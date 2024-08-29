@@ -1,6 +1,7 @@
-package com.dape.api.enums.converter;
+package com.dape.api.domain.enums.converter;
 
-import com.dape.api.enums.TicketTypeEnum;
+import com.dape.api.domain.enums.TicketTypeEnum;
+import com.dape.api.domain.enums.converter.TicketTypeEnumConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

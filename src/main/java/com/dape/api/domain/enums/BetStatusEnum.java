@@ -1,4 +1,4 @@
-package com.dape.api.enums;
+package com.dape.api.domain.enums;
 
 public enum BetStatusEnum {
     PENDING(1, "Aposta pendente"),

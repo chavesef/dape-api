@@ -1,4 +1,4 @@
-package com.dape.api.enums;
+package com.dape.api.domain.enums;
 
 public enum TicketTypeEnum {
     SIMPLE(1, "Bilhete simples"),
