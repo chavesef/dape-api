@@ -38,15 +38,15 @@ public class Ticket {
 
     @Column(name = "COD_TICKET_TYPE", nullable = false)
     @Convert(converter = TicketTypeEnumConverter.class)
-    private TicketTypeEnum codTicketType;
+    private TicketTypeEnum ticketTypeEnum;
 
     @Column(name = "COD_TICKET_STATUS", nullable = false)
     @Convert(converter = TicketStatusEnumConverter.class)
-    private TicketStatusEnum codTicketStatus;
+    private TicketStatusEnum ticketStatusEnum;
 
     @ManyToOne
     @JoinColumn(name = "IDT_CLIENT", nullable = false)
-    private Client idtClient;
+    private Client client;
 
     public BigDecimal getNumAmmount() {
         return numAmmount;
@@ -80,27 +80,27 @@ public class Ticket {
         this.datUpdated = datUpdated;
     }
 
-    public TicketTypeEnum getCodTicketType() {
-        return codTicketType;
+    public TicketTypeEnum getTicketTypeEnum() {
+        return ticketTypeEnum;
     }
 
-    public void setCodTicketType(TicketTypeEnum codTicketType) {
-        this.codTicketType = codTicketType;
+    public void setTicketTypeEnum(TicketTypeEnum codTicketType) {
+        this.ticketTypeEnum = codTicketType;
     }
 
-    public TicketStatusEnum getCodTicketStatus() {
-        return codTicketStatus;
+    public TicketStatusEnum getTicketStatusEnum() {
+        return ticketStatusEnum;
     }
 
-    public void setCodTicketStatus(TicketStatusEnum codTicketStatus) {
-        this.codTicketStatus = codTicketStatus;
+    public void setTicketStatusEnum(TicketStatusEnum codTicketStatus) {
+        this.ticketStatusEnum = codTicketStatus;
     }
 
-    public Client getIdtClient() {
-        return idtClient;
+    public Client getClient() {
+        return client;
     }
 
-    public void setIdtClient(Client idtClient) {
-        this.idtClient = idtClient;
+    public void setClient(Client idtClient) {
+        this.client = idtClient;
     }
 }

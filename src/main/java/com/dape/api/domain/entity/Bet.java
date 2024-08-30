@@ -40,7 +40,7 @@ public class Bet {
 
     @Column(name = "COD_BET_STATUS", nullable = false)
     @Convert(converter = BetStatusEnumConverter.class)
-    private BetStatusEnum codBetStatus;
+    private BetStatusEnum betStatusEnum;
 
     public Long getIdtBet() {
         return idtBet;
@@ -90,11 +90,11 @@ public class Bet {
         this.desBet = desBet;
     }
 
-    public BetStatusEnum getCodBetStatus() {
-        return codBetStatus;
+    public BetStatusEnum getBetStatusEnum() {
+        return betStatusEnum;
     }
 
-    public void setCodBetStatus(BetStatusEnum codBetStatus) {
-        this.codBetStatus = codBetStatus;
+    public void setBetStatusEnum(BetStatusEnum codBetStatus) {
+        this.betStatusEnum = codBetStatus;
     }
 }
