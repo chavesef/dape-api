@@ -27,7 +27,7 @@ public class Bet {
     private BigDecimal numOdd;
 
     @Column(name = "FLG_SELECTED", nullable = false)
-    private int flgSelected;
+    private Integer flgSelected;
 
     @Column(name = "DAT_CREATED", nullable = false)
     private LocalDateTime datCreated;
@@ -66,11 +66,11 @@ public class Bet {
         this.datCreated = datCreated;
     }
 
-    public int getFlgSelected() {
+    public Integer getFlgSelected() {
         return flgSelected;
     }
 
-    public void setFlgSelected(int flgSelected) {
+    public void setFlgSelected(Integer flgSelected) {
         this.flgSelected = flgSelected;
     }
 
