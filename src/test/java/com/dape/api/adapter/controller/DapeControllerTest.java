@@ -1,4 +1,4 @@
-package com.dape.api.controller;
+package com.dape.api.adapter.controller;
 
 import org.junit.jupiter.api.Test;
 
