@@ -24,6 +24,7 @@ def cucumberVersion = '7.18.1'
 dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 	runtimeOnly group: 'com.oracle.database.jdbc', name: 'ojdbc11'
 	testImplementation group: 'com.h2database', name: 'h2', version: h2Version
 	developmentOnly group: 'org.springframework.boot', name: 'spring-boot-devtools'
