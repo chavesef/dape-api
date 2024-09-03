@@ -2,6 +2,7 @@ package com.dape.api.adapter.dto;
 
 import java.math.BigDecimal;
 
+
 public class BetPostRequest {
 
     private BigDecimal numOdd;
