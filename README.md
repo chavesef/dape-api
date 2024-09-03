@@ -10,7 +10,7 @@ ou 'perdida'(red).
 ## Sumário
 - [Arquitetura](#arquitetura)
 - [Modelagem do banco de dados](#modelagem-do-banco-de-dados)
-- [Máquina de estados](#status)
+- [Máquina de estados](#máquina-de-estados-do-status-de-uma-aposta-ou-bilhete)
 - [Ambiente de desenvolvimento](#ambiente-de-desenvolvimento)
   - [Tecnologias Utilizadas](#tecnologias-utilizadas)
   - [Configurando ambiente de desenvolvimento](#configurando-ambiente-de-desenvolvimento)
