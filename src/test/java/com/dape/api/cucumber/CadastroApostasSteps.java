@@ -7,6 +7,7 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,10 +22,15 @@ public class CadastroApostasSteps {
     private final BetRepository betRepository;
     private ResponseEntity<Object> cadastroResponseEntity;
 
-    private boolean servicoIndisponivel = false;
+    private boolean servicoIndisponivel;
 
     public CadastroApostasSteps(BetRepository betRepository) {
         this.betRepository = betRepository;
+    }
+
+    @BeforeEach
+    public void setUp() {
+        servicoIndisponivel = false;
     }
 
     @Dado("que existam as seguintes apostas cadastradas no banco de dados")
