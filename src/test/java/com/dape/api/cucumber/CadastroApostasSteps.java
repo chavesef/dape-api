@@ -1,8 +1,10 @@
 package com.dape.api.cucumber;
 
+import com.dape.api.adapter.dto.BetPostRequest;
+import com.dape.api.adapter.dto.BetPostResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
-import com.dape.api.domain.enums.BetStatusEnum;
+import com.dape.api.usecase.service.BetService;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
@@ -12,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -20,12 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CadastroApostasSteps {
     private final BetRepository betRepository;
+    private final BetService betService;
     private ResponseEntity<Object> cadastroResponseEntity;
 
     private boolean servicoIndisponivel;
 
-    public CadastroApostasSteps(BetRepository betRepository) {
+    public CadastroApostasSteps(BetRepository betRepository, BetService betService) {
         this.betRepository = betRepository;
+        this.betService = betService;
     }
 
     @BeforeEach
@@ -48,18 +51,11 @@ public class CadastroApostasSteps {
             else if (desBet.isBlank())
                 cadastroResponseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             else {
-                Bet newBet = new Bet();
-                newBet.setDesBet(desBet);
-                newBet.setNumOdd(new BigDecimal(numOdd));
-                newBet.setFlgSelected(0);
-                newBet.setDatCreated(LocalDateTime.now());
-                newBet.setDatUpdated(LocalDateTime.now());
-                newBet.setBetStatusEnum(BetStatusEnum.PENDING);
+                BetPostRequest betPostRequest = new BetPostRequest(new BigDecimal(numOdd), desBet);
 
-                Bet savedBet = betRepository.save(newBet);
-                cadastroResponseEntity = new ResponseEntity<>(savedBet, HttpStatus.CREATED);
+                BetPostResponse betPostResponse = betService.cadastrarAposta(betPostRequest);
+                cadastroResponseEntity = new ResponseEntity<>(betPostResponse, HttpStatus.CREATED);
             }
-
         }
     }
 
@@ -79,7 +75,6 @@ public class CadastroApostasSteps {
     @E("o banco de dados deve se manter")
     public void oBancoDeDadosDeveSeManter(List<Bet> bets) {
         List<Bet> actualBets = betRepository.findAll();
-
         assertEquals(bets.size(), actualBets.size());
     }
 
