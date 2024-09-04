@@ -1,7 +1,7 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.BetPostRequest;
-import com.dape.api.domain.entity.Bet;
+import com.dape.api.adapter.dto.BetPostResponse;
 import com.dape.api.usecase.service.BetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,7 @@ public class DapeController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/bet")
-    public Bet cadastrarAposta(@RequestBody BetPostRequest betPostRequest){
+    public BetPostResponse cadastrarAposta(@RequestBody BetPostRequest betPostRequest){
         return betService.cadastrarAposta(betPostRequest);
     }
 }

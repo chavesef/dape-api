@@ -1,6 +1,7 @@
 package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.BetPostRequest;
+import com.dape.api.adapter.dto.BetPostResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -19,7 +20,7 @@ public class BetService {
         this.betRepository = betRepository;
     }
 
-    public Bet cadastrarAposta(BetPostRequest betPostRequest) {
+    public BetPostResponse cadastrarAposta(BetPostRequest betPostRequest) {
         if (betPostRequest.getNumOdd().compareTo(BigDecimal.ONE) <= 0)
             throw new BetPostException("Valor da odd deve ser maior que 1");
         if (betPostRequest.getDesBet().isBlank())
@@ -33,7 +34,10 @@ public class BetService {
         bet.setDatUpdated(LocalDateTime.now());
         bet.setFlgSelected(0);
 
-        return betRepository.save(bet);
+        betRepository.save(bet);
+
+        return new BetPostResponse(bet.getIdtBet(), bet.getDesBet(), bet.getNumOdd(),
+                bet.getDatCreated().toLocalDate(), bet.getBetStatusEnum());
     }
 
 }
