@@ -1,6 +1,7 @@
 package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.BetPostRequest;
+import com.dape.api.adapter.dto.BetPostResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -34,7 +35,7 @@ class BetServiceTest {
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(betEsperada);
 
         betService = new BetService(betRepository);
-        final Bet betCriada = betService.cadastrarAposta(betPostRequest);
+        final BetPostResponse betCriada = betService.cadastrarAposta(betPostRequest);
 
         assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());
     }

@@ -1,6 +1,7 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.BetPostRequest;
+import com.dape.api.adapter.dto.BetPostResponse;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.usecase.service.BetService;
@@ -31,14 +32,14 @@ class DapeControllerTest {
     void cadastrarAposta(){
         BetPostRequest betPostRequest = new BetPostRequest(
                 new BigDecimal("2.12"), "Vitória do River Plate");
-        Bet betEsperada = apostaEsperada(betPostRequest);
+        BetPostResponse betEsperada = apostaEsperada(betPostRequest);
         when(betService.cadastrarAposta(betPostRequest)).thenReturn(betEsperada);
-        Bet betCriada = dapeController.cadastrarAposta(betPostRequest);
+        BetPostResponse betCriada = dapeController.cadastrarAposta(betPostRequest);
 
         assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());
     }
 
-    private Bet apostaEsperada(BetPostRequest betPostRequest) {
+    private BetPostResponse apostaEsperada(BetPostRequest betPostRequest) {
         Bet bet = new Bet();
         bet.setDesBet(betPostRequest.getDesBet());
         bet.setNumOdd(betPostRequest.getNumOdd());
@@ -47,6 +48,7 @@ class DapeControllerTest {
         bet.setDatUpdated(LocalDateTime.now());
         bet.setFlgSelected(0);
 
-        return bet;
+        return new BetPostResponse(bet.getIdtBet(), bet.getDesBet(), bet.getNumOdd(),
+                bet.getDatCreated().toLocalDate(), bet.getBetStatusEnum());
     }
 }
