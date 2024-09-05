@@ -1,7 +1,7 @@
 package com.dape.api.adapter.controller;
 
-import com.dape.api.adapter.dto.BetPostRequest;
-import com.dape.api.adapter.dto.BetPostResponse;
+import com.dape.api.adapter.dto.request.BetPostRequest;
+import com.dape.api.adapter.dto.response.BetPostResponse;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.usecase.service.BetService;

@@ -1,4 +1,4 @@
-package com.dape.api.adapter.dto;
+package com.dape.api.adapter.dto.response;
 
 import com.dape.api.domain.enums.BetStatusEnum;
 

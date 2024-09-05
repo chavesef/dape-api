@@ -1,4 +1,4 @@
-package com.dape.api.adapter.dto;
+package com.dape.api.adapter.dto.request;
 
 import java.math.BigDecimal;
 
