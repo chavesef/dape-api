@@ -4,12 +4,11 @@ import com.dape.api.adapter.dto.request.BetPostRequest;
 import com.dape.api.adapter.dto.response.BetPostResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
-import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetPostException;
+import com.dape.api.usecase.factory.BetFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Service
 public class BetService {
@@ -26,14 +25,7 @@ public class BetService {
         if (betPostRequest.getDesBet().isBlank())
                 throw new BetPostException("Descrição da aposta não deve ser nula/vazia");
 
-        Bet bet = new Bet();
-        bet.setDesBet(betPostRequest.getDesBet());
-        bet.setNumOdd(betPostRequest.getNumOdd());
-        bet.setBetStatusEnum(BetStatusEnum.PENDING);
-        bet.setDatCreated(LocalDateTime.now());
-        bet.setDatUpdated(LocalDateTime.now());
-        bet.setFlgSelected(0);
-
+        Bet bet = BetFactory.createBet(betPostRequest);
         betRepository.save(bet);
 
         return new BetPostResponse(bet.getIdtBet(), bet.getDesBet(), bet.getNumOdd(),
