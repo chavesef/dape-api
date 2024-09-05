@@ -12,21 +12,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-class DapeControllerTest {
+class BetOperationsControllerTest {
 
     private final BetService betService = Mockito.mock(BetService.class);
-    private final DapeController dapeController = new DapeController(betService);
-
-    @Test
-    void helloWorld(){
-        final String result = dapeController.helloWorld();
-        final String expected = "Hello World!";
-        assertNotNull(result);
-        assertEquals(expected, result);
-    }
+    private final BetOperationsController betOperationsController = new BetOperationsController(betService);
 
     @Test
     void cadastrarAposta(){
@@ -34,7 +25,7 @@ class DapeControllerTest {
                 new BigDecimal("2.12"), "Vitória do River Plate");
         BetPostResponse betEsperada = apostaEsperada(betPostRequest);
         when(betService.cadastrarAposta(betPostRequest)).thenReturn(betEsperada);
-        BetPostResponse betCriada = dapeController.cadastrarAposta(betPostRequest);
+        BetPostResponse betCriada = betOperationsController.registerBet(betPostRequest);
 
         assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());
     }
