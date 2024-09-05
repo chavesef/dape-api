@@ -86,15 +86,15 @@ O projeto possui um documento de contrato de endpoints disponibilizado ([dape-ap
 são definidas as regras de requisições e respostas para cada endpoint.
 
 ### Cadastro de uma nova aposta
-Para cadastrar uma nova aposta no banco de dados utilize um software de sua escolha que realize solicitações HTTP com as seguintes informações:
-- POST /bet HTTP/1.1
-- Host: localhost:8080
-- Content-Type: application/json
-```json
-{
-"num_odd": 2.19,
-"des_bet": "Vitória do Botafogo"
-}
+Para cadastrar uma nova aposta no banco de dados rode o comando a seguir no terminal:
+```sh
+curl -X POST \
+     --location 'localhost:8080/dape/bet' \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "numOdd": 2.19,
+           "desBet": "Vitória do Botafogo"
+         }' 
 ```
 
 A resposta deverá ser como a seguinte:
