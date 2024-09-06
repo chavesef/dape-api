@@ -92,8 +92,8 @@ curl -X POST \
      --location 'localhost:8080/dape/bet' \
      -H 'Content-Type: application/json' \
      -d '{
-           "numOdd": 2.19,
-           "desBet": "Vitória do Botafogo"
+           "num_odd": 2.19,
+           "des_bet": "Vitória do Botafogo"
          }' 
 ```
 
