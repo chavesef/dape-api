@@ -1,15 +1,22 @@
 package com.dape.api.adapter.dto.response;
 
 import com.dape.api.domain.enums.BetStatusEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class BetPostResponse {
+
+    @JsonProperty(value = "idt_bet")
     private Long idtBet;
+    @JsonProperty(value = "des_bet")
     private String desBet;
+    @JsonProperty(value = "num_odd")
     private BigDecimal numOdd;
+    @JsonProperty(value = "dat_created")
     private LocalDate datCreated;
+    @JsonProperty(value = "bet_status")
     private BetStatusEnum betStatus;
 
     public BetPostResponse(Long idtBet, String desBet, BigDecimal numOdd,
