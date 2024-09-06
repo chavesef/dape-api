@@ -1,15 +1,14 @@
 package com.dape.api.adapter.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.math.BigDecimal;
 
-
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BetPostRequest {
 
-    @JsonProperty(value = "num_odd")
     private BigDecimal numOdd;
-    @JsonProperty(value = "des_bet")
     private String desBet;
 
     public BetPostRequest(BigDecimal numOdd, String desBet) {
