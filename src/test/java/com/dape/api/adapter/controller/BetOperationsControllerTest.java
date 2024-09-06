@@ -7,9 +7,11 @@ import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.usecase.service.BetService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -25,9 +27,9 @@ class BetOperationsControllerTest {
                 new BigDecimal("2.12"), "Vitória do River Plate");
         BetPostResponse betEsperada = apostaEsperada(betPostRequest);
         when(betService.cadastrarAposta(betPostRequest)).thenReturn(betEsperada);
-        BetPostResponse betCriada = betOperationsController.registerBet(betPostRequest);
+        ResponseEntity<BetPostResponse> betCriada = betOperationsController.registerBet(betPostRequest);
 
-        assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());
+        assertEquals(betEsperada.getDesBet(), Objects.requireNonNull(betCriada.getBody()).getDesBet());
     }
 
     private BetPostResponse apostaEsperada(BetPostRequest betPostRequest) {
