@@ -22,26 +22,24 @@ class BetOperationsControllerTest {
     private final BetOperationsController betOperationsController = new BetOperationsController(betService);
 
     @Test
-    void cadastrarAposta(){
+    void registerBet(){
         BetPostRequest betPostRequest = new BetPostRequest(
                 new BigDecimal("2.12"), "Vitória do River Plate");
-        BetPostResponse betEsperada = apostaEsperada(betPostRequest);
-        when(betService.cadastrarAposta(betPostRequest)).thenReturn(betEsperada);
+
+        BetPostResponse betEsperada = Mockito.mock(BetPostResponse.class);
+        when(betEsperada.getDesBet()).thenReturn("Vitória do River Plate");
+        when(betEsperada.getNumOdd()).thenReturn(new BigDecimal("2.12"));
+
+        Bet bet = Mockito.mock(Bet.class);
+        when(bet.getDesBet()).thenReturn(betPostRequest.getDesBet());
+        when(bet.getNumOdd()).thenReturn(betPostRequest.getNumOdd());
+        when(bet.getDatCreated()).thenReturn(LocalDateTime.now());
+        when(bet.getBetStatusEnum()).thenReturn(BetStatusEnum.PENDING);
+
+        when(betService.registerBet(betPostRequest)).thenReturn(bet);
+
         ResponseEntity<BetPostResponse> betCriada = betOperationsController.registerBet(betPostRequest);
 
         assertEquals(betEsperada.getDesBet(), Objects.requireNonNull(betCriada.getBody()).getDesBet());
-    }
-
-    private BetPostResponse apostaEsperada(BetPostRequest betPostRequest) {
-        Bet bet = new Bet();
-        bet.setDesBet(betPostRequest.getDesBet());
-        bet.setNumOdd(betPostRequest.getNumOdd());
-        bet.setBetStatusEnum(BetStatusEnum.PENDING);
-        bet.setDatCreated(LocalDateTime.now());
-        bet.setDatUpdated(LocalDateTime.now());
-        bet.setFlgSelected(0);
-
-        return new BetPostResponse(bet.getIdtBet(), bet.getDesBet(), bet.getNumOdd(),
-                bet.getDatCreated().toLocalDate(), bet.getBetStatusEnum());
     }
 }

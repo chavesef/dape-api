@@ -1,9 +1,9 @@
 package com.dape.api.cucumber;
 
 import com.dape.api.adapter.dto.request.BetPostRequest;
-import com.dape.api.adapter.dto.response.BetPostResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
+import com.dape.api.usecase.factory.BetPostResponseFactory;
 import com.dape.api.usecase.service.BetService;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
@@ -53,8 +53,8 @@ public class CadastroApostasSteps {
             else {
                 BetPostRequest betPostRequest = new BetPostRequest(new BigDecimal(numOdd), desBet);
 
-                BetPostResponse betPostResponse = betService.cadastrarAposta(betPostRequest);
-                cadastroResponseEntity = new ResponseEntity<>(betPostResponse, HttpStatus.CREATED);
+                Bet bet = betService.registerBet(betPostRequest);
+                cadastroResponseEntity = new ResponseEntity<>(BetPostResponseFactory.createBetPostResponse(bet), HttpStatus.CREATED);
             }
         }
     }
