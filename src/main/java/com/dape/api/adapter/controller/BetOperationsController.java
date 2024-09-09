@@ -2,7 +2,9 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.request.BetPostRequest;
 import com.dape.api.adapter.dto.response.BetPostResponse;
+import com.dape.api.usecase.factory.BetPostResponseFactory;
 import com.dape.api.usecase.service.BetService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,8 @@ public class BetOperationsController {
     }
 
     @PostMapping("/bet")
-    public ResponseEntity<BetPostResponse> registerBet(@RequestBody BetPostRequest betPostRequest){
-        return new ResponseEntity<>(betService.cadastrarAposta(betPostRequest), HttpStatus.CREATED);
+    public ResponseEntity<BetPostResponse> registerBet(@Valid @RequestBody BetPostRequest betPostRequest){
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(BetPostResponseFactory.createBetPostResponse(betService.registerBet(betPostRequest)));
     }
 }

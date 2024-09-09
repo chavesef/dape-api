@@ -25,6 +25,8 @@ public class BetPostResponse {
         this.betStatus = betStatus;
     }
 
+    public BetPostResponse() {}
+
     public Long getIdtBet() {
         return idtBet;
     }
