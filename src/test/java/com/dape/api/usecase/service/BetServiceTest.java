@@ -1,13 +1,12 @@
 package com.dape.api.usecase.service;
 
+import com.dape.api.adapter.controller.BetStub;
 import com.dape.api.adapter.dto.request.BetPostRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -24,12 +23,9 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        BetPostRequest betPostRequest = new BetPostRequest(
-                new BigDecimal("2.12"), "Vitória do River Plate");
+        final BetPostRequest betPostRequest = BetStub.createBetPostRequest();
 
-        final Bet betEsperada = Mockito.mock(Bet.class);
-        when(betEsperada.getDesBet()).thenReturn("Vitória do River Plate");
-        when(betEsperada.getNumOdd()).thenReturn(new BigDecimal("2.12"));
+        final Bet betEsperada = BetStub.createBet();
 
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(betEsperada);
 

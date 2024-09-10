@@ -3,14 +3,11 @@ package com.dape.api.adapter.controller;
 import com.dape.api.adapter.dto.request.BetPostRequest;
 import com.dape.api.adapter.dto.response.BetPostResponse;
 import com.dape.api.domain.entity.Bet;
-import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.usecase.service.BetService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,18 +20,11 @@ class BetOperationsControllerTest {
 
     @Test
     void registerBet(){
-        BetPostRequest betPostRequest = new BetPostRequest(
-                new BigDecimal("2.12"), "Vitória do River Plate");
+        final BetPostRequest betPostRequest = BetStub.createBetPostRequest();
 
-        BetPostResponse betEsperada = Mockito.mock(BetPostResponse.class);
-        when(betEsperada.getDesBet()).thenReturn("Vitória do River Plate");
-        when(betEsperada.getNumOdd()).thenReturn(new BigDecimal("2.12"));
+        final BetPostResponse betEsperada = BetStub.createBetPostResponse();
 
-        Bet bet = Mockito.mock(Bet.class);
-        when(bet.getDesBet()).thenReturn(betPostRequest.getDesBet());
-        when(bet.getNumOdd()).thenReturn(betPostRequest.getNumOdd());
-        when(bet.getDatCreated()).thenReturn(LocalDateTime.now());
-        when(bet.getBetStatusEnum()).thenReturn(BetStatusEnum.PENDING);
+        final Bet bet = BetStub.createBet();
 
         when(betService.registerBet(betPostRequest)).thenReturn(bet);
 
