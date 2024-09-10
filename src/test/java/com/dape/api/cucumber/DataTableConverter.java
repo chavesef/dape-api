@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 
-public class BetConverter {
+public class DataTableConverter {
 
     @DataTableType
     public Bet betDataTableType(Map<String, String> map){
