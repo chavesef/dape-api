@@ -14,6 +14,8 @@ public class BetPostResponseFactory {
         betPostResponse.setNumOdd(bet.getNumOdd());
         betPostResponse.setDatCreated(bet.getDatCreated().toLocalDate());
         betPostResponse.setBetStatus(bet.getBetStatusEnum());
+        betPostResponse.setDatUpdated(bet.getDatUpdated().toLocalDate());
+        betPostResponse.setFlgSelected(bet.getFlgSelected());
 
         return betPostResponse;
     }

@@ -14,15 +14,20 @@ public class BetPostResponse {
     private String desBet;
     private BigDecimal numOdd;
     private LocalDate datCreated;
+    private LocalDate datUpdated;
     private BetStatusEnum betStatus;
+    private Integer flgSelected;
 
     public BetPostResponse(Long idtBet, String desBet, BigDecimal numOdd,
-                           LocalDate datCreated, BetStatusEnum betStatus) {
+                           LocalDate datCreated, LocalDate datUpdated,
+                           BetStatusEnum betStatus, Integer flgSelected) {
         this.idtBet = idtBet;
         this.desBet = desBet;
         this.numOdd = numOdd;
         this.datCreated = datCreated;
+        this.datUpdated = datUpdated;
         this.betStatus = betStatus;
+        this.flgSelected = flgSelected;
     }
 
     public BetPostResponse() {}
@@ -65,5 +70,21 @@ public class BetPostResponse {
 
     public void setBetStatus(BetStatusEnum betStatus) {
         this.betStatus = betStatus;
+    }
+
+    public LocalDate getDatUpdated() {
+        return datUpdated;
+    }
+
+    public void setDatUpdated(LocalDate datUpdated) {
+        this.datUpdated = datUpdated;
+    }
+
+    public Integer getFlgSelected() {
+        return flgSelected;
+    }
+
+    public void setFlgSelected(Integer flgSelected) {
+        this.flgSelected = flgSelected;
     }
 }
