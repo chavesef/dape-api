@@ -6,11 +6,11 @@ import com.dape.api.domain.entity.Bet;
 import com.dape.api.usecase.service.BetService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class BetOperationsControllerTest {
@@ -22,14 +22,24 @@ class BetOperationsControllerTest {
     void registerBet(){
         final BetPostRequest betPostRequest = BetStub.createBetPostRequest();
 
-        final BetPostResponse betEsperada = BetStub.createBetPostResponse();
+        final BetPostResponse betPostResponse = BetStub.createBetPostResponse();
 
         final Bet bet = BetStub.createBet();
 
         when(betService.registerBet(betPostRequest)).thenReturn(bet);
 
         ResponseEntity<BetPostResponse> betCriada = betOperationsController.registerBet(betPostRequest);
+        ResponseEntity<BetPostResponse> betEsperada =
+                ResponseEntity.status(HttpStatusCode.valueOf(201)).body(betPostResponse);
 
-        assertEquals(betEsperada.getDesBet(), Objects.requireNonNull(betCriada.getBody()).getDesBet());
+        verify(betService).registerBet(betPostRequest);
+        assertEquals(betEsperada.getStatusCode(), betCriada.getStatusCode());
+        assertEquals(betEsperada.getBody().getDesBet(), betCriada.getBody().getDesBet());
+        assertEquals(betEsperada.getBody().getBetStatus(), betCriada.getBody().getBetStatus());
+        assertEquals(betEsperada.getBody().getIdtBet(), betCriada.getBody().getIdtBet());
+        assertEquals(betEsperada.getBody().getDatCreated(), betCriada.getBody().getDatCreated());
+        assertEquals(betEsperada.getBody().getDatUpdated(), betCriada.getBody().getDatUpdated());
+        assertEquals(betEsperada.getBody().getNumOdd(), betCriada.getBody().getNumOdd());
+        assertEquals(betEsperada.getBody().getFlgSelected(), betCriada.getBody().getFlgSelected());
     }
 }
