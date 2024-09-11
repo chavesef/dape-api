@@ -1,38 +1,44 @@
 package com.dape.api.cucumber;
 
-import com.dape.api.adapter.dto.request.BetPostRequest;
+import com.dape.api.adapter.dto.response.BetPostResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
-import com.dape.api.usecase.factory.BetPostResponseFactory;
-import com.dape.api.usecase.service.BetService;
 import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-
+import static io.restassured.RestAssured.baseURI;
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.port;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CadastroApostasSteps {
     private final BetRepository betRepository;
-    private final BetService betService;
-    private ResponseEntity<Object> cadastroResponseEntity;
+    private ResponseEntity<BetPostResponse> cadastroResponseEntity;
 
     private boolean servicoIndisponivel;
 
-    public CadastroApostasSteps(BetRepository betRepository, BetService betService) {
+    public CadastroApostasSteps(BetRepository betRepository) {
         this.betRepository = betRepository;
-        this.betService = betService;
+    }
+
+    @BeforeAll
+    public static void setUp() {
+        baseURI = "http://localhost";
+        port = 8080;
+        System.setProperty("port", String.valueOf(port));
     }
 
     @BeforeEach
-    public void setUp() {
+    public void serviceAvailable() {
         servicoIndisponivel = false;
     }
 
@@ -46,16 +52,13 @@ public class CadastroApostasSteps {
         if(servicoIndisponivel)
             cadastroResponseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         else {
-            if (numOdd <= 1)
+            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
+            Response post = given().body(betPostRequestJson).contentType(ContentType.JSON).when()
+                    .post("/dape/bet");
+            if (post.jsonPath().get("$") instanceof List)
                 cadastroResponseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            else if (desBet.isBlank())
-                cadastroResponseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            else {
-                BetPostRequest betPostRequest = new BetPostRequest(new BigDecimal(numOdd), desBet);
-
-                Bet bet = betService.registerBet(betPostRequest);
-                cadastroResponseEntity = new ResponseEntity<>(BetPostResponseFactory.createBetPostResponse(bet), HttpStatus.CREATED);
-            }
+            else
+                cadastroResponseEntity = ResponseEntity.status(post.statusCode()).body(post.getBody().as(BetPostResponse.class));
         }
     }
 
@@ -65,14 +68,14 @@ public class CadastroApostasSteps {
         assertEquals(expectedCodeDescription, HttpStatus.valueOf(expectedStatusCode).getReasonPhrase());
     }
 
-    @E("os seguintes dados devem ser cadastrados no banco de dados")
+    @Entao("os seguintes dados devem ser cadastrados no banco de dados")
     public void osSeguintesDadosDevemSerCadastradosNoBancoDeDados(List<Bet> bets) {
         List<Bet> actualBets = betRepository.findAll();
         Bet bet = bets.get(0);
         assertEquals(bet.getDesBet(), actualBets.get(actualBets.size()-1).getDesBet());
     }
 
-    @E("o banco de dados deve se manter")
+    @Entao("o banco de dados deve se manter")
     public void oBancoDeDadosDeveSeManter(List<Bet> bets) {
         List<Bet> actualBets = betRepository.findAll();
         assertEquals(bets.size(), actualBets.size());
