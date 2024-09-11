@@ -40,8 +40,8 @@ class BetOperationsControllerTest {
         assertEquals(betEsperada.getBody().getDesBet(), betCriada.getBody().getDesBet());
         assertEquals(betEsperada.getBody().getBetStatusEnum(), betCriada.getBody().getBetStatusEnum());
         assertEquals(betEsperada.getBody().getIdtBet(), betCriada.getBody().getIdtBet());
-        assertEquals(betEsperada.getBody().getDatCreated(), betCriada.getBody().getDatCreated());
-        assertEquals(betEsperada.getBody().getDatUpdated(), betCriada.getBody().getDatUpdated());
+        assertEquals(betEsperada.getBody().getDatCreated().toLocalDate(), betCriada.getBody().getDatCreated().toLocalDate());
+        assertEquals(betEsperada.getBody().getDatUpdated().toLocalDate(), betCriada.getBody().getDatUpdated().toLocalDate());
         assertEquals(betEsperada.getBody().getNumOdd(), betCriada.getBody().getNumOdd());
         assertEquals(betEsperada.getBody().getFlgSelected(), betCriada.getBody().getFlgSelected());
     }

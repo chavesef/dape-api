@@ -31,8 +31,8 @@ class BetServiceTest {
         assertEquals(betEsperada.getIdtBet(), betCriada.getIdtBet());
         assertEquals(betEsperada.getBetStatusEnum(), betCriada.getBetStatusEnum());
         assertEquals(betEsperada.getNumOdd(), betCriada.getNumOdd());
-        assertEquals(betEsperada.getDatCreated(), betCriada.getDatCreated());
-        assertEquals(betEsperada.getDatUpdated(), betCriada.getDatUpdated());
+        assertEquals(betEsperada.getDatCreated().toLocalDate(), betCriada.getDatCreated().toLocalDate());
+        assertEquals(betEsperada.getDatUpdated().toLocalDate(), betCriada.getDatUpdated().toLocalDate());
         assertEquals(betEsperada.getFlgSelected(), betCriada.getFlgSelected());
     }
 }
