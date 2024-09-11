@@ -5,7 +5,7 @@ info:
   description: DAPE API contract - Declaração de Apostas Esportivas
   contact:
     email: efchaves@uolinc.com
-  version: 1.0.0
+  version: 1.0.1
 
 servers:
   - url: http://localhost:8080/dape
@@ -77,15 +77,15 @@ paths:
           required: false
           schema:
             type: string
-            format: date
-            example: "2025-07-21"
+            format: date-time
+            example: "2025-07-21T15:16:10.877543705"
         - name: dat_updated
           in: query
           required: false
           schema:
             type: string
-            format: date
-            example: "2025-08-07"
+            format: date-time
+            example: "2025-07-21T15:16:10.877543705"
       responses:
         '200':
           description: OK
@@ -279,15 +279,15 @@ paths:
           required: false
           schema:
             type: string
-            format: date
-            example: "2025-07-21"
+            format: date-time
+            example: "2025-07-21T15:16:10.877543705"
         - name: dat_updated
           in: query
           required: false
           schema:
             type: string
-            format: date
-            example: "2025-08-07"
+            format: date-time
+            example: "2025-07-21T15:16:10.877543705"
       responses:
         '200':
           description: OK
@@ -323,23 +323,31 @@ components:
     BetCreateResponse:
       type: object
       properties:
-        bet_status:
-          $ref: '#/components/schemas/StatusEnum'
         idt_bet:
           type: integer
           format: int32
           example: 2
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
         num_odd:
           type: number
           format: double
           example: 2.19
-        des_bet:
-          type: string
-          example: "Vitória do Botafogo"
         dat_created:
           type: string
-          format: date
-          example: "2025-07-21"
+          format: date-time
+          example: "2025-07-21T15:16:10.877543705"
+        dat_updated:
+          type: string
+          format: date-time
+          example: "2025-07-21T15:16:10.877543705"
+        bet_status:
+          $ref: '#/components/schemas/StatusEnum'
+        flg_selected:
+          type: integer
+          format: int32
+          example: 0
       xml:
         name: BetCreateRequest
 
@@ -369,12 +377,12 @@ components:
           example: "Vitória do Botafogo"
         dat_created:
           type: string
-          format: date
-          example: "2025-07-21"
+          format: date-time
+          example: "2025-07-21T15:16:10.877543705"
         dat_updated:
           type: string
-          format: date
-          example: "2025-08-06"
+          format: date-time
+          example: "2025-07-21T15:16:10.877543705"
         bet_status:
           $ref: '#/components/schemas/StatusEnum'
       xml:
@@ -401,12 +409,12 @@ components:
           $ref: '#/components/schemas/StatusEnum'
         dat_created:
           type: string
-          format: date
-          example: "2025-07-21"
+          format: date-time
+          example: "2025-07-21T15:16:10.877543705"
         dat_updated:
           type: string
-          format: date
-          example: "2025-08-06"
+          format: date-time
+          example: "2025-07-21T15:16:10.877543705"
       xml:
         name: StatusUpdateResponse
 
@@ -446,12 +454,12 @@ components:
                 $ref: '#/components/schemas/StatusEnum'
               dat_created:
                 type: string
-                format: date
-                example: "2025-07-21"
+                format: date-time
+                example: "2025-07-21T15:16:10.877543705"
               dat_updated:
                 type: string
-                format: date
-                example: "2025-08-06"
+                format: date-time
+                example: "2025-07-21T15:16:10.877543705"
       xml:
         name: BetListResponse
 
@@ -500,8 +508,8 @@ components:
           example: 5.76
         dat_created:
           type: string
-          format: date
-          example: "2025-07-21"
+          format: date-time
+          example: "2025-07-21T15:16:10.877543705"
         client:
           type: object
           properties:
@@ -553,8 +561,8 @@ components:
                 example: 100.01
               dat_created:
                 type: string
-                format: date
-                example: "2025-07-21"
+                format: date-time
+                example: "2025-07-21T15:16:10.877543705"
               ticket_type:
                 $ref: '#/components/schemas/TicketTypeEnum'
               num_final_odd:
