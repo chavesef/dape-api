@@ -1,5 +1,8 @@
 package com.dape.api.adapter.controller;
 
+import com.dape.api.adapter.controller.stub.BetPostRequestStub;
+import com.dape.api.adapter.controller.stub.BetPostResponseStub;
+import com.dape.api.adapter.controller.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetPostRequest;
 import com.dape.api.adapter.dto.response.BetPostResponse;
 import com.dape.api.domain.entity.Bet;
@@ -20,9 +23,9 @@ class BetOperationsControllerTest {
 
     @Test
     void registerBet(){
-        final BetPostRequest betPostRequest = BetStub.createBetPostRequest();
+        final BetPostRequest betPostRequest = BetPostRequestStub.createBetPostRequest();
 
-        final BetPostResponse betPostResponse = BetStub.createBetPostResponse();
+        final BetPostResponse betPostResponse = BetPostResponseStub.createBetPostResponse();
 
         final Bet bet = BetStub.createBet();
 

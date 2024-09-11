@@ -1,6 +1,7 @@
 package com.dape.api.usecase.service;
 
-import com.dape.api.adapter.controller.BetStub;
+import com.dape.api.adapter.controller.stub.BetPostRequestStub;
+import com.dape.api.adapter.controller.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetPostRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
@@ -17,7 +18,7 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        final BetPostRequest betPostRequest = BetStub.createBetPostRequest();
+        final BetPostRequest betPostRequest = BetPostRequestStub.createBetPostRequest();
 
         final Bet betEsperada = BetStub.createBet();
 
