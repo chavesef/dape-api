@@ -4,7 +4,6 @@ import com.dape.api.adapter.controller.BetStub;
 import com.dape.api.adapter.dto.request.BetPostRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -13,13 +12,8 @@ import static org.mockito.Mockito.when;
 
 class BetServiceTest {
 
-    private BetRepository betRepository;
+    private final BetRepository betRepository = Mockito.mock(BetRepository.class);
     private BetService betService;
-
-    @BeforeEach
-    public void setUp() {
-        betRepository = Mockito.mock(BetRepository.class);
-    }
 
     @Test
     void registerBet() {
@@ -33,5 +27,11 @@ class BetServiceTest {
         final Bet betCriada = betService.registerBet(betPostRequest);
 
         assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());
+        assertEquals(betEsperada.getIdtBet(), betCriada.getIdtBet());
+        assertEquals(betEsperada.getBetStatusEnum(), betCriada.getBetStatusEnum());
+        assertEquals(betEsperada.getNumOdd(), betCriada.getNumOdd());
+        assertEquals(betEsperada.getDatCreated(), betCriada.getDatCreated());
+        assertEquals(betEsperada.getDatUpdated(), betCriada.getDatUpdated());
+        assertEquals(betEsperada.getFlgSelected(), betCriada.getFlgSelected());
     }
 }
