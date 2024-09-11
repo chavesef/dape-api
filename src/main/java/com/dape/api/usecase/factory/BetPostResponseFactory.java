@@ -2,21 +2,17 @@ package com.dape.api.usecase.factory;
 
 import com.dape.api.adapter.dto.response.BetPostResponse;
 import com.dape.api.domain.entity.Bet;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class BetPostResponseFactory {
 
     private BetPostResponseFactory() {}
 
     public static BetPostResponse createBetPostResponse(Bet bet) {
-        final BetPostResponse betPostResponse = new BetPostResponse();
-        betPostResponse.setIdtBet(bet.getIdtBet());
-        betPostResponse.setDesBet(bet.getDesBet());
-        betPostResponse.setNumOdd(bet.getNumOdd());
-        betPostResponse.setDatCreated(bet.getDatCreated().toLocalDate());
-        betPostResponse.setBetStatus(bet.getBetStatusEnum());
-        betPostResponse.setDatUpdated(bet.getDatUpdated().toLocalDate());
-        betPostResponse.setFlgSelected(bet.getFlgSelected());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
 
-        return betPostResponse;
+        return objectMapper.convertValue(bet, BetPostResponse.class);
     }
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BetPostResponse {
@@ -13,20 +13,20 @@ public class BetPostResponse {
     private Long idtBet;
     private String desBet;
     private BigDecimal numOdd;
-    private LocalDate datCreated;
-    private LocalDate datUpdated;
-    private BetStatusEnum betStatus;
+    private LocalDateTime datCreated;
+    private LocalDateTime datUpdated;
+    private BetStatusEnum betStatusEnum;
     private Integer flgSelected;
 
     public BetPostResponse(Long idtBet, String desBet, BigDecimal numOdd,
-                           LocalDate datCreated, LocalDate datUpdated,
-                           BetStatusEnum betStatus, Integer flgSelected) {
+                           LocalDateTime datCreated, LocalDateTime datUpdated,
+                           BetStatusEnum betStatusEnum, Integer flgSelected) {
         this.idtBet = idtBet;
         this.desBet = desBet;
         this.numOdd = numOdd;
         this.datCreated = datCreated;
         this.datUpdated = datUpdated;
-        this.betStatus = betStatus;
+        this.betStatusEnum = betStatusEnum;
         this.flgSelected = flgSelected;
     }
 
@@ -56,27 +56,27 @@ public class BetPostResponse {
         this.numOdd = numOdd;
     }
 
-    public LocalDate getDatCreated() {
+    public LocalDateTime getDatCreated() {
         return datCreated;
     }
 
-    public void setDatCreated(LocalDate datCreated) {
+    public void setDatCreated(LocalDateTime datCreated) {
         this.datCreated = datCreated;
     }
 
-    public BetStatusEnum getBetStatus() {
-        return betStatus;
+    public BetStatusEnum getBetStatusEnum() {
+        return betStatusEnum;
     }
 
-    public void setBetStatus(BetStatusEnum betStatus) {
-        this.betStatus = betStatus;
+    public void setBetStatusEnum(BetStatusEnum betStatusEnum) {
+        this.betStatusEnum = betStatusEnum;
     }
 
-    public LocalDate getDatUpdated() {
+    public LocalDateTime getDatUpdated() {
         return datUpdated;
     }
 
-    public void setDatUpdated(LocalDate datUpdated) {
+    public void setDatUpdated(LocalDateTime datUpdated) {
         this.datUpdated = datUpdated;
     }
 

@@ -35,7 +35,7 @@ class BetOperationsControllerTest {
         verify(betService).registerBet(betPostRequest);
         assertEquals(betEsperada.getStatusCode(), betCriada.getStatusCode());
         assertEquals(betEsperada.getBody().getDesBet(), betCriada.getBody().getDesBet());
-        assertEquals(betEsperada.getBody().getBetStatus(), betCriada.getBody().getBetStatus());
+        assertEquals(betEsperada.getBody().getBetStatusEnum(), betCriada.getBody().getBetStatusEnum());
         assertEquals(betEsperada.getBody().getIdtBet(), betCriada.getBody().getIdtBet());
         assertEquals(betEsperada.getBody().getDatCreated(), betCriada.getBody().getDatCreated());
         assertEquals(betEsperada.getBody().getDatUpdated(), betCriada.getBody().getDatUpdated());

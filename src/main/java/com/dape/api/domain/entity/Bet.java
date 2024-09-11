@@ -3,6 +3,8 @@ package com.dape.api.domain.entity;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.enums.converter.BetStatusEnumConverter;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "BET")
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Bet {
 
     @Id
