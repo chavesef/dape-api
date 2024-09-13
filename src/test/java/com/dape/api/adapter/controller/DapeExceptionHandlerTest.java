@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -42,5 +43,17 @@ class DapeExceptionHandlerTest {
             assertEquals(expectedErrors.get(i).getErrorCode(), actualResponse.getBody().get(i).getErrorCode());
         }
 
+    }
+
+    @Test
+    void handleInvalidTypeOdd(){
+        HttpMessageNotReadableException exception = Mockito.mock(HttpMessageNotReadableException.class);
+
+        ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleHttpMessageNotReadableException(exception);
+
+        ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
+
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());
     }
 }
