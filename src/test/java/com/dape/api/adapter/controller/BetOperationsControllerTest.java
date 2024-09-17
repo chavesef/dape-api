@@ -31,18 +31,18 @@ class BetOperationsControllerTest {
 
         when(betService.registerBet(betPostRequest)).thenReturn(bet);
 
-        final ResponseEntity<BetPostResponse> betCriada = betOperationsController.registerBet(betPostRequest);
-        final ResponseEntity<BetPostResponse> betEsperada =
+        final ResponseEntity<BetPostResponse> actualBet = betOperationsController.registerBet(betPostRequest);
+        final ResponseEntity<BetPostResponse> expectedBet =
                 ResponseEntity.status(HttpStatusCode.valueOf(201)).body(betPostResponse);
 
         verify(betService).registerBet(betPostRequest);
-        assertEquals(betEsperada.getStatusCode(), betCriada.getStatusCode());
-        assertEquals(betEsperada.getBody().getDesBet(), betCriada.getBody().getDesBet());
-        assertEquals(betEsperada.getBody().getBetStatusEnum(), betCriada.getBody().getBetStatusEnum());
-        assertEquals(betEsperada.getBody().getIdtBet(), betCriada.getBody().getIdtBet());
-        assertEquals(betEsperada.getBody().getDatCreated().toLocalDate(), betCriada.getBody().getDatCreated().toLocalDate());
-        assertEquals(betEsperada.getBody().getDatUpdated().toLocalDate(), betCriada.getBody().getDatUpdated().toLocalDate());
-        assertEquals(betEsperada.getBody().getNumOdd(), betCriada.getBody().getNumOdd());
-        assertEquals(betEsperada.getBody().getFlgSelected(), betCriada.getBody().getFlgSelected());
+        assertEquals(expectedBet.getStatusCode(), actualBet.getStatusCode());
+        assertEquals(expectedBet.getBody().getDesBet(), actualBet.getBody().getDesBet());
+        assertEquals(expectedBet.getBody().getBetStatusEnum(), actualBet.getBody().getBetStatusEnum());
+        assertEquals(expectedBet.getBody().getIdtBet(), actualBet.getBody().getIdtBet());
+        assertEquals(expectedBet.getBody().getDatCreated().toLocalDate(), actualBet.getBody().getDatCreated().toLocalDate());
+        assertEquals(expectedBet.getBody().getDatUpdated().toLocalDate(), actualBet.getBody().getDatUpdated().toLocalDate());
+        assertEquals(expectedBet.getBody().getNumOdd(), actualBet.getBody().getNumOdd());
+        assertEquals(expectedBet.getBody().getFlgSelected(), actualBet.getBody().getFlgSelected());
     }
 }
