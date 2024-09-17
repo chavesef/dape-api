@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 class BetServiceTest {
 
     private final BetRepository betRepository = Mockito.mock(BetRepository.class);
-    private BetService betService;
+    private final BetService betService = new BetService(betRepository);
 
     @Test
     void registerBet() {
@@ -24,7 +24,6 @@ class BetServiceTest {
 
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(betEsperada);
 
-        betService = new BetService(betRepository);
         final Bet betCriada = betService.registerBet(betPostRequest);
 
         assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());

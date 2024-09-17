@@ -22,18 +22,19 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleInvalidRequestParameters() {
-        BindingResult bindingResult = new BeanPropertyBindingResult("betPostRequest", "betPostRequest");
+        final BindingResult bindingResult = new BeanPropertyBindingResult("betPostRequest", "betPostRequest");
         bindingResult.addError(new FieldError("betPostRequest", "numOdd", "Valor da odd deve ser maior que 1"));
         bindingResult.addError(new FieldError("betPostRequest", "desBet", "Descrição da aposta não deve ser nula/vazia"));
 
-        MethodArgumentNotValidException exception = new MethodArgumentNotValidException(Mockito.mock(org.springframework.core.MethodParameter.class), bindingResult);
+        final MethodArgumentNotValidException exception = new MethodArgumentNotValidException(Mockito.mock(org.springframework.core.MethodParameter.class), bindingResult);
 
-        ResponseEntity<List<ErrorResponse>> actualResponse = exceptionHandler.handleValidationException(exception);
+        final ResponseEntity<List<ErrorResponse>> actualResponse = exceptionHandler.handleValidationException(exception);
 
-        List<ErrorResponse> expectedErrors = new ArrayList<>();
+        final List<ErrorResponse> expectedErrors = new ArrayList<>();
         expectedErrors.add(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Valor da odd deve ser maior que 1"));
         expectedErrors.add(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Descrição da aposta não deve ser nula/vazia"));
-        ResponseEntity<List<ErrorResponse>> expectedResponse =
+
+        final ResponseEntity<List<ErrorResponse>> expectedResponse =
                 new ResponseEntity<>(expectedErrors, HttpStatus.BAD_REQUEST);
 
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
@@ -47,11 +48,11 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleInvalidTypeOdd(){
-        HttpMessageNotReadableException exception = Mockito.mock(HttpMessageNotReadableException.class);
+        final HttpMessageNotReadableException exception = Mockito.mock(HttpMessageNotReadableException.class);
 
-        ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleHttpMessageNotReadableException(exception);
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleHttpMessageNotReadableException(exception);
 
-        ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
+        final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
 
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());

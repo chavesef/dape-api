@@ -31,8 +31,8 @@ class BetOperationsControllerTest {
 
         when(betService.registerBet(betPostRequest)).thenReturn(bet);
 
-        ResponseEntity<BetPostResponse> betCriada = betOperationsController.registerBet(betPostRequest);
-        ResponseEntity<BetPostResponse> betEsperada =
+        final ResponseEntity<BetPostResponse> betCriada = betOperationsController.registerBet(betPostRequest);
+        final ResponseEntity<BetPostResponse> betEsperada =
                 ResponseEntity.status(HttpStatusCode.valueOf(201)).body(betPostResponse);
 
         verify(betService).registerBet(betPostRequest);
