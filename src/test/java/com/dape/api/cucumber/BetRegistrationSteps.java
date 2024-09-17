@@ -20,13 +20,13 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.port;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CadastroApostasSteps {
+public class BetRegistrationSteps {
     private final BetRepository betRepository;
     private ResponseEntity<BetPostResponse> cadastroResponseEntity;
 
     private boolean servicoIndisponivel;
 
-    public CadastroApostasSteps(BetRepository betRepository) {
+    public BetRegistrationSteps(BetRepository betRepository) {
         this.betRepository = betRepository;
     }
 
@@ -43,12 +43,12 @@ public class CadastroApostasSteps {
     }
 
     @Dado("que existam as seguintes apostas cadastradas no banco de dados")
-    public void queExistamAsSeguintesApostasCadastradasNoBancoDeDados(List<Bet> bets) {
+    public void theFollowingBetsAreRegisteredInTheDatabase(List<Bet> bets) {
         betRepository.saveAll(bets);
     }
 
     @Quando("uma requisição de criação de aposta for realizada com odd {double} e descrição {string}")
-    public void umaRequisiçãoDeCriaçãoDeApostaForRealizadaComOddEDescrição(double numOdd, String desBet) {
+    public void aBetPostRequestIsCalled(double numOdd, String desBet) {
         if(servicoIndisponivel)
             cadastroResponseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         else {
@@ -63,26 +63,26 @@ public class CadastroApostasSteps {
     }
 
     @Entao("o serviço de cadastro de apostas deve retornar o status code {int} - {string}")
-    public void oServiçoDeCadastroDeApostasDeveRetornarOStatusCode(int expectedStatusCode, String expectedCodeDescription) {
+    public void theBetRegistrationServiceShouldReturnStatusCode(int expectedStatusCode, String expectedCodeDescription) {
         assertEquals(expectedStatusCode, cadastroResponseEntity.getStatusCode().value());
         assertEquals(expectedCodeDescription, HttpStatus.valueOf(expectedStatusCode).getReasonPhrase());
     }
 
     @Entao("os seguintes dados devem ser cadastrados no banco de dados")
-    public void osSeguintesDadosDevemSerCadastradosNoBancoDeDados(List<Bet> bets) {
+    public void theFollowingDataShouldBeRegisteredInTheDatabase(List<Bet> bets) {
         List<Bet> actualBets = betRepository.findAll();
         Bet bet = bets.get(0);
         assertEquals(bet.getDesBet(), actualBets.get(actualBets.size()-1).getDesBet());
     }
 
-    @Entao("o banco de dados deve se manter")
-    public void oBancoDeDadosDeveSeManter(List<Bet> bets) {
+    @Entao("o banco de dados não deve ser modificado")
+    public void theDatabaseShouldNotBeModified(List<Bet> bets) {
         List<Bet> actualBets = betRepository.findAll();
         assertEquals(bets.size(), actualBets.size());
     }
 
     @Dado("que o serviço esteja indisponível")
-    public void queOServiçoEstejaIndisponível() {
+    public void theServiceIsUnavailable() {
         servicoIndisponivel = true;
     }
 }
