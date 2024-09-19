@@ -10,12 +10,14 @@ ou 'perdida'(red).
 ## Sumário
 - [Arquitetura](#arquitetura)
 - [Modelagem do banco de dados](#modelagem-do-banco-de-dados)
-- [Máquina de estados](#status)
+- [Máquina de estados](#máquina-de-estados-do-status-de-uma-aposta-ou-bilhete)
 - [Ambiente de desenvolvimento](#ambiente-de-desenvolvimento)
   - [Tecnologias Utilizadas](#tecnologias-utilizadas)
   - [Configurando ambiente de desenvolvimento](#configurando-ambiente-de-desenvolvimento)
   - [Conexão com o banco de dados](#conexão-com-o-banco-de-dados)
   - [Migração e versionamento com Flyway](#migração-e-versionamento-com-flyway)
+- [Utilização](#utilização)
+  - [Cadastro de uma nova aposta](#cadastro-de-uma-nova-aposta)
 
 
 ## Arquitetura
@@ -74,6 +76,38 @@ Em sequência há uma breve explicação sobre o significado de cada parte:
 - Descrição: breve descrição dos comandos a serem realizados, com palavras separadas por _ (underscore)
 
 Ao executar a aplicação pela primeira vez, o Flyway será responsável por criar as tabelas, com o arquivo presente em [V1.1__CREATING_TABLES_RG_8483.sql](src/main/resources/db/migration/V1.1__CREATING_TABLES_RG_8483.sql) e em seguida
-popular o banco de dados usando o arquivo [V1.2__INSERTING_DATA_RG_8483.sql](src/main/resources/db/migration/V1.2__INSERTING_DATA_RG_8483.sql)
+popular o banco de dados usando o arquivo [V1.2__INSERTING_DATA_RG_8483.sql](src/main/resources/db/migration/V1.2__INSERTING_DATA_RG_8483.sql). Posteriormente foi 
+adicionado o arquivo [V1.3__ALTERING_TICKET_TABLE_RG_8484.sql](src/main/resources/db/migration/V1.3__ALTERING_TICKET_TABLE_RG_8484.sql) para adicionar uma coluna
+para a odd final do bilhete de apostas.
+
+## Utilização
+
+O projeto possui um documento de contrato de endpoints disponibilizado ([dape-api-contract.yml](src/main/resources/dape-api-contract.yml)), no qual
+são definidas as regras de requisições e respostas para cada endpoint.
+
+### Cadastro de uma nova aposta
+Para cadastrar uma nova aposta no banco de dados rode o comando a seguir no terminal:
+```sh
+curl -X POST \
+     --location 'localhost:8080/dape/bet' \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "num_odd": 2.19,
+           "des_bet": "Vitória do Botafogo"
+         }' 
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 201 - CREATED
+```json
+{
+  "bet_status": "PENDING",
+  "idt_bet": 2,
+  "num_odd": 2.19,
+  "des_bet": "Vitória do Botafogo",
+  "dat_created": "2025-07-21"
+}
+```
+
 
 

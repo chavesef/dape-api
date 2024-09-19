@@ -20,15 +20,22 @@ repositories {
 
 def h2Version = '2.3.230'
 def cucumberVersion = '7.18.1'
+def springDocVersion = '2.6.0'
+def jacksonVersion = '2.17.2'
+def restAssuredVersion = '5.5.0'
 
 dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
 	runtimeOnly group: 'com.oracle.database.jdbc', name: 'ojdbc11'
+	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: restAssuredVersion
 	testImplementation group: 'com.h2database', name: 'h2', version: h2Version
 	developmentOnly group: 'org.springframework.boot', name: 'spring-boot-devtools'
 	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 	testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: springDocVersion
 	implementation group: 'org.flywaydb', name: 'flyway-database-oracle'
 	implementation group: 'io.cucumber', name: 'cucumber-java', version: cucumberVersion
 	testImplementation group: 'io.cucumber', name: 'cucumber-java', version: cucumberVersion
