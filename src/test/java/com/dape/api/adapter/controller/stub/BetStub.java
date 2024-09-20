@@ -20,4 +20,17 @@ public class BetStub{
 
         return bet;
     }
+
+    public static Bet createUpdatedBet() {
+        Bet bet = new Bet();
+        bet.setIdtBet(1L);
+        bet.setDesBet("Vitória do Boca Juniors");
+        bet.setNumOdd(new BigDecimal("2.43"));
+        bet.setDatCreated(LocalDateTime.now());
+        bet.setDatUpdated(LocalDateTime.now());
+        bet.setBetStatusEnum(BetStatusEnum.PENDING);
+        bet.setFlgSelected(0);
+
+        return bet;
+    }
 }

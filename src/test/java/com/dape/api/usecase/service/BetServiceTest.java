@@ -5,10 +5,16 @@ import com.dape.api.adapter.controller.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
+import com.dape.api.domain.exception.BetNotExistent;
+import com.dape.api.domain.exception.BetSelectedOrResolvedException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 class BetServiceTest {
@@ -20,18 +26,59 @@ class BetServiceTest {
     void registerBet() {
         final BetRequest betRequest = BetPostRequestStub.createBetPostRequest();
 
-        final Bet betEsperada = BetStub.createBet();
+        final Bet expectedBet = BetStub.createBet();
 
-        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(betEsperada);
+        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
 
-        final Bet betCriada = betService.registerBet(betRequest);
+        final Bet actualBet = betService.registerBet(betRequest);
 
-        assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());
-        assertEquals(betEsperada.getIdtBet(), betCriada.getIdtBet());
-        assertEquals(betEsperada.getBetStatusEnum(), betCriada.getBetStatusEnum());
-        assertEquals(betEsperada.getNumOdd(), betCriada.getNumOdd());
-        assertEquals(betEsperada.getDatCreated().toLocalDate(), betCriada.getDatCreated().toLocalDate());
-        assertEquals(betEsperada.getDatUpdated().toLocalDate(), betCriada.getDatUpdated().toLocalDate());
-        assertEquals(betEsperada.getFlgSelected(), betCriada.getFlgSelected());
+        assertEquals(expectedBet.getDesBet(), actualBet.getDesBet());
+        assertEquals(expectedBet.getIdtBet(), actualBet.getIdtBet());
+        assertEquals(expectedBet.getBetStatusEnum(), actualBet.getBetStatusEnum());
+        assertEquals(expectedBet.getNumOdd(), actualBet.getNumOdd());
+        assertEquals(expectedBet.getDatCreated().toLocalDate(), actualBet.getDatCreated().toLocalDate());
+        assertEquals(expectedBet.getDatUpdated().toLocalDate(), actualBet.getDatUpdated().toLocalDate());
+        assertEquals(expectedBet.getFlgSelected(), actualBet.getFlgSelected());
+    }
+
+    @Test
+    void updateBet(){
+        final Long idtBet = 1L;
+
+        final BetRequest betRequest = BetPostRequestStub.createBetPatchRequest();
+
+        final Bet existentBet = BetStub.createBet();
+        final Bet expectedBet = BetStub.createUpdatedBet();
+
+        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
+
+        final Bet actualBet = betService.updateBet(idtBet, betRequest);
+
+        assertThat(actualBet).usingRecursiveComparison().isEqualTo(expectedBet);
+    }
+
+    @Test
+    void updatedBetInexistent(){
+        final Long idtBet = 2L;
+
+        final BetRequest betRequest = BetPostRequestStub.createBetPatchRequest();
+
+        assertThrows(BetNotExistent.class, () -> betService.updateBet(idtBet, betRequest));
+
+    }
+
+    @Test
+    void updatedBetSelectedOrResolved(){
+        final Long idtBet = 1L;
+
+        final BetRequest betRequest = BetPostRequestStub.createBetPatchRequest();
+
+        Bet existentBet = BetStub.createBet();
+        existentBet.setFlgSelected(1);
+
+        when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
+
+        assertThrows(BetSelectedOrResolvedException.class, () -> betService.updateBet(idtBet, betRequest));
     }
 }
