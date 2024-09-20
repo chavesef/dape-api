@@ -1,7 +1,7 @@
 package com.dape.api.adapter.controller;
 
-import com.dape.api.adapter.dto.request.BetPostRequest;
-import com.dape.api.adapter.dto.response.BetPostResponse;
+import com.dape.api.adapter.dto.request.BetRequest;
+import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.usecase.factory.BetPostResponseFactory;
 import com.dape.api.usecase.service.BetService;
 import jakarta.validation.Valid;
@@ -26,14 +26,14 @@ public class BetOperationsController {
     }
 
     @PostMapping("/bet")
-    public ResponseEntity<BetPostResponse> registerBet(@Valid @RequestBody BetPostRequest betPostRequest){
+    public ResponseEntity<BetResponse> registerBet(@Valid @RequestBody BetRequest betRequest){
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(BetPostResponseFactory.createBetPostResponse(betService.registerBet(betPostRequest)));
+                .body(BetPostResponseFactory.createBetPostResponse(betService.registerBet(betRequest)));
     }
 
     @PatchMapping("/bet/{idtBet}")
-    public ResponseEntity<BetPostResponse> updateBet(@PathVariable Long idtBet, @Valid @RequestBody BetPostRequest betPostRequest){
+    public ResponseEntity<BetResponse> updateBet(@PathVariable Long idtBet, @Valid @RequestBody BetRequest betRequest){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(BetPostResponseFactory.createBetPostResponse(betService.updateBet(idtBet, betPostRequest)));
+                    .body(BetPostResponseFactory.createBetPostResponse(betService.updateBet(idtBet, betRequest)));
     }
 }

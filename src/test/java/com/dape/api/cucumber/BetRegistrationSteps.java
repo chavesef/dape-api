@@ -1,6 +1,6 @@
 package com.dape.api.cucumber;
 
-import com.dape.api.adapter.dto.response.BetPostResponse;
+import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import io.cucumber.java.pt.Dado;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BetRegistrationSteps {
     private final BetRepository betRepository;
-    private ResponseEntity<BetPostResponse> cadastroResponseEntity;
+    private ResponseEntity<BetResponse> cadastroResponseEntity;
 
     private boolean servicoIndisponivel;
 
@@ -58,7 +58,7 @@ public class BetRegistrationSteps {
             if (post.jsonPath().get("$") instanceof List)
                 cadastroResponseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             else
-                cadastroResponseEntity = ResponseEntity.status(post.statusCode()).body(post.getBody().as(BetPostResponse.class));
+                cadastroResponseEntity = ResponseEntity.status(post.statusCode()).body(post.getBody().as(BetResponse.class));
         }
     }
 

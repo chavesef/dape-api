@@ -2,7 +2,7 @@ package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.controller.stub.BetPostRequestStub;
 import com.dape.api.adapter.controller.stub.BetStub;
-import com.dape.api.adapter.dto.request.BetPostRequest;
+import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import org.junit.jupiter.api.Test;
@@ -18,13 +18,13 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        final BetPostRequest betPostRequest = BetPostRequestStub.createBetPostRequest();
+        final BetRequest betRequest = BetPostRequestStub.createBetPostRequest();
 
         final Bet betEsperada = BetStub.createBet();
 
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(betEsperada);
 
-        final Bet betCriada = betService.registerBet(betPostRequest);
+        final Bet betCriada = betService.registerBet(betRequest);
 
         assertEquals(betEsperada.getDesBet(), betCriada.getDesBet());
         assertEquals(betEsperada.getIdtBet(), betCriada.getIdtBet());

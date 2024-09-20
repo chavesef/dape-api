@@ -3,8 +3,8 @@ package com.dape.api.adapter.controller;
 import com.dape.api.adapter.controller.stub.BetPostRequestStub;
 import com.dape.api.adapter.controller.stub.BetPostResponseStub;
 import com.dape.api.adapter.controller.stub.BetStub;
-import com.dape.api.adapter.dto.request.BetPostRequest;
-import com.dape.api.adapter.dto.response.BetPostResponse;
+import com.dape.api.adapter.dto.request.BetRequest;
+import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.usecase.service.BetService;
 import org.junit.jupiter.api.Test;
@@ -23,19 +23,19 @@ class BetOperationsControllerTest {
 
     @Test
     void registerBet(){
-        final BetPostRequest betPostRequest = BetPostRequestStub.createBetPostRequest();
+        final BetRequest betRequest = BetPostRequestStub.createBetPostRequest();
 
-        final BetPostResponse betPostResponse = BetPostResponseStub.createBetPostResponse();
+        final BetResponse betResponse = BetPostResponseStub.createBetPostResponse();
 
         final Bet bet = BetStub.createBet();
 
-        when(betService.registerBet(betPostRequest)).thenReturn(bet);
+        when(betService.registerBet(betRequest)).thenReturn(bet);
 
-        final ResponseEntity<BetPostResponse> actualBet = betOperationsController.registerBet(betPostRequest);
-        final ResponseEntity<BetPostResponse> expectedBet =
-                ResponseEntity.status(HttpStatusCode.valueOf(201)).body(betPostResponse);
+        final ResponseEntity<BetResponse> actualBet = betOperationsController.registerBet(betRequest);
+        final ResponseEntity<BetResponse> expectedBet =
+                ResponseEntity.status(HttpStatusCode.valueOf(201)).body(betResponse);
 
-        verify(betService).registerBet(betPostRequest);
+        verify(betService).registerBet(betRequest);
         assertEquals(expectedBet.getStatusCode(), actualBet.getStatusCode());
         assertEquals(expectedBet.getBody().getDesBet(), actualBet.getBody().getDesBet());
         assertEquals(expectedBet.getBody().getBetStatusEnum(), actualBet.getBody().getBetStatusEnum());

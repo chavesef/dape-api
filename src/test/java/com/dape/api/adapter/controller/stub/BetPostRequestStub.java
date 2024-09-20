@@ -1,12 +1,12 @@
 package com.dape.api.adapter.controller.stub;
 
-import com.dape.api.adapter.dto.request.BetPostRequest;
+import com.dape.api.adapter.dto.request.BetRequest;
 
 import java.math.BigDecimal;
 
 public class BetPostRequestStub{
 
-    public static BetPostRequest createBetPostRequest() {
-        return new BetPostRequest(new BigDecimal("2.12"), "Vitória do River Plate");
+    public static BetRequest createBetPostRequest() {
+        return new BetRequest(new BigDecimal("2.12"), "Vitória do River Plate");
     }
 }

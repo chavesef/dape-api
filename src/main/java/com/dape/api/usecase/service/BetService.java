@@ -1,6 +1,6 @@
 package com.dape.api.usecase.service;
 
-import com.dape.api.adapter.dto.request.BetPostRequest;
+import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -20,16 +20,16 @@ public class BetService {
         this.betRepository = betRepository;
     }
 
-    public Bet registerBet(BetPostRequest betPostRequest) {
-        return betRepository.save(BetFactory.createBet(betPostRequest));
+    public Bet registerBet(BetRequest betRequest) {
+        return betRepository.save(BetFactory.createBet(betRequest));
     }
 
-    public Bet updateBet(Long idtBet, BetPostRequest betPostRequest) {
+    public Bet updateBet(Long idtBet, BetRequest betRequest) {
         Bet betToUpdate = getBetById(idtBet);
 
         if(betIsNotSelectedNorResolved(betToUpdate)){
-            betToUpdate.setDesBet(betPostRequest.getDesBet());
-            betToUpdate.setNumOdd(betPostRequest.getNumOdd());
+            betToUpdate.setDesBet(betRequest.getDesBet());
+            betToUpdate.setNumOdd(betRequest.getNumOdd());
             betToUpdate.setDatUpdated(LocalDateTime.now());
             return betRepository.save(betToUpdate);
         } else {

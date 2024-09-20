@@ -1,6 +1,6 @@
 package com.dape.api.usecase.factory;
 
-import com.dape.api.adapter.dto.request.BetPostRequest;
+import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 
@@ -11,11 +11,11 @@ public class BetFactory {
     private BetFactory() {
     }
 
-    public static Bet createBet(BetPostRequest betPostRequest) {
+    public static Bet createBet(BetRequest betRequest) {
 
         Bet bet = new Bet();
-        bet.setDesBet(betPostRequest.getDesBet());
-        bet.setNumOdd(betPostRequest.getNumOdd());
+        bet.setDesBet(betRequest.getDesBet());
+        bet.setNumOdd(betRequest.getNumOdd());
         bet.setFlgSelected(0);
         bet.setDatCreated(LocalDateTime.now());
         bet.setDatUpdated(LocalDateTime.now());
