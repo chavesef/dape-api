@@ -1,6 +1,8 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
+import com.dape.api.domain.exception.BetNotExistentException;
+import com.dape.api.domain.exception.BetSelectedOrResolvedException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
@@ -53,6 +55,32 @@ class DapeExceptionHandlerTest {
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleHttpMessageNotReadableException(exception);
 
         final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
+
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());
+    }
+
+    @Test
+    void handleBetInexistent(){
+        final BetNotExistentException exception = Mockito.mock(BetNotExistentException.class);
+
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBetNotExistException(exception);
+
+        final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage()));
+
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());
+    }
+
+    @Test
+    void handleBetSelectedOrResolved(){
+        final BetSelectedOrResolvedException exception = Mockito.mock(BetSelectedOrResolvedException.class);
+
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBetSelectedOrResolvedException(exception);
+
+        final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
 
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());

@@ -38,7 +38,7 @@ public class DapeExceptionHandler {
     }
 
     @ExceptionHandler(BetSelectedOrResolvedException.class)
-    public ResponseEntity<ErrorResponse> handleBetSelectedException(BetSelectedOrResolvedException e){
+    public ResponseEntity<ErrorResponse> handleBetSelectedOrResolvedException(BetSelectedOrResolvedException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 }
