@@ -12,6 +12,9 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,5 +47,24 @@ class BetOperationsControllerTest {
         assertEquals(expectedBet.getBody().getDatUpdated().toLocalDate(), actualBet.getBody().getDatUpdated().toLocalDate());
         assertEquals(expectedBet.getBody().getNumOdd(), actualBet.getBody().getNumOdd());
         assertEquals(expectedBet.getBody().getFlgSelected(), actualBet.getBody().getFlgSelected());
+    }
+
+    @Test
+    void updateBet(){
+        final Long idtBet = 1L;
+        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
+
+        final BetResponse betResponse = BetPostResponseStub.createBetPatchResponse();
+
+        final Bet bet = BetStub.createUpdatedBet();
+
+        when(betService.updateBet(idtBet, betRequest)).thenReturn(bet);
+
+        final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBet(idtBet, betRequest);
+        final ResponseEntity<BetResponse> expectedBet =
+                ResponseEntity.status(HttpStatusCode.valueOf(200)).body(betResponse);
+
+        verify(betService).updateBet(idtBet, betRequest);
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 }
