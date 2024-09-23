@@ -5,6 +5,7 @@ import com.dape.api.adapter.controller.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
+import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.BetSelectedOrResolvedException;
 import org.junit.jupiter.api.Test;
@@ -69,13 +70,27 @@ class BetServiceTest {
     }
 
     @Test
-    void updatedBetSelectedOrResolved(){
+    void updatedBetSelected(){
         final Long idtBet = 1L;
 
         final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
         Bet existentBet = BetStub.createBet();
         existentBet.setFlgSelected(1);
+
+        when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
+
+        assertThrows(BetSelectedOrResolvedException.class, () -> betService.updateBet(idtBet, betRequest));
+    }
+
+    @Test
+    void updatedBetResolved(){
+        final Long idtBet = 1L;
+
+        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
+
+        Bet existentBet = BetStub.createBet();
+        existentBet.setBetStatusEnum(BetStatusEnum.GREEN);
 
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
