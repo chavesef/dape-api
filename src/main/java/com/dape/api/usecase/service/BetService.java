@@ -4,7 +4,7 @@ import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
-import com.dape.api.domain.exception.BetNotExistent;
+import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.BetSelectedOrResolvedException;
 import com.dape.api.usecase.factory.BetFactory;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class BetService {
         if(bet.isPresent())
             return bet.get();
         else
-            throw new BetNotExistent("Aposta com id " + idtBet + " não existe no banco de dados");
+            throw new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados");
     }
 
     public boolean betIsNotSelectedNorResolved(Bet betToUpdate) {

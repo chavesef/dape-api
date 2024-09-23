@@ -1,7 +1,7 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
-import com.dape.api.domain.exception.BetNotExistent;
+import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.BetSelectedOrResolvedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +32,8 @@ public class DapeExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
-    @ExceptionHandler(BetNotExistent.class)
-    public ResponseEntity<ErrorResponse> handleBetNotExistException(BetNotExistent e){
+    @ExceptionHandler(BetNotExistentException.class)
+    public ResponseEntity<ErrorResponse> handleBetNotExistException(BetNotExistentException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
     }
 

@@ -5,7 +5,7 @@ import com.dape.api.adapter.controller.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
-import com.dape.api.domain.exception.BetNotExistent;
+import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.BetSelectedOrResolvedException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -64,7 +64,7 @@ class BetServiceTest {
 
         final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
-        assertThrows(BetNotExistent.class, () -> betService.updateBet(idtBet, betRequest));
+        assertThrows(BetNotExistentException.class, () -> betService.updateBet(idtBet, betRequest));
 
     }
 
