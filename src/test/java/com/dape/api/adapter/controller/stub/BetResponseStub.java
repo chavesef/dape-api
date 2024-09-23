@@ -6,7 +6,7 @@ import com.dape.api.domain.entity.Bet;
 import static com.dape.api.adapter.controller.stub.BetStub.createBet;
 import static com.dape.api.adapter.controller.stub.BetStub.createUpdatedBet;
 
-public class BetPostResponseStub {
+public class BetResponseStub {
 
     public static BetResponse createBetPostResponse() {
         Bet bet = createBet();
