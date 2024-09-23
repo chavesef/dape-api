@@ -4,7 +4,7 @@ import com.dape.api.adapter.dto.request.BetRequest;
 
 import java.math.BigDecimal;
 
-public class BetPostRequestStub{
+public class BetRequestStub {
 
     public static BetRequest createBetPostRequest() {
         return new BetRequest(new BigDecimal("2.12"), "Vitória do River Plate");

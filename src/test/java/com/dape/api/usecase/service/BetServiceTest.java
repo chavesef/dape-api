@@ -1,6 +1,6 @@
 package com.dape.api.usecase.service;
 
-import com.dape.api.adapter.controller.stub.BetPostRequestStub;
+import com.dape.api.adapter.controller.stub.BetRequestStub;
 import com.dape.api.adapter.controller.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
@@ -24,7 +24,7 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        final BetRequest betRequest = BetPostRequestStub.createBetPostRequest();
+        final BetRequest betRequest = BetRequestStub.createBetPostRequest();
 
         final Bet expectedBet = BetStub.createBet();
 
@@ -45,7 +45,7 @@ class BetServiceTest {
     void updateBet(){
         final Long idtBet = 1L;
 
-        final BetRequest betRequest = BetPostRequestStub.createBetPatchRequest();
+        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
         final Bet existentBet = BetStub.createBet();
         final Bet expectedBet = BetStub.createUpdatedBet();
@@ -62,7 +62,7 @@ class BetServiceTest {
     void updatedBetInexistent(){
         final Long idtBet = 2L;
 
-        final BetRequest betRequest = BetPostRequestStub.createBetPatchRequest();
+        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
         assertThrows(BetNotExistent.class, () -> betService.updateBet(idtBet, betRequest));
 
@@ -72,7 +72,7 @@ class BetServiceTest {
     void updatedBetSelectedOrResolved(){
         final Long idtBet = 1L;
 
-        final BetRequest betRequest = BetPostRequestStub.createBetPatchRequest();
+        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
         Bet existentBet = BetStub.createBet();
         existentBet.setFlgSelected(1);
