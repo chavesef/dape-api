@@ -55,7 +55,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
   Cenario: Atualizar uma aposta inexistente
     Quando uma requisição de atualização de aposta for realizada com odd 2,20 e descrição "Vitória do Vitória" e idt_bet 2024
     Entao o serviço de atualização deve retornar o status code 404 - "Not Found"
-    E o banco de dados deve se manter
+    E o banco de dados de atualização não deve ser modificado
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
       | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
@@ -91,7 +91,7 @@ Funcionalidade: Realizar atualização de apostas disponíveis no banco de dados
     Dado que o serviço de atualização esteja indisponível
     Quando uma requisição de atualização de aposta for realizada com odd 2,20 e descrição "Vitória do Vitória" e idt_bet 2
     Então o serviço de atualização deve retornar o status code 500 - "Internal Server Error"
-    E o banco de dados deve se manter
+    E o banco de dados de atualização não deve ser modificado
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
       | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |

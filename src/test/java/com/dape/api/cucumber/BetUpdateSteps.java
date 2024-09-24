@@ -73,7 +73,7 @@ public class BetUpdateSteps {
     }
 
     @Entao("o seguinte dado deve estar na tabela")
-    public void oSeguinteDadoDeveSeManterOMesmoNaTabela(List<Bet> updatedBets) {
+    public void theFollowingDataShouldBeInTheTable(List<Bet> updatedBets) {
         Bet expectedBet = updatedBets.get(0);
 
         Optional<Bet> actualBet = betRepository.findById(expectedBet.getIdtBet());
@@ -82,15 +82,15 @@ public class BetUpdateSteps {
         assertThat(actualBet.get()).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
-    @Entao("o banco de dados deve se manter")
-    public void oBancoDeDadosDeveSeManter(List<Bet> expectedBets) {
+    @Entao("o banco de dados de atualização não deve ser modificado")
+    public void theDatabaseShouldNotBeModified(List<Bet> expectedBets) {
         List<Bet> actualBets = betRepository.findAll();
 
         assertThat(actualBets).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBets);
     }
 
     @Dado("que o serviço de atualização esteja indisponível")
-    public void queOServiçoDeAtualizaçãoEstejaIndisponível() {
+    public void theUpdateServiceIsUnavailable() {
         servicoIndisponivel = true;
     }
 }
