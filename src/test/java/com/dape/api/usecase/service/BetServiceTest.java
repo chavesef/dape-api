@@ -11,6 +11,7 @@ import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -33,67 +34,68 @@ class BetServiceTest {
 
         final Bet actualBet = betService.registerBet(betRequest);
 
-        assertEquals(expectedBet.getDesBet(), actualBet.getDesBet());
-        assertEquals(expectedBet.getIdtBet(), actualBet.getIdtBet());
-        assertEquals(expectedBet.getBetStatusEnum(), actualBet.getBetStatusEnum());
-        assertEquals(expectedBet.getNumOdd(), actualBet.getNumOdd());
-        assertEquals(expectedBet.getDatCreated().toLocalDate(), actualBet.getDatCreated().toLocalDate());
-        assertEquals(expectedBet.getDatUpdated().toLocalDate(), actualBet.getDatUpdated().toLocalDate());
-        assertEquals(expectedBet.getFlgSelected(), actualBet.getFlgSelected());
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
     @Test
     void updateBet(){
-        final Long idtBet = 1L;
-
         final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
         final Bet existentBet = BetStub.createBet();
         final Bet expectedBet = BetStub.createUpdatedBet();
 
+        final Long idtBet = 1L;
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
         final Bet actualBet = betService.updateBet(idtBet, betRequest);
 
-        assertThat(actualBet).usingRecursiveComparison().isEqualTo(expectedBet);
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
     @Test
-    void updatedBetInexistent(){
-        final Long idtBet = 2L;
-
+    void updatedBetInexistentExpectException(){
         final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
-        assertThrows(BetNotExistentException.class, () -> betService.updateBet(idtBet, betRequest));
+        final Long idtBet = 2L;
+        final String expectedMessage = "Aposta com id " + idtBet + " não existe no banco de dados";
 
+        BetNotExistentException betNotExistentException =
+                assertThrows(BetNotExistentException.class, () -> betService.updateBet(idtBet, betRequest));
+        assertEquals(expectedMessage, betNotExistentException.getMessage());
     }
 
     @Test
-    void updatedBetSelected(){
-        final Long idtBet = 1L;
-
+    void updatedBetSelectedExpectException(){
         final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
         Bet existentBet = BetStub.createBet();
         existentBet.setFlgSelected(1);
 
+        final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
+        final String expectedMessage = "Condições inválidas para atualização: BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
+
+        InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
     }
 
     @Test
-    void updatedBetResolved(){
-        final Long idtBet = 1L;
-
+    void updatedBetResolvedExpectException(){
         final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
 
         Bet existentBet = BetStub.createBet();
         existentBet.setBetStatusEnum(BetStatusEnum.GREEN);
 
+        final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
+        final String expectedMessage = "Condições inválidas para atualização: BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
+
+        InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
     }
 }
