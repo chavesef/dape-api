@@ -52,7 +52,7 @@ class DapeExceptionHandlerTest {
     void handleInvalidTypeOdd(){
         final HttpMessageNotReadableException exception = Mockito.mock(HttpMessageNotReadableException.class);
 
-        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleHttpMessageNotReadableException(exception);
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBadRequestExceptions(exception);
 
         final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
 
@@ -77,7 +77,7 @@ class DapeExceptionHandlerTest {
     void handleBetSelectedOrResolved(){
         final BetSelectedOrResolvedException exception = Mockito.mock(BetSelectedOrResolvedException.class);
 
-        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBetSelectedOrResolvedException(exception);
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBadRequestExceptions(exception);
 
         final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));

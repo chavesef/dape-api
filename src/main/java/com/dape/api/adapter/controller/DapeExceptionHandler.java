@@ -27,18 +27,13 @@ public class DapeExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+    @ExceptionHandler({HttpMessageNotReadableException.class, BetSelectedOrResolvedException.class})
+    public ResponseEntity<ErrorResponse> handleBadRequestExceptions(Exception e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
     @ExceptionHandler(BetNotExistentException.class)
     public ResponseEntity<ErrorResponse> handleBetNotExistException(BetNotExistentException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
-    }
-
-    @ExceptionHandler(BetSelectedOrResolvedException.class)
-    public ResponseEntity<ErrorResponse> handleBetSelectedOrResolvedException(BetSelectedOrResolvedException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 }
