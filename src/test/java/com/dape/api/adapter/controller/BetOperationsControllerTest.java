@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -26,11 +27,11 @@ class BetOperationsControllerTest {
 
     @Test
     void registerBet(){
-        final BetRequest betRequest = BetRequestStub.createBetPostRequest();
+        final BetRequest betRequest = BetRequestStub.builder().createBetRequest();
 
-        final BetResponse betResponse = BetResponseStub.createBetPostResponse();
+        final BetResponse betResponse = BetResponseStub.createBetResponse(betRequest.getDesBet(), betRequest.getNumOdd());
 
-        final Bet bet = BetStub.createBet();
+        final Bet bet = BetStub.builder().createBet();
 
         when(betService.registerBet(betRequest)).thenReturn(bet);
 
@@ -51,13 +52,13 @@ class BetOperationsControllerTest {
 
     @Test
     void updateBet(){
+        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
+
+        final BetResponse betResponse = BetResponseStub.createBetResponse(betRequest.getDesBet(), betRequest.getNumOdd());
+
+        final Bet bet = BetStub.builder().setDesBet(betRequest.getDesBet()).setNumOdd(betRequest.getNumOdd()).createBet();
+
         final Long idtBet = 1L;
-        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
-
-        final BetResponse betResponse = BetResponseStub.createBetPatchResponse();
-
-        final Bet bet = BetStub.createUpdatedBet();
-
         when(betService.updateBet(idtBet, betRequest)).thenReturn(bet);
 
         final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBet(idtBet, betRequest);

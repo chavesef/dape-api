@@ -5,12 +5,29 @@ import com.dape.api.adapter.dto.request.BetRequest;
 import java.math.BigDecimal;
 
 public class BetRequestStub {
+    private BigDecimal numOdd;
+    private String desBet;
 
-    public static BetRequest createBetPostRequest() {
-        return new BetRequest(new BigDecimal("2.12"), "Vitória do River Plate");
+    private BetRequestStub() {
+        this.numOdd = new BigDecimal("2.12");
+        this.desBet = "Vitória do River Plate";
     }
 
-    public static BetRequest createBetPatchRequest(){
-        return new BetRequest(new BigDecimal("2.43"), "Vitória do Boca Juniors");
+    public static BetRequestStub builder() {
+        return new BetRequestStub();
+    }
+
+    public BetRequest createBetRequest() {
+        return new BetRequest(this.numOdd, this.desBet);
+    }
+
+    public BetRequestStub setNumOdd(BigDecimal numOdd) {
+        this.numOdd = numOdd;
+        return this;
+    }
+
+    public BetRequestStub setDesBet(String desBet) {
+        this.desBet = desBet;
+        return this;
     }
 }

@@ -11,6 +11,7 @@ import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -26,9 +27,9 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        final BetRequest betRequest = BetRequestStub.createBetPostRequest();
+        final BetRequest betRequest = BetRequestStub.builder().createBetRequest();
 
-        final Bet expectedBet = BetStub.createBet();
+        final Bet expectedBet = BetStub.builder().createBet();
 
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
 
@@ -39,10 +40,10 @@ class BetServiceTest {
 
     @Test
     void updateBet(){
-        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
+        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
 
-        final Bet existentBet = BetStub.createBet();
-        final Bet expectedBet = BetStub.createUpdatedBet();
+        final Bet existentBet = BetStub.builder().createBet();
+        final Bet expectedBet = BetStub.builder().setDesBet(betRequest.getDesBet()).setNumOdd(betRequest.getNumOdd()).createBet();
 
         final Long idtBet = 1L;
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
@@ -55,7 +56,7 @@ class BetServiceTest {
 
     @Test
     void updatedBetInexistentExpectException(){
-        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
+        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
 
         final Long idtBet = 2L;
         final String expectedMessage = "Aposta com id " + idtBet + " não existe no banco de dados";
@@ -67,9 +68,9 @@ class BetServiceTest {
 
     @Test
     void updatedBetSelectedExpectException(){
-        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
+        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
 
-        Bet existentBet = BetStub.createBet();
+        Bet existentBet = BetStub.builder().createBet();
         existentBet.setFlgSelected(1);
 
         final Long idtBet = 1L;
@@ -84,9 +85,9 @@ class BetServiceTest {
 
     @Test
     void updatedBetResolvedExpectException(){
-        final BetRequest betRequest = BetRequestStub.createBetPatchRequest();
+        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
 
-        Bet existentBet = BetStub.createBet();
+        Bet existentBet = BetStub.builder().createBet();
         existentBet.setBetStatusEnum(BetStatusEnum.GREEN);
 
         final Long idtBet = 1L;
