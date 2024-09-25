@@ -10,18 +10,20 @@ import com.dape.api.usecase.factory.BetFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class BetService {
 
     private final BetRepository betRepository;
+    private static final Logger LOGGER = Logger.getLogger(BetService.class.getName());
 
     public BetService(BetRepository betRepository) {
         this.betRepository = betRepository;
     }
 
     public Bet registerBet(BetRequest betRequest) {
+        LOGGER.info("Aposta criada com descrição: " + betRequest.getDesBet() + " e odd: " + betRequest.getNumOdd());
         return betRepository.save(BetFactory.createBet(betRequest));
     }
 
@@ -32,19 +34,15 @@ public class BetService {
             betToUpdate.setDesBet(betRequest.getDesBet());
             betToUpdate.setNumOdd(betRequest.getNumOdd());
             betToUpdate.setDatUpdated(LocalDateTime.now());
+            LOGGER.info("Aposta atualizada com descrição: " + betToUpdate.getDesBet() + " e odd: " + betRequest.getNumOdd());
             return betRepository.save(betToUpdate);
         } else {
-            throw new InvalidStatusForUpdateException("Aposta já selecionada ou já resolvida, não é permitido atualizá-la");
+            throw new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
         }
     }
 
     public Bet getBetById(Long idtBet) {
-        Optional<Bet> bet = betRepository.findById(idtBet);
-
-        if(bet.isPresent())
-            return bet.get();
-        else
-            throw new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados");
+        return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
 
     public boolean betIsNotSelectedNorResolved(Bet betToUpdate) {
