@@ -5,6 +5,7 @@ import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -50,7 +51,8 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleInvalidTypeOdd(){
-        final HttpMessageNotReadableException exception = Mockito.mock(HttpMessageNotReadableException.class);
+        HttpInputMessage httpInputMessage = Mockito.mock(HttpInputMessage.class);
+        final HttpMessageNotReadableException exception = new HttpMessageNotReadableException("Valor de odd inválido", httpInputMessage);
 
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBadRequestExceptions(exception);
 
@@ -62,7 +64,7 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleBetInexistent(){
-        final BetNotExistentException exception = Mockito.mock(BetNotExistentException.class);
+        final BetNotExistentException exception = new BetNotExistentException("Aposta com id 4 não existe no banco de dados");
 
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBetNotExistException(exception);
 
@@ -75,7 +77,7 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleBetSelectedOrResolved(){
-        final InvalidStatusForUpdateException exception = Mockito.mock(InvalidStatusForUpdateException.class);
+        final InvalidStatusForUpdateException exception = new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=RED, FlgSelected=0");
 
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBadRequestExceptions(exception);
 
