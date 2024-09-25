@@ -64,9 +64,9 @@ public class BetUpdateSteps {
 
     @Entao("o seguinte dado deve estar na tabela")
     public void theFollowingDataShouldBeInTheTable(List<Bet> updatedBets) {
-        Bet expectedBet = updatedBets.get(0);
+        final Bet expectedBet = updatedBets.get(0);
 
-        Optional<Bet> actualBet = betRepository.findById(expectedBet.getIdtBet());
+        final Optional<Bet> actualBet = betRepository.findById(expectedBet.getIdtBet());
 
         assertNotNull(actualBet);
         assertThat(actualBet.get()).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
@@ -74,7 +74,7 @@ public class BetUpdateSteps {
 
     @Entao("o banco de dados de atualização não deve ser modificado")
     public void theDatabaseShouldNotBeModified(List<Bet> expectedBets) {
-        List<Bet> actualBets = betRepository.findAll();
+        final List<Bet> actualBets = betRepository.findAll();
 
         assertThat(actualBets).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBets);
     }

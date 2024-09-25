@@ -60,14 +60,14 @@ public class BetRegistrationSteps {
 
     @Entao("os seguintes dados devem ser cadastrados no banco de dados")
     public void theFollowingDataShouldBeRegisteredInTheDatabase(List<Bet> bets) {
-        List<Bet> actualBets = betRepository.findAll();
-        Bet bet = bets.get(0);
+        final List<Bet> actualBets = betRepository.findAll();
+        final Bet bet = bets.get(0);
         assertEquals(bet.getDesBet(), actualBets.get(actualBets.size()-1).getDesBet());
     }
 
     @Entao("o banco de dados não deve ser modificado")
     public void theDatabaseShouldNotBeModified(List<Bet> bets) {
-        List<Bet> actualBets = betRepository.findAll();
+        final List<Bet> actualBets = betRepository.findAll();
         assertEquals(bets.size(), actualBets.size());
     }
 
