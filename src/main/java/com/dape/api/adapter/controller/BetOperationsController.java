@@ -2,7 +2,7 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
-import com.dape.api.usecase.factory.BetPostResponseFactory;
+import com.dape.api.usecase.factory.BetResponseFactory;
 import com.dape.api.usecase.service.BetService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,12 +28,12 @@ public class BetOperationsController {
     @PostMapping("/bet")
     public ResponseEntity<BetResponse> registerBet(@Valid @RequestBody BetRequest betRequest){
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(BetPostResponseFactory.createBetPostResponse(betService.registerBet(betRequest)));
+                .body(BetResponseFactory.createBetResponse(betService.registerBet(betRequest)));
     }
 
     @PatchMapping("/bet/{idtBet}")
     public ResponseEntity<BetResponse> updateBet(@PathVariable Long idtBet, @Valid @RequestBody BetRequest betRequest){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(BetPostResponseFactory.createBetPostResponse(betService.updateBet(idtBet, betRequest)));
+                    .body(BetResponseFactory.createBetResponse(betService.updateBet(idtBet, betRequest)));
     }
 }

@@ -3,11 +3,11 @@ package com.dape.api.usecase.factory;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.domain.entity.Bet;
 
-public class BetPostResponseFactory {
+public class BetResponseFactory {
 
-    private BetPostResponseFactory() {}
+    private BetResponseFactory() {}
 
-    public static BetResponse createBetPostResponse(Bet bet) {
+    public static BetResponse createBetResponse(Bet bet) {
         final BetResponse betResponse = new BetResponse();
         betResponse.setIdtBet(bet.getIdtBet());
         betResponse.setDesBet(bet.getDesBet());
