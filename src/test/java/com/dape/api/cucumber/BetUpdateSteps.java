@@ -53,17 +53,7 @@ public class BetUpdateSteps {
 
     @Quando("uma requisição de atualização de aposta for realizada com odd {double} e descrição {string} e idt_bet {int}")
     public void aBetPatchRequestIsCalled(double numOdd, String desBet, int idtBet) {
-        if(servicoIndisponivel)
-            cadastroResponseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        else {
-            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
-            Response patch = RestAssured.given().body(betPostRequestJson).contentType(ContentType.JSON)
-                    .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}");
-            if (patch.jsonPath().get("$") instanceof List)
-                cadastroResponseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            else
-                cadastroResponseEntity = ResponseEntity.status(patch.statusCode()).body(patch.getBody().as(BetResponse.class));
-        }
+        cadastroResponseEntity = generateResponseEntityForThePatchRequest(numOdd, desBet, idtBet);
     }
 
     @Entao("o serviço de atualização deve retornar o status code {int} - {string}")
@@ -92,5 +82,19 @@ public class BetUpdateSteps {
     @Dado("que o serviço de atualização esteja indisponível")
     public void theUpdateServiceIsUnavailable() {
         servicoIndisponivel = true;
+    }
+
+    private ResponseEntity<BetResponse> generateResponseEntityForThePatchRequest(double numOdd, String desBet, int idtBet) {
+        if(servicoIndisponivel)
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        else {
+            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
+            Response patch = RestAssured.given().body(betPostRequestJson).contentType(ContentType.JSON)
+                    .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}");
+            if (patch.jsonPath().get("$") instanceof List)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            else
+                return ResponseEntity.status(patch.statusCode()).body(patch.getBody().as(BetResponse.class));
+        }
     }
 }

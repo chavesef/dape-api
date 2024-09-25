@@ -49,17 +49,7 @@ public class BetRegistrationSteps {
 
     @Quando("uma requisição de criação de aposta for realizada com odd {double} e descrição {string}")
     public void aBetPostRequestIsCalled(double numOdd, String desBet) {
-        if(servicoIndisponivel)
-            cadastroResponseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        else {
-            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
-            Response post = given().body(betPostRequestJson).contentType(ContentType.JSON).when()
-                    .post("/dape/bet");
-            if (post.jsonPath().get("$") instanceof List)
-                cadastroResponseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            else
-                cadastroResponseEntity = ResponseEntity.status(post.statusCode()).body(post.getBody().as(BetResponse.class));
-        }
+        cadastroResponseEntity = generateResponseEntityForThePostRequest(numOdd, desBet);
     }
 
     @Entao("o serviço de cadastro de apostas deve retornar o status code {int} - {string}")
@@ -84,5 +74,19 @@ public class BetRegistrationSteps {
     @Dado("que o serviço esteja indisponível")
     public void theServiceIsUnavailable() {
         servicoIndisponivel = true;
+    }
+
+    private ResponseEntity<BetResponse> generateResponseEntityForThePostRequest(double numOdd, String desBet) {
+        if(servicoIndisponivel)
+             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        else {
+            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
+            Response post = given().body(betPostRequestJson).contentType(ContentType.JSON).when()
+                    .post("/dape/bet");
+            if (post.jsonPath().get("$") instanceof List)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            else
+                return ResponseEntity.status(post.statusCode()).body(post.getBody().as(BetResponse.class));
+        }
     }
 }
