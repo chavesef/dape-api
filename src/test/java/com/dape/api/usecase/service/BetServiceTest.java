@@ -7,7 +7,7 @@ import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.BetSelectedOrResolvedException;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -80,7 +80,7 @@ class BetServiceTest {
 
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        assertThrows(BetSelectedOrResolvedException.class, () -> betService.updateBet(idtBet, betRequest));
+        assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
     }
 
     @Test
@@ -94,6 +94,6 @@ class BetServiceTest {
 
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        assertThrows(BetSelectedOrResolvedException.class, () -> betService.updateBet(idtBet, betRequest));
+        assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
     }
 }

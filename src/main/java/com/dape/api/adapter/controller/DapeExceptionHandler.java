@@ -2,7 +2,7 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.BetSelectedOrResolvedException;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -27,7 +27,7 @@ public class DapeExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    @ExceptionHandler({HttpMessageNotReadableException.class, BetSelectedOrResolvedException.class})
+    @ExceptionHandler({HttpMessageNotReadableException.class, InvalidStatusForUpdateException.class})
     public ResponseEntity<ErrorResponse> handleBadRequestExceptions(Exception e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }

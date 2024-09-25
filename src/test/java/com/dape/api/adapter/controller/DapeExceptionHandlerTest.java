@@ -2,7 +2,7 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.BetSelectedOrResolvedException;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
@@ -75,7 +75,7 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleBetSelectedOrResolved(){
-        final BetSelectedOrResolvedException exception = Mockito.mock(BetSelectedOrResolvedException.class);
+        final InvalidStatusForUpdateException exception = Mockito.mock(InvalidStatusForUpdateException.class);
 
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBadRequestExceptions(exception);
 

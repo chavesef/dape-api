@@ -5,7 +5,7 @@ import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.BetSelectedOrResolvedException;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.usecase.factory.BetFactory;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class BetService {
             betToUpdate.setDatUpdated(LocalDateTime.now());
             return betRepository.save(betToUpdate);
         } else {
-            throw new BetSelectedOrResolvedException("Aposta já selecionada ou já resolvida, não é permitido atualizá-la");
+            throw new InvalidStatusForUpdateException("Aposta já selecionada ou já resolvida, não é permitido atualizá-la");
         }
     }
 
