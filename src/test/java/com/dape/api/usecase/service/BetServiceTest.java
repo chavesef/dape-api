@@ -1,7 +1,7 @@
 package com.dape.api.usecase.service;
 
-import com.dape.api.adapter.controller.stub.BetRequestStub;
-import com.dape.api.adapter.controller.stub.BetStub;
+import com.dape.api.stub.BetRequestStub;
+import com.dape.api.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
@@ -27,9 +27,9 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        final BetRequest betRequest = BetRequestStub.builder().createBetRequest();
+        final BetRequest betRequest = BetRequestStub.builder().build();
 
-        final Bet expectedBet = BetStub.builder().createBet();
+        final Bet expectedBet = BetStub.builder().build();
 
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
 
@@ -40,10 +40,10 @@ class BetServiceTest {
 
     @Test
     void updateBet(){
-        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
+        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        final Bet existentBet = BetStub.builder().createBet();
-        final Bet expectedBet = BetStub.builder().setDesBet(betRequest.getDesBet()).setNumOdd(betRequest.getNumOdd()).createBet();
+        final Bet existentBet = BetStub.builder().build();
+        final Bet expectedBet = BetStub.builder().withDesBet(betRequest.getDesBet()).withNumOdd(betRequest.getNumOdd()).build();
 
         final Long idtBet = 1L;
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
@@ -56,7 +56,7 @@ class BetServiceTest {
 
     @Test
     void updatedBetInexistentExpectException(){
-        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
+        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
         final Long idtBet = 2L;
         final String expectedMessage = "Aposta com id " + idtBet + " não existe no banco de dados";
@@ -68,9 +68,9 @@ class BetServiceTest {
 
     @Test
     void updatedBetSelectedExpectException(){
-        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
+        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        Bet existentBet = BetStub.builder().createBet();
+        Bet existentBet = BetStub.builder().build();
         existentBet.setFlgSelected(1);
 
         final Long idtBet = 1L;
@@ -85,9 +85,9 @@ class BetServiceTest {
 
     @Test
     void updatedBetResolvedExpectException(){
-        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
+        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        Bet existentBet = BetStub.builder().createBet();
+        Bet existentBet = BetStub.builder().build();
         existentBet.setBetStatusEnum(BetStatusEnum.GREEN);
 
         final Long idtBet = 1L;

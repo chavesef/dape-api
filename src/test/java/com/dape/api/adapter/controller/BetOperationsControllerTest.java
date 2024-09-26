@@ -1,8 +1,8 @@
 package com.dape.api.adapter.controller;
 
-import com.dape.api.adapter.controller.stub.BetRequestStub;
-import com.dape.api.adapter.controller.stub.BetResponseStub;
-import com.dape.api.adapter.controller.stub.BetStub;
+import com.dape.api.stub.BetRequestStub;
+import com.dape.api.stub.BetResponseStub;
+import com.dape.api.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.domain.entity.Bet;
@@ -27,11 +27,11 @@ class BetOperationsControllerTest {
 
     @Test
     void registerBet(){
-        final BetRequest betRequest = BetRequestStub.builder().createBetRequest();
+        final BetRequest betRequest = BetRequestStub.builder().build();
 
-        final BetResponse betResponse = BetResponseStub.createBetResponse(betRequest.getDesBet(), betRequest.getNumOdd());
+        final Bet bet = BetStub.builder().build();
 
-        final Bet bet = BetStub.builder().createBet();
+        final BetResponse betResponse = BetResponseStub.builder().build();
 
         when(betService.registerBet(betRequest)).thenReturn(bet);
 
@@ -52,11 +52,11 @@ class BetOperationsControllerTest {
 
     @Test
     void updateBet(){
-        final BetRequest betRequest = BetRequestStub.builder().setDesBet("Vitória do Boca Juniors").setNumOdd(new BigDecimal("2.43")).createBetRequest();
+        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        final BetResponse betResponse = BetResponseStub.createBetResponse(betRequest.getDesBet(), betRequest.getNumOdd());
+        final Bet bet = BetStub.builder().withDesBet(betRequest.getDesBet()).withNumOdd(betRequest.getNumOdd()).build();
 
-        final Bet bet = BetStub.builder().setDesBet(betRequest.getDesBet()).setNumOdd(betRequest.getNumOdd()).createBet();
+        final BetResponse betResponse = BetResponseStub.builder().withDesBet(bet.getDesBet()).withNumOdd(bet.getNumOdd()).build();
 
         final Long idtBet = 1L;
         when(betService.updateBet(idtBet, betRequest)).thenReturn(bet);

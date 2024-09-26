@@ -1,4 +1,4 @@
-package com.dape.api.adapter.controller.stub;
+package com.dape.api.stub;
 
 import com.dape.api.adapter.dto.request.BetRequest;
 
@@ -17,16 +17,16 @@ public class BetRequestStub {
         return new BetRequestStub();
     }
 
-    public BetRequest createBetRequest() {
+    public BetRequest build() {
         return new BetRequest(this.numOdd, this.desBet);
     }
 
-    public BetRequestStub setNumOdd(BigDecimal numOdd) {
+    public BetRequestStub withNumOdd(BigDecimal numOdd) {
         this.numOdd = numOdd;
         return this;
     }
 
-    public BetRequestStub setDesBet(String desBet) {
+    public BetRequestStub withDesBet(String desBet) {
         this.desBet = desBet;
         return this;
     }

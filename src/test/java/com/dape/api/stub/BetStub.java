@@ -1,4 +1,4 @@
-package com.dape.api.adapter.controller.stub;
+package com.dape.api.stub;
 
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -7,13 +7,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class BetStub{
-    private final Long idtBet;
+    private Long idtBet;
     private String desBet;
     private BigDecimal numOdd;
-    private final LocalDateTime datCreated;
-    private final LocalDateTime datUpdated;
-    private final BetStatusEnum betStatusEnum;
-    private final Integer flgSelected;
+    private LocalDateTime datCreated;
+    private LocalDateTime datUpdated;
+    private BetStatusEnum betStatusEnum;
+    private Integer flgSelected;
 
     private BetStub(){
         this.idtBet = 1L;
@@ -29,7 +29,7 @@ public class BetStub{
         return new BetStub();
     }
 
-    public Bet createBet(){
+    public Bet build(){
         Bet bet = new Bet();
         bet.setIdtBet(this.idtBet);
         bet.setDesBet(this.desBet);
@@ -42,13 +42,38 @@ public class BetStub{
         return bet;
     }
 
-    public BetStub setNumOdd(BigDecimal numOdd){
+    public BetStub withNumOdd(BigDecimal numOdd){
         this.numOdd = numOdd;
         return this;
     }
 
-    public BetStub setDesBet(String desBet){
+    public BetStub withDesBet(String desBet){
         this.desBet = desBet;
+        return this;
+    }
+
+    public BetStub withIdtBet(Long idtBet){
+        this.idtBet = idtBet;
+        return this;
+    }
+
+    public BetStub withDatCreated(LocalDateTime datCreated){
+        this.datCreated = datCreated;
+        return this;
+    }
+
+    public BetStub withDatUpdated(LocalDateTime datUpdated){
+        this.datUpdated = datUpdated;
+        return this;
+    }
+
+    public BetStub withBetStatusEnum(BetStatusEnum betStatusEnum){
+        this.betStatusEnum = betStatusEnum;
+        return this;
+    }
+
+    public BetStub withFlgSelected(Integer flgSelected){
+        this.flgSelected = flgSelected;
         return this;
     }
 }
