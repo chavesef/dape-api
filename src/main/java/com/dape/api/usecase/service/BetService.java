@@ -23,7 +23,7 @@ public class BetService {
     }
 
     public Bet registerBet(BetRequest betRequest) {
-        LOGGER.info("Aposta criada com descrição: " + betRequest.getDesBet() + " e odd: " + betRequest.getNumOdd());
+        LOGGER.info("Criando aposta com descrição: " + betRequest.getDesBet() + " e odd: " + betRequest.getNumOdd());
         return betRepository.save(BetFactory.createBet(betRequest));
     }
 
@@ -34,7 +34,7 @@ public class BetService {
             betToUpdate.setDesBet(betRequest.getDesBet());
             betToUpdate.setNumOdd(betRequest.getNumOdd());
             betToUpdate.setDatUpdated(LocalDateTime.now());
-            LOGGER.info("Aposta atualizada com descrição: " + betToUpdate.getDesBet() + " e odd: " + betRequest.getNumOdd());
+            LOGGER.info("Atualizando aposta com descrição: " + betToUpdate.getDesBet() + " e odd: " + betRequest.getNumOdd());
             return betRepository.save(betToUpdate);
         } else {
             throw new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
