@@ -28,7 +28,7 @@ public class DapeExceptionHandler {
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class, InvalidStatusForUpdateException.class})
-    public ResponseEntity<ErrorResponse> handleBadRequestExceptions(Exception e){
+    public ResponseEntity<ErrorResponse> handleInvalidRequestDataExceptions(Exception e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 

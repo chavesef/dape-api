@@ -54,7 +54,7 @@ class DapeExceptionHandlerTest {
         HttpInputMessage httpInputMessage = Mockito.mock(HttpInputMessage.class);
         final HttpMessageNotReadableException exception = new HttpMessageNotReadableException("Valor de odd inválido", httpInputMessage);
 
-        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBadRequestExceptions(exception);
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
 
         final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
 
@@ -79,7 +79,7 @@ class DapeExceptionHandlerTest {
     void handleBetSelectedOrResolved(){
         final InvalidStatusForUpdateException exception = new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=RED, FlgSelected=0");
 
-        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBadRequestExceptions(exception);
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
 
         final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
