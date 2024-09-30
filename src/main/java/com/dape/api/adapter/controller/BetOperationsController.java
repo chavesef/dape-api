@@ -29,14 +29,14 @@ public class BetOperationsController {
 
     @PostMapping("/bet")
     public ResponseEntity<BetResponse> registerBet(@Valid @RequestBody BetRequest betRequest){
-        LOGGER.info("Método POST chamado para cadastrar uma nova aposta com descrição={} e odd={}", betRequest.getDesBet(), betRequest.getNumOdd());
+        LOGGER.info("m=registerBet, msg=Método POST chamado para cadastrar uma nova aposta com descrição={} e odd={}", betRequest.getDesBet(), betRequest.getNumOdd());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(BetResponseFactory.createBetResponse(betService.registerBet(betRequest)));
     }
 
     @PatchMapping("/bet/{idtBet}")
     public ResponseEntity<BetResponse> updateBet(@PathVariable Long idtBet, @Valid @RequestBody BetRequest betRequest){
-        LOGGER.info("Método PATCH chamado para atualizar uma aposta com id={} e descrição={} e odd={}", idtBet, betRequest.getDesBet(), betRequest.getNumOdd());
+        LOGGER.info("m=updateBet, msg=Método PATCH chamado para atualizar uma aposta com id={} e descrição={} e odd={}", idtBet, betRequest.getDesBet(), betRequest.getNumOdd());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BetResponseFactory.createBetResponse(betService.updateBet(idtBet, betRequest)));
     }
