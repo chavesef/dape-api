@@ -20,20 +20,6 @@ public class BetResponse {
     private BetStatusEnum betStatusEnum;
     private Integer flgSelected;
 
-    public BetResponse(Long idtBet, String desBet, BigDecimal numOdd,
-                       LocalDateTime datCreated, LocalDateTime datUpdated,
-                       BetStatusEnum betStatusEnum, Integer flgSelected) {
-        this.idtBet = idtBet;
-        this.desBet = desBet;
-        this.numOdd = numOdd;
-        this.datCreated = datCreated;
-        this.datUpdated = datUpdated;
-        this.betStatusEnum = betStatusEnum;
-        this.flgSelected = flgSelected;
-    }
-
-    public BetResponse() {}
-
     public Long getIdtBet() {
         return idtBet;
     }
