@@ -31,22 +31,30 @@ public class BetService {
     public Bet updateBet(Long idtBet, BetRequest betRequest) {
         Bet betToUpdate = getBetById(idtBet);
 
-        if(betIsNotSelectedNorResolved(betToUpdate)){
-            betToUpdate.setDesBet(betRequest.getDesBet());
-            betToUpdate.setNumOdd(betRequest.getNumOdd());
-            betToUpdate.setDatUpdated(LocalDateTime.now());
-            LOGGER.info("m=updateBet, msg=Atualizando aposta com descrição: {} e odd: {}", betToUpdate.getDesBet(), betToUpdate.getNumOdd());
-            return betRepository.save(betToUpdate);
-        } else {
-            throw new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
-        }
+        validateBetToUpdate(betToUpdate);
+
+        updateBetFields(betToUpdate, betRequest);
+
+        LOGGER.info("m=updateBet, msg=Atualizando aposta com descrição: {} e odd: {}", betToUpdate.getDesBet(), betToUpdate.getNumOdd());
+        return betRepository.save(betToUpdate);
     }
 
     private Bet getBetById(Long idtBet) {
         return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
 
-    private boolean betIsNotSelectedNorResolved(Bet betToUpdate) {
-        return betToUpdate.getFlgSelected() == 0 && betToUpdate.getBetStatusEnum() == BetStatusEnum.PENDING;
+    private void validateBetToUpdate(Bet betToUpdate){
+        if(betIsNotUpdatable(betToUpdate))
+            throw new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
+    }
+
+    private void updateBetFields(Bet betToUpdate, BetRequest betRequest){
+        betToUpdate.setDesBet(betRequest.getDesBet());
+        betToUpdate.setNumOdd(betRequest.getNumOdd());
+        betToUpdate.setDatUpdated(LocalDateTime.now());
+    }
+
+    private boolean betIsNotUpdatable(Bet betToUpdate) {
+        return betToUpdate.getFlgSelected() == 1 || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 }
