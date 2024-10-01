@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -40,14 +40,7 @@ class BetOperationsControllerTest {
                 ResponseEntity.status(HttpStatusCode.valueOf(201)).body(betResponse);
 
         verify(betService).registerBet(betRequest);
-        assertEquals(expectedBet.getStatusCode(), actualBet.getStatusCode());
-        assertEquals(expectedBet.getBody().getDesBet(), actualBet.getBody().getDesBet());
-        assertEquals(expectedBet.getBody().getBetStatusEnum(), actualBet.getBody().getBetStatusEnum());
-        assertEquals(expectedBet.getBody().getIdtBet(), actualBet.getBody().getIdtBet());
-        assertEquals(expectedBet.getBody().getDatCreated().toLocalDate(), actualBet.getBody().getDatCreated().toLocalDate());
-        assertEquals(expectedBet.getBody().getDatUpdated().toLocalDate(), actualBet.getBody().getDatUpdated().toLocalDate());
-        assertEquals(expectedBet.getBody().getNumOdd(), actualBet.getBody().getNumOdd());
-        assertEquals(expectedBet.getBody().getFlgSelected(), actualBet.getBody().getFlgSelected());
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
     @Test
@@ -58,9 +51,9 @@ class BetOperationsControllerTest {
 
         final BetResponse betResponse = BetResponseStub.builder().withDesBet(bet.getDesBet()).withNumOdd(bet.getNumOdd()).build();
 
-        final Long idtBet = 1L;
-        when(betService.updateBet(idtBet, betRequest)).thenReturn(bet);
+        when(betService.updateBet(anyLong(), betRequest)).thenReturn(bet);
 
+        final Long idtBet = 1L;
         final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBet(idtBet, betRequest);
         final ResponseEntity<BetResponse> expectedBet =
                 ResponseEntity.status(HttpStatusCode.valueOf(200)).body(betResponse);
