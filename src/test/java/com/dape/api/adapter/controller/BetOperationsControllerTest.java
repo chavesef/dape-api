@@ -12,11 +12,12 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,13 +46,13 @@ class BetOperationsControllerTest {
 
     @Test
     void updateBet(){
-        final BetRequest betRequest = BetRequestStub.builder().build();
+        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        final Bet bet = BetStub.builder().build();
+        final Bet bet = BetStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        final BetResponse betResponse = BetResponseStub.builder().build();
+        final BetResponse betResponse = BetResponseStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        when(betService.updateBet(anyLong(), eq(betRequest))).thenReturn(bet);
+        when(betService.updateBet(anyLong(), any(BetRequest.class))).thenReturn(bet);
 
         final Long idtBet = 1L;
         final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBet(idtBet, betRequest);
