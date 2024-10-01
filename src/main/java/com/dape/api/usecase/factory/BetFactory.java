@@ -13,7 +13,7 @@ public class BetFactory {
 
     public static Bet createBet(BetRequest betRequest) {
 
-        Bet bet = new Bet();
+        final Bet bet = new Bet();
         bet.setDesBet(betRequest.getDesBet());
         bet.setNumOdd(betRequest.getNumOdd());
         bet.setFlgSelected(0);
