@@ -42,11 +42,11 @@ public class BetService {
         }
     }
 
-    public Bet getBetById(Long idtBet) {
+    private Bet getBetById(Long idtBet) {
         return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
 
-    public boolean betIsNotSelectedNorResolved(Bet betToUpdate) {
+    private boolean betIsNotSelectedNorResolved(Bet betToUpdate) {
         return betToUpdate.getFlgSelected() == 0 && betToUpdate.getBetStatusEnum() == BetStatusEnum.PENDING;
     }
 }
