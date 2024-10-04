@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Service
 public class BetService {
 
+    public static final int IS_SELECTED = 1;
     private final BetRepository betRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
 
@@ -55,6 +56,6 @@ public class BetService {
     }
 
     private boolean betIsNotUpdatable(Bet betToUpdate) {
-        return betToUpdate.getFlgSelected() == 1 || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
+        return betToUpdate.getFlgSelected() == IS_SELECTED || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 }
