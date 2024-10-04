@@ -24,7 +24,7 @@ public class BetRegistrationSteps {
     private final BetRepository betRepository;
     private ResponseEntity<BetResponse> cadastroResponseEntity;
 
-    private boolean servicoIndisponivel;
+    private boolean serviceUnavailable;
 
     public BetRegistrationSteps(BetRepository betRepository) {
         this.betRepository = betRepository;
@@ -39,7 +39,7 @@ public class BetRegistrationSteps {
 
     @BeforeEach
     public void serviceAvailable() {
-        servicoIndisponivel = false;
+        serviceUnavailable = false;
     }
 
     @Dado("que existam as seguintes apostas cadastradas no banco de dados")
@@ -73,11 +73,11 @@ public class BetRegistrationSteps {
 
     @Dado("que o serviço esteja indisponível")
     public void theServiceIsUnavailable() {
-        servicoIndisponivel = true;
+        serviceUnavailable = true;
     }
 
     private ResponseEntity<BetResponse> generateResponseEntityForThePostRequest(double numOdd, String desBet) {
-        if(servicoIndisponivel)
+        if(serviceUnavailable)
              return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         else {
             String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
