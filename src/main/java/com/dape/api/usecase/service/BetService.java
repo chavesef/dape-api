@@ -1,6 +1,7 @@
 package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetRequest;
+import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -40,6 +41,17 @@ public class BetService {
         return betRepository.save(betToUpdate);
     }
 
+    public Bet updateBetStatus(Long idtBet, BetStatusRequest betStatus) {
+        Bet betToUpdate = getBetById(idtBet);
+
+        validateBetToUpdateStatus(betToUpdate);
+
+        changeBetStatus(betToUpdate, betStatus);
+
+        LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta para: {}", betToUpdate.getBetStatusEnum());
+        return betRepository.save(betToUpdate);
+    }
+
     private Bet getBetById(Long idtBet) {
         return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
@@ -57,5 +69,21 @@ public class BetService {
 
     private boolean betIsNotUpdatable(Bet betToUpdate) {
         return betToUpdate.getFlgSelected() == IS_SELECTED || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
+    }
+
+    private void validateBetToUpdateStatus(Bet betToUpdate) {
+        if(betStatusIsNotUpdatable(betToUpdate))
+            throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status: BetStatus=" + betToUpdate.getBetStatusEnum());
+    }
+
+    private boolean betStatusIsNotUpdatable(Bet betToUpdate) {
+        return betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
+    }
+
+    private void changeBetStatus(Bet betToUpdate, BetStatusRequest betStatus) {
+        if(betStatus.getBetStatus() == BetStatusEnum.GREEN || betStatus.getBetStatus() == BetStatusEnum.RED)
+            betToUpdate.setBetStatusEnum(betStatus.getBetStatus());
+        else
+            throw new InvalidStatusForUpdateException("Aposta já se encontra com o status PENDING");
     }
 }
