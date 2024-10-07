@@ -1,6 +1,7 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.request.BetRequest;
+import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.usecase.factory.BetResponseFactory;
 import com.dape.api.usecase.service.BetService;
@@ -39,5 +40,12 @@ public class BetOperationsController {
         LOGGER.info("m=updateBet, msg=Método PATCH chamado para atualizar uma aposta com id={} e descrição={} e odd={}", idtBet, betRequest.getDesBet(), betRequest.getNumOdd());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BetResponseFactory.createBetResponse(betService.updateBet(idtBet, betRequest)));
+    }
+
+    @PatchMapping("bet/{idtBet}/status")
+    public ResponseEntity<BetResponse> updateBetStatus(@PathVariable Long idtBet, @RequestBody BetStatusRequest betStatus){
+        LOGGER.info("m=updateBetStatus, msg=Método PATCH chamado para atualizar o status de uma aposta para: {}", betStatus.getBetStatus());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(BetResponseFactory.createBetResponse(betService.updateBetStatus(idtBet, betStatus)));
     }
 }
