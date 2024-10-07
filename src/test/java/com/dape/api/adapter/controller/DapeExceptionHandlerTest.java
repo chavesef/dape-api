@@ -1,8 +1,11 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
+import com.dape.api.domain.exception.BetNotExistentException;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -48,11 +51,38 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleInvalidTypeOdd(){
-        final HttpMessageNotReadableException exception = Mockito.mock(HttpMessageNotReadableException.class);
+        HttpInputMessage httpInputMessage = Mockito.mock(HttpInputMessage.class);
+        final HttpMessageNotReadableException exception = new HttpMessageNotReadableException("Valor de odd inválido", httpInputMessage);
 
-        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleHttpMessageNotReadableException(exception);
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
 
         final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
+
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());
+    }
+
+    @Test
+    void handleBetInexistent(){
+        final BetNotExistentException exception = new BetNotExistentException("Aposta com id 4 não existe no banco de dados");
+
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBetNotExistException(exception);
+
+        final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage()));
+
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());
+    }
+
+    @Test
+    void handleBetSelectedOrResolved(){
+        final InvalidStatusForUpdateException exception = new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=RED, FlgSelected=0");
+
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
+
+        final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
 
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());

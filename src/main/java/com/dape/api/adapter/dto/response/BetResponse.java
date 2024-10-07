@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BetPostResponse {
+public class BetResponse {
 
     private Long idtBet;
     private String desBet;
@@ -19,20 +19,6 @@ public class BetPostResponse {
     private LocalDateTime datUpdated;
     private BetStatusEnum betStatusEnum;
     private Integer flgSelected;
-
-    public BetPostResponse(Long idtBet, String desBet, BigDecimal numOdd,
-                           LocalDateTime datCreated, LocalDateTime datUpdated,
-                           BetStatusEnum betStatusEnum, Integer flgSelected) {
-        this.idtBet = idtBet;
-        this.desBet = desBet;
-        this.numOdd = numOdd;
-        this.datCreated = datCreated;
-        this.datUpdated = datUpdated;
-        this.betStatusEnum = betStatusEnum;
-        this.flgSelected = flgSelected;
-    }
-
-    public BetPostResponse() {}
 
     public Long getIdtBet() {
         return idtBet;

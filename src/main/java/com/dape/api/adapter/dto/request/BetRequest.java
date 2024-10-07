@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class BetPostRequest {
+public class BetRequest {
 
     @Min(value = 1, message = "Valor da odd deve ser maior que 1")
     @NotNull(message = "Valor da aposta não deve ser nulo")
@@ -17,7 +17,7 @@ public class BetPostRequest {
     @NotBlank(message = "Descrição da aposta não deve ser nula/vazia")
     private String desBet;
 
-    public BetPostRequest(BigDecimal numOdd, String desBet) {
+    public BetRequest(BigDecimal numOdd, String desBet) {
         this.numOdd = numOdd;
         this.desBet = desBet;
     }

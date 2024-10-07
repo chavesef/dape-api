@@ -21,7 +21,7 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
 
   @CadastroApostaSucesso
   Cenario: Cadastrar uma nova aposta com sucesso
-    Quando uma requisição de criação de aposta for realizada com odd 2.19 e descrição "Vitória do Bahia"
+    Quando uma requisição de criação de aposta for realizada com odd 2,19 e descrição "Vitória do Bahia"
     Entao o serviço de cadastro de apostas deve retornar o status code 201 - "Created"
     E os seguintes dados devem ser cadastrados no banco de dados
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
@@ -29,7 +29,7 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
 
   @CadastroApostaMesmaDescricaoSucesso
   Cenario: Cadastrar uma nova aposta com descrição já existente para vitória de um time em partidas diferentes com sucesso
-    Quando uma requisição de criação de aposta for realizada com odd 1.87 e descrição "Vitória do Botafogo"
+    Quando uma requisição de criação de aposta for realizada com odd 1,87 e descrição "Vitória do Botafogo"
     Entao o serviço de cadastro de apostas deve retornar o status code 201 - "Created"
     E os seguintes dados devem ser cadastrados no banco de dados
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
@@ -37,7 +37,7 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
 
   @CadastroApostaOddInvalida
   Cenario: Cadastrar uma nova aposta com odd inválida
-    Quando uma requisição de criação de aposta for realizada com odd -2.19 e descrição "Vitória do Bahia"
+    Quando uma requisição de criação de aposta for realizada com odd -2,19 e descrição "Vitória do Bahia"
     Entao o serviço de cadastro de apostas deve retornar o status code 400 - "Bad Request"
     E o banco de dados não deve ser modificado
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
@@ -53,12 +53,10 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
       | 10      | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
       | 11      | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
-      | 13      | 2.19    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Bahia            | PENDING    |
-      | 14      | 1.87    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Botafogo         | PENDING    |
 
   @CadastroApostaDescricaoInvalida
   Cenario: Cadastrar uma nova aposta com descricao invalida
-    Quando uma requisição de criação de aposta for realizada com odd 2.19 e descrição ""
+    Quando uma requisição de criação de aposta for realizada com odd 2,19 e descrição ""
     Entao o serviço de cadastro de apostas deve retornar o status code 400 - "Bad Request"
     E o banco de dados não deve ser modificado
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
@@ -74,13 +72,11 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
       | 10      | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
       | 11      | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
-      | 13      | 2.19    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Bahia            | PENDING    |
-      | 14      | 1.87    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Botafogo         | PENDING    |
 
   @CadastroApostaServicoIndisponivel
   Cenário: Cadastrar uma nova aposta com serviço indisponível
     Dado que o serviço esteja indisponível
-    Quando uma requisição de criação de aposta for realizada com odd 2.19 e descrição "Vitória do Bahia"
+    Quando uma requisição de criação de aposta for realizada com odd 2,19 e descrição "Vitória do Bahia"
     Então o serviço de cadastro de apostas deve retornar o status code 500 - "Internal Server Error"
     E o banco de dados não deve ser modificado
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
@@ -96,5 +92,3 @@ Funcionalidade: Realizar o cadastro de novas apostas no banco de dados
       | 10      | 3.02    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Internacional    | GREEN      |
       | 11      | 2.15    | 0            | 2024-08-20  | 2024-08-22  | Vitória do Cruzeiro         | RED        |
       | 12      | 2.20    | 1            | 2024-08-20  | 2024-08-20  | Vitória do Atlético Mineiro | RED        |
-      | 13      | 2.19    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Bahia            | PENDING    |
-      | 14      | 1.87    | 0            | 2024-08-20  | 2024-08-20  | Vitória do Botafogo         | PENDING    |
