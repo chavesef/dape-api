@@ -84,7 +84,7 @@ para a odd final do bilhete de apostas.
 
 ## Utilização
 
-O projeto possui um documento de contrato de endpoints disponibilizado ([dape-api-contract.yml](src/main/resources/dape-api-contract.yml)), no qual
+O projeto possui um documento de contrato de endpoints disponibilizado ([dape-api-contract.yml](src/main/resources/static/dape-api-contract.yml)), no qual
 são definidas as regras de requisições e respostas para cada endpoint.
 
 ### Cadastro de uma nova aposta
