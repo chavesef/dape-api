@@ -46,7 +46,7 @@ public class BetService {
 
         validateBetToUpdateStatus(betToUpdate);
 
-        changeBetStatus(betToUpdate, betStatus);
+        updateBetStatusField(betToUpdate, betStatus);
 
         LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta para: {}", betToUpdate.getBetStatusEnum());
         return betRepository.save(betToUpdate);
@@ -80,7 +80,7 @@ public class BetService {
         return betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 
-    private void changeBetStatus(Bet betToUpdate, BetStatusRequest betStatus) {
+    private void updateBetStatusField(Bet betToUpdate, BetStatusRequest betStatus) {
         if(betStatus.getBetStatus() == BetStatusEnum.GREEN || betStatus.getBetStatus() == BetStatusEnum.RED)
             betToUpdate.setBetStatusEnum(betStatus.getBetStatus());
         else
