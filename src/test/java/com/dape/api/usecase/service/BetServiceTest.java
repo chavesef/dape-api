@@ -109,10 +109,10 @@ class BetServiceTest {
         final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
 
-        final Long idtBet = 1L;
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
         when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
 
+        final Long idtBet = 1L;
         final Bet actualBet = betService.updateBetStatus(idtBet, betStatusRequest);
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
@@ -125,10 +125,10 @@ class BetServiceTest {
         final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build();
 
-        final Long idtBet = 1L;
         when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
         when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
 
+        final Long idtBet = 1L;
         final Bet actualBet = betService.updateBetStatus(idtBet, betStatusRequest);
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
