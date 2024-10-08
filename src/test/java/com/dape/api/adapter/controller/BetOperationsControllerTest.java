@@ -1,5 +1,7 @@
 package com.dape.api.adapter.controller;
 
+import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetResponseStub;
 import com.dape.api.stub.BetStub;
@@ -60,6 +62,26 @@ class BetOperationsControllerTest {
                 ResponseEntity.status(HttpStatusCode.valueOf(200)).body(betResponse);
 
         verify(betService).updateBet(idtBet, betRequest);
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
+    }
+
+    @Test
+    void updateBetStatus(){
+        final BetStatusRequest betStatusRequest = new BetStatusRequest();
+        betStatusRequest.setBetStatus(BetStatusEnum.GREEN);
+
+        final Bet bet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
+
+        final BetResponse betResponse = BetResponseStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
+
+        when(betService.updateBetStatus(anyLong(), any())).thenReturn(bet);
+
+        final Long idtBet = 1L;
+        final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBetStatus(idtBet, betStatusRequest);
+        final ResponseEntity<BetResponse> expectedBet =
+                ResponseEntity.status(HttpStatusCode.valueOf(200)).body(betResponse);
+
+        verify(betService).updateBetStatus(idtBet, betStatusRequest);
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 }
