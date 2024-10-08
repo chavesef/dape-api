@@ -23,7 +23,7 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
   Cenario: Atualizar o status de uma aposta com sucesso
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 1
     Entao o serviço de atualização de status deve retornar o status code 200 - "OK"
-    E o seguinte dado deve ser atualizado na tabela
+    E o seguinte dado deve estar na tabela de atualização de status de apostas
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | GREEN      |
 
@@ -31,7 +31,7 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
   Cenario: Atualizar o status de uma aposta com status inválido
     Quando uma requisição de atualização de aposta for realizada com status "VENCIDA" e idt_bet 2
     Entao o serviço de atualização de status deve retornar o status code 400 - "Bad Request"
-    E o seguinte dado deve se manter o mesmo na tabela
+    E o seguinte dado deve estar na tabela de atualização de status de apostas
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
 
@@ -39,7 +39,7 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
   Cenario: Atualizar o status de uma aposta que não esteja com o status PENDING
     Quando uma requisição de atualização de aposta for realizada com status "RED" e idt_bet 4
     Entao o serviço de atualização de status deve retornar o status code 400 - "Bad Request"
-    E o seguinte dado deve se manter o mesmo na tabela
+    E o seguinte dado deve estar na tabela de atualização de status de apostas
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 4       | 4.12    | 1            | 2024-08-16  | 2024-08-21  | Vitória do Corinthians      | GREEN      |
 
