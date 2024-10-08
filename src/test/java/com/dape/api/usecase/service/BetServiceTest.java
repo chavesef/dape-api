@@ -1,5 +1,6 @@
 package com.dape.api.usecase.service;
 
+import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 class BetServiceTest {
@@ -98,5 +100,57 @@ class BetServiceTest {
         InvalidStatusForUpdateException invalidStatusForUpdateException =
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
         assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
+    }
+
+    @Test
+    void updateBetStatusToGreen(){
+        final BetStatusRequest betStatusRequest = new BetStatusRequest();
+        betStatusRequest.setBetStatus(BetStatusEnum.GREEN);
+
+        final Bet existentBet = BetStub.builder().build();
+        final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
+
+        final Long idtBet = 1L;
+        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
+
+        final Bet actualBet = betService.updateBetStatus(idtBet, betStatusRequest);
+
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
+    }
+
+    @Test
+    void updateBetStatusToRed(){
+        final BetStatusRequest betStatusRequest = new BetStatusRequest();
+        betStatusRequest.setBetStatus(BetStatusEnum.RED);
+
+        final Bet existentBet = BetStub.builder().build();
+        final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build();
+
+        final Long idtBet = 1L;
+        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
+
+        final Bet actualBet = betService.updateBetStatus(idtBet, betStatusRequest);
+
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
+    }
+
+    @Test
+    void updateWithInvalidStatusExpectException(){
+        final BetStatusRequest betStatusRequest = new BetStatusRequest();
+        betStatusRequest.setBetStatus(BetStatusEnum.PENDING);
+
+        final Bet existentBet = BetStub.builder().build();
+
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
+
+        final String expectedMessage = "Aposta já se encontra com o status PENDING";
+
+        final Long idtBet = 1L;
+        InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
+
     }
 }
