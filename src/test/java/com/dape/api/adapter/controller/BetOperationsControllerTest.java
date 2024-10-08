@@ -4,6 +4,7 @@ import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetResponseStub;
+import com.dape.api.stub.BetStatusRequestStub;
 import com.dape.api.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
@@ -67,8 +68,7 @@ class BetOperationsControllerTest {
 
     @Test
     void updateBetStatus(){
-        final BetStatusRequest betStatusRequest = new BetStatusRequest();
-        betStatusRequest.setBetStatus(BetStatusEnum.GREEN);
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
 
         final Bet bet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
 
