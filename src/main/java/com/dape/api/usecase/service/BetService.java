@@ -81,9 +81,10 @@ public class BetService {
     }
 
     private void updateBetStatusField(Bet betToUpdate, BetStatusRequest betStatus) {
-        if(betStatus.getBetStatus() == BetStatusEnum.GREEN || betStatus.getBetStatus() == BetStatusEnum.RED)
+        if(betStatus.getBetStatus() == BetStatusEnum.GREEN || betStatus.getBetStatus() == BetStatusEnum.RED) {
             betToUpdate.setBetStatusEnum(betStatus.getBetStatus());
-        else
+            betToUpdate.setDatUpdated(LocalDateTime.now());
+        } else
             throw new InvalidStatusForUpdateException("Aposta já se encontra com o status PENDING");
     }
 }
