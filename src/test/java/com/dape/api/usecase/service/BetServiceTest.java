@@ -2,6 +2,7 @@ package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.stub.BetRequestStub;
+import com.dape.api.stub.BetStatusRequestStub;
 import com.dape.api.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
@@ -72,8 +73,7 @@ class BetServiceTest {
     void updatedBetSelectedExpectException(){
         final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        Bet existentBet = BetStub.builder().build();
-        existentBet.setFlgSelected(1);
+        Bet existentBet = BetStub.builder().withFlgSelected(1).build();
 
         final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
@@ -89,8 +89,7 @@ class BetServiceTest {
     void updatedBetResolvedExpectException(){
         final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        Bet existentBet = BetStub.builder().build();
-        existentBet.setBetStatusEnum(BetStatusEnum.GREEN);
+        Bet existentBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
 
         final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
@@ -104,8 +103,8 @@ class BetServiceTest {
 
     @Test
     void updateBetStatusToGreen(){
-        final BetStatusRequest betStatusRequest = new BetStatusRequest();
-        betStatusRequest.setBetStatus(BetStatusEnum.GREEN);
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
+
 
         final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
@@ -121,8 +120,7 @@ class BetServiceTest {
 
     @Test
     void updateBetStatusToRed(){
-        final BetStatusRequest betStatusRequest = new BetStatusRequest();
-        betStatusRequest.setBetStatus(BetStatusEnum.RED);
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.RED).build();
 
         final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build();
@@ -138,8 +136,7 @@ class BetServiceTest {
 
     @Test
     void updateWithInvalidStatusExpectException(){
-        final BetStatusRequest betStatusRequest = new BetStatusRequest();
-        betStatusRequest.setBetStatus(BetStatusEnum.PENDING);
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().build();
 
         final Bet existentBet = BetStub.builder().build();
 
