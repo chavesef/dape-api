@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BetRegistrationSteps {
     private final BetRepository betRepository;
-    private ResponseEntity<BetResponse> cadastroResponseEntity;
+    private ResponseEntity<BetResponse> registrationResponseEntity;
 
     private boolean serviceUnavailable;
 
@@ -49,12 +49,12 @@ public class BetRegistrationSteps {
 
     @Quando("uma requisição de criação de aposta for realizada com odd {double} e descrição {string}")
     public void aBetPostRequestIsCalled(double numOdd, String desBet) {
-        cadastroResponseEntity = generateResponseEntityForThePostRequest(numOdd, desBet);
+        registrationResponseEntity = generateResponseEntityForThePostRequest(numOdd, desBet);
     }
 
     @Entao("o serviço de cadastro de apostas deve retornar o status code {int} - {string}")
     public void theBetRegistrationServiceShouldReturnStatusCode(int expectedStatusCode, String expectedCodeDescription) {
-        assertEquals(expectedStatusCode, cadastroResponseEntity.getStatusCode().value());
+        assertEquals(expectedStatusCode, registrationResponseEntity.getStatusCode().value());
         assertEquals(expectedCodeDescription, HttpStatus.valueOf(expectedStatusCode).getReasonPhrase());
     }
 

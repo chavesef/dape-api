@@ -26,9 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BetUpdateSteps {
     private final BetRepository betRepository;
-    private ResponseEntity<BetResponse> cadastroResponseEntity;
+    private ResponseEntity<BetResponse> updateResponseEntity;
 
-    private boolean servicoIndisponivel;
+    private boolean serviceUnavailable;
 
     public BetUpdateSteps(BetRepository betRepository) {
         this.betRepository = betRepository;
@@ -43,7 +43,7 @@ public class BetUpdateSteps {
 
     @BeforeEach
     public void serviceAvailable() {
-        servicoIndisponivel = false;
+        serviceUnavailable = false;
     }
 
     @Dado("que existam as seguintes apostas cadastradas no banco de dados para atualização")
@@ -53,12 +53,12 @@ public class BetUpdateSteps {
 
     @Quando("uma requisição de atualização de aposta for realizada com odd {double} e descrição {string} e idt_bet {int}")
     public void aBetPatchRequestIsCalled(double numOdd, String desBet, int idtBet) {
-        cadastroResponseEntity = generateResponseEntityForThePatchRequest(numOdd, desBet, idtBet);
+        updateResponseEntity = generateResponseEntityForThePatchRequest(numOdd, desBet, idtBet);
     }
 
     @Entao("o serviço de atualização deve retornar o status code {int} - {string}")
     public void theBetUpdateServiceShouldReturnStatusCode(int expectedStatusCode, String expectedCodeDescription) {
-        assertEquals(expectedStatusCode, cadastroResponseEntity.getStatusCode().value());
+        assertEquals(expectedStatusCode, updateResponseEntity.getStatusCode().value());
         assertEquals(expectedCodeDescription, HttpStatus.valueOf(expectedStatusCode).getReasonPhrase());
     }
 
@@ -81,15 +81,15 @@ public class BetUpdateSteps {
 
     @Dado("que o serviço de atualização esteja indisponível")
     public void theUpdateServiceIsUnavailable() {
-        servicoIndisponivel = true;
+        serviceUnavailable = true;
     }
 
     private ResponseEntity<BetResponse> generateResponseEntityForThePatchRequest(double numOdd, String desBet, int idtBet) {
-        if(servicoIndisponivel)
+        if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         else {
-            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
-            Response patch = RestAssured.given().body(betPostRequestJson).contentType(ContentType.JSON)
+            String betPatchRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
+            Response patch = RestAssured.given().body(betPatchRequestJson).contentType(ContentType.JSON)
                     .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}");
             if (patch.jsonPath().get("$") instanceof List)
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
