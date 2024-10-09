@@ -47,7 +47,7 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
   Cenario: Atualizar o status de uma aposta inexistente
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 2024
     Entao o serviço de atualização de status deve retornar o status code 404 - "Not Found"
-    E o banco de dados de atualização de status não deve ser modificado
+    E a tabela bet de atualização de status deve conter os registros abaixo
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
       | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |
@@ -67,7 +67,7 @@ Funcionalidade: Realizar atualização do status de apostas disponíveis no banc
     Dado que o serviço de atualização de status esteja indisponível
     Quando uma requisição de atualização de aposta for realizada com status "GREEN" e idt_bet 1
     Então o serviço de atualização de status deve retornar o status code 500 - "Internal Server Error"
-    E o banco de dados de atualização de status não deve ser modificado
+    E a tabela bet de atualização de status deve conter os registros abaixo
       | idt_bet | num_odd | flg_selected | dat_created | dat_updated | des_bet                     | bet_status |
       | 1       | 2.13    | 0            | 2024-08-15  | 2024-08-15  | Vitória do São Paulo        | PENDING    |
       | 2       | 1.32    | 0            | 2024-08-15  | 2024-08-15  | Vitória do Flamengo         | PENDING    |

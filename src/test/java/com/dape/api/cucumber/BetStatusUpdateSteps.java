@@ -72,7 +72,7 @@ public class BetStatusUpdateSteps {
         assertThat(actualBet.get()).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
-    @Entao("o banco de dados de atualização de status não deve ser modificado")
+    @Entao("a tabela bet de atualização de status deve conter os registros abaixo")
     public void theDatabaseShouldNotBeModified(List<Bet> expectedBets) {
         final List<Bet> actualBets = betRepository.findAll();
 
