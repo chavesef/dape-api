@@ -74,12 +74,8 @@ public class BetService {
     }
 
     private void validateBetToUpdateStatus(Bet betToUpdate) {
-        if(betStatusIsNotUpdatable(betToUpdate))
+        if(betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING)
             throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status: BetStatus=" + betToUpdate.getBetStatusEnum());
-    }
-
-    private boolean betStatusIsNotUpdatable(Bet betToUpdate) {
-        return betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusRequest betStatus) {
