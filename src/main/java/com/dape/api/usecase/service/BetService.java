@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class BetService {
@@ -21,7 +20,6 @@ public class BetService {
     public static final int IS_SELECTED = 1;
     private final BetRepository betRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
-    private static final List<BetStatusEnum> VALID_STATUSES = List.of(BetStatusEnum.GREEN, BetStatusEnum.RED);
 
     public BetService(BetRepository betRepository) {
         this.betRepository = betRepository;
@@ -44,6 +42,8 @@ public class BetService {
     }
 
     public Bet updateBetStatus(Long idtBet, BetStatusRequest betStatusRequest) {
+        validateBetStatusRequest(betStatusRequest);
+
         final Bet betToUpdate = getBetById(idtBet);
 
         validateBetToUpdateStatus(betToUpdate);
@@ -73,16 +73,18 @@ public class BetService {
         return betToUpdate.getFlgSelected() == IS_SELECTED || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 
+    private void validateBetStatusRequest(BetStatusRequest betStatusRequest) {
+        if(betStatusRequest.getBetStatus() == BetStatusEnum.PENDING)
+            throw new InvalidStatusForUpdateException("Não é permitido atualizar o status de uma aposta para PENDING");
+    }
+
     private void validateBetToUpdateStatus(Bet betToUpdate) {
         if(betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING)
             throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status: BetStatus=" + betToUpdate.getBetStatusEnum());
     }
 
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusRequest betStatusRequest) {
-        if(VALID_STATUSES.contains(betStatusRequest.getBetStatus())) {
             betToUpdate.setBetStatusEnum(betStatusRequest.getBetStatus());
             betToUpdate.setDatUpdated(LocalDateTime.now());
-        } else
-            throw new InvalidStatusForUpdateException("Aposta já se encontra com o status PENDING");
     }
 }
