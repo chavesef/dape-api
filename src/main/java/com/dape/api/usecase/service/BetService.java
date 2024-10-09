@@ -43,12 +43,12 @@ public class BetService {
         return betRepository.save(betToUpdate);
     }
 
-    public Bet updateBetStatus(Long idtBet, BetStatusRequest betStatus) {
+    public Bet updateBetStatus(Long idtBet, BetStatusRequest betStatusRequest) {
         final Bet betToUpdate = getBetById(idtBet);
 
         validateBetToUpdateStatus(betToUpdate);
 
-        updateBetStatusAndDatUpdatedFields(betToUpdate, betStatus);
+        updateBetStatusAndDatUpdatedFields(betToUpdate, betStatusRequest);
 
         LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta para: {}", betToUpdate.getBetStatusEnum());
         return betRepository.save(betToUpdate);
@@ -78,9 +78,9 @@ public class BetService {
             throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status: BetStatus=" + betToUpdate.getBetStatusEnum());
     }
 
-    private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusRequest betStatus) {
-        if(VALID_STATUSES.contains(betStatus.getBetStatus())) {
-            betToUpdate.setBetStatusEnum(betStatus.getBetStatus());
+    private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusRequest betStatusRequest) {
+        if(VALID_STATUSES.contains(betStatusRequest.getBetStatus())) {
+            betToUpdate.setBetStatusEnum(betStatusRequest.getBetStatus());
             betToUpdate.setDatUpdated(LocalDateTime.now());
         } else
             throw new InvalidStatusForUpdateException("Aposta já se encontra com o status PENDING");

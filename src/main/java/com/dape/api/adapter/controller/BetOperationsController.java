@@ -43,9 +43,9 @@ public class BetOperationsController {
     }
 
     @PatchMapping("bet/{idtBet}/status")
-    public ResponseEntity<BetResponse> updateBetStatus(@PathVariable Long idtBet, @RequestBody BetStatusRequest betStatus){
-        LOGGER.info("m=updateBetStatus, msg=Método PATCH chamado para atualizar o status de uma aposta para: {}", betStatus.getBetStatus());
+    public ResponseEntity<BetResponse> updateBetStatus(@PathVariable Long idtBet, @RequestBody BetStatusRequest betStatusRequest){
+        LOGGER.info("m=updateBetStatus, msg=Método PATCH chamado para atualizar o status de uma aposta para: {}", betStatusRequest.getBetStatus());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(BetResponseFactory.createBetResponse(betService.updateBetStatus(idtBet, betStatus)));
+                .body(BetResponseFactory.createBetResponse(betService.updateBetStatus(idtBet, betStatusRequest)));
     }
 }
