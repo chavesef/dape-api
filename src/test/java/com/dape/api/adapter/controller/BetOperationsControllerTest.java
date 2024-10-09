@@ -25,15 +25,15 @@ import static org.mockito.Mockito.when;
 
 class BetOperationsControllerTest {
 
+    public static final Long IDT_BET = 1L;
     private final BetService betService = Mockito.mock(BetService.class);
     private final BetOperationsController betOperationsController = new BetOperationsController(betService);
 
     @Test
     void registerBet(){
+        when(betService.registerBet(any(BetRequest.class))).thenReturn(BetStub.builder().build());
+
         final BetRequest betRequest = BetRequestStub.builder().build();
-
-        when(betService.registerBet(betRequest)).thenReturn(BetStub.builder().build());
-
         final ResponseEntity<BetResponse> actualBet = betOperationsController.registerBet(betRequest);
         final ResponseEntity<BetResponse> expectedBet =
                 ResponseEntity.status(HttpStatusCode.valueOf(201)).body(BetResponseStub.builder().build());
@@ -44,32 +44,28 @@ class BetOperationsControllerTest {
 
     @Test
     void updateBet(){
-        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
-
         when(betService.updateBet(anyLong(), any(BetRequest.class)))
                 .thenReturn(BetStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build());
 
-        final Long idtBet = 1L;
-        final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBet(idtBet, betRequest);
+        final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
+        final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBet(IDT_BET, betRequest);
         final ResponseEntity<BetResponse> expectedBet = ResponseEntity.status(HttpStatusCode.valueOf(200))
                 .body(BetResponseStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build());
 
-        verify(betService).updateBet(idtBet, betRequest);
+        verify(betService).updateBet(IDT_BET, betRequest);
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
     @Test
     void updateBetStatus(){
-        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
-
         when(betService.updateBetStatus(anyLong(), any(BetStatusRequest.class))).thenReturn(BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build());
 
-        final Long idtBet = 1L;
-        final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBetStatus(idtBet, betStatusRequest);
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
+        final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBetStatus(IDT_BET, betStatusRequest);
         final ResponseEntity<BetResponse> expectedBet = ResponseEntity.status(HttpStatusCode.valueOf(200))
                 .body(BetResponseStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build());
 
-        verify(betService).updateBetStatus(idtBet, betStatusRequest);
+        verify(betService).updateBetStatus(IDT_BET, betStatusRequest);
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 }
