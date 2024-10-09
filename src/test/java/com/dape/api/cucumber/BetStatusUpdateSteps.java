@@ -87,15 +87,16 @@ public class BetStatusUpdateSteps {
     private ResponseEntity<BetResponse> generateResponseEntityForThePatchRequest(String betStatus, int idtBet) {
         if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        else {
-            String betPatchRequestJson = "{ \"bet_status\": \"" + betStatus + "\" }";
-            Response patch = RestAssured.given().body(betPatchRequestJson).contentType(ContentType.JSON)
-                    .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}/status");
-            System.out.println(patch.asString());
-            if (patch.jsonPath().get("$") instanceof List)
+
+        String betPatchRequestJson = "{ \"bet_status\": \"" + betStatus + "\" }";
+
+        Response patch = RestAssured.given().body(betPatchRequestJson).contentType(ContentType.JSON)
+                    .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}/status")
+                    .then().extract().response();
+
+        if (patch.jsonPath().get("$") instanceof List)
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            else
-                return ResponseEntity.status(patch.statusCode()).body(patch.getBody().as(BetResponse.class));
-        }
+
+        return ResponseEntity.status(patch.statusCode()).body(patch.getBody().as(BetResponse.class));
     }
 }
