@@ -37,7 +37,7 @@ public class BetService {
 
         updateBetFields(betToUpdate, betRequest);
 
-        LOGGER.info("m=updateBet, msg=Atualizando aposta com descrição: {} e odd: {}", betToUpdate.getDesBet(), betToUpdate.getNumOdd());
+        LOGGER.info("m=updateBet, msg=Atualizando aposta com id:{}, descrição: {} e odd: {}", idtBet, betToUpdate.getDesBet(), betToUpdate.getNumOdd());
         return betRepository.save(betToUpdate);
     }
 
@@ -50,7 +50,7 @@ public class BetService {
 
         updateBetStatusAndDatUpdatedFields(betToUpdate, betStatusRequest);
 
-        LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta para: {}", betToUpdate.getBetStatusEnum());
+        LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta com id:{} para: {}", idtBet, betToUpdate.getBetStatusEnum());
         return betRepository.save(betToUpdate);
     }
 
@@ -60,7 +60,7 @@ public class BetService {
 
     private void validateBetToUpdate(Bet betToUpdate){
         if(betIsNotUpdatable(betToUpdate))
-            throw new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
+            throw new InvalidStatusForUpdateException("Condições inválidas para atualização da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
     }
 
     private void updateBetFields(Bet betToUpdate, BetRequest betRequest){
@@ -80,7 +80,7 @@ public class BetService {
 
     private void validateBetToUpdateStatus(Bet betToUpdate) {
         if(betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING)
-            throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status: BetStatus=" + betToUpdate.getBetStatusEnum());
+            throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum());
     }
 
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusRequest betStatusRequest) {
