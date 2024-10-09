@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -30,13 +31,11 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        final BetRequest betRequest = BetRequestStub.builder().build();
-
         final Bet expectedBet = BetStub.builder().build();
 
-        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
 
-        final Bet actualBet = betService.registerBet(betRequest);
+        final Bet actualBet = betService.registerBet(BetRequestStub.builder().build());
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
@@ -45,12 +44,11 @@ class BetServiceTest {
     void updateBet(){
         final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withDesBet(betRequest.getDesBet()).withNumOdd(betRequest.getNumOdd()).build();
 
         final Long idtBet = 1L;
-        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
-        when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(idtBet)).thenReturn(Optional.of(BetStub.builder().build()));
 
         final Bet actualBet = betService.updateBet(idtBet, betRequest);
 
@@ -103,33 +101,26 @@ class BetServiceTest {
 
     @Test
     void updateBetStatusToGreen(){
-        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
-
-
-        final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
 
-        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
-        when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
 
         final Long idtBet = 1L;
-        final Bet actualBet = betService.updateBetStatus(idtBet, betStatusRequest);
+        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build());
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
     @Test
     void updateBetStatusToRed(){
-        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.RED).build();
-
-        final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build();
 
-        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
-        when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
 
         final Long idtBet = 1L;
-        final Bet actualBet = betService.updateBetStatus(idtBet, betStatusRequest);
+        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.RED).build());
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
@@ -142,7 +133,7 @@ class BetServiceTest {
 
         when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
 
-        final String expectedMessage = "Aposta já se encontra com o status PENDING";
+        final String expectedMessage = "Não é permitido atualizar o status de uma aposta para PENDING";
 
         final Long idtBet = 1L;
         InvalidStatusForUpdateException invalidStatusForUpdateException =
