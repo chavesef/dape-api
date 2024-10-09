@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class BetService {
@@ -20,6 +21,7 @@ public class BetService {
     public static final int IS_SELECTED = 1;
     private final BetRepository betRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
+    private static final List<BetStatusEnum> VALID_STATUSES = List.of(BetStatusEnum.GREEN, BetStatusEnum.RED);
 
     public BetService(BetRepository betRepository) {
         this.betRepository = betRepository;
@@ -42,11 +44,11 @@ public class BetService {
     }
 
     public Bet updateBetStatus(Long idtBet, BetStatusRequest betStatus) {
-        Bet betToUpdate = getBetById(idtBet);
+        final Bet betToUpdate = getBetById(idtBet);
 
         validateBetToUpdateStatus(betToUpdate);
 
-        updateBetStatusField(betToUpdate, betStatus);
+        updateBetStatusAndDatUpdatedFields(betToUpdate, betStatus);
 
         LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta para: {}", betToUpdate.getBetStatusEnum());
         return betRepository.save(betToUpdate);
@@ -80,8 +82,8 @@ public class BetService {
         return betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 
-    private void updateBetStatusField(Bet betToUpdate, BetStatusRequest betStatus) {
-        if(betStatus.getBetStatus() == BetStatusEnum.GREEN || betStatus.getBetStatus() == BetStatusEnum.RED) {
+    private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusRequest betStatus) {
+        if(VALID_STATUSES.contains(betStatus.getBetStatus())) {
             betToUpdate.setBetStatusEnum(betStatus.getBetStatus());
             betToUpdate.setDatUpdated(LocalDateTime.now());
         } else
