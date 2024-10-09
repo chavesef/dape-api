@@ -76,7 +76,7 @@ class BetServiceTest {
         final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        final String expectedMessage = "Condições inválidas para atualização: BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
+        final String expectedMessage = "Condições inválidas para atualização da aposta com id: " + existentBet.getIdtBet() + " - BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
 
         InvalidStatusForUpdateException invalidStatusForUpdateException =
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
@@ -92,7 +92,7 @@ class BetServiceTest {
         final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        final String expectedMessage = "Condições inválidas para atualização: BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
+        final String expectedMessage = "Condições inválidas para atualização da aposta com id: " + existentBet.getIdtBet() + " - BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
 
         InvalidStatusForUpdateException invalidStatusForUpdateException =
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
@@ -126,16 +126,40 @@ class BetServiceTest {
     }
 
     @Test
+    void updateBetStatusInexistentBetExpectException(){
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
+
+        final Long idtBet = 2L;
+        final String expectedMessage = "Aposta com id " + idtBet + " não existe no banco de dados";
+
+        BetNotExistentException betNotExistentException =
+                assertThrows(BetNotExistentException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, betNotExistentException.getMessage());
+    }
+
+    @Test
     void updateWithInvalidStatusExpectException(){
         final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().build();
 
-        final Bet existentBet = BetStub.builder().build();
-
-        when(betRepository.findById(anyLong())).thenReturn(Optional.of(existentBet));
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
 
         final String expectedMessage = "Não é permitido atualizar o status de uma aposta para PENDING";
 
         final Long idtBet = 1L;
+        InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
+    }
+
+    @Test
+    void updateWhenNotInStatusPendingExpectException(){
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
+
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build()));
+
+        final Long idtBet = 1L;
+        final String expectedMessage = "Condições inválidas para atualização do status da aposta com id: " +  idtBet + " - BetStatus=" + BetStatusEnum.RED;
+
         InvalidStatusForUpdateException invalidStatusForUpdateException =
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
         assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
