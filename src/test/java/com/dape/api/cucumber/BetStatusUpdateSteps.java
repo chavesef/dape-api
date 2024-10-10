@@ -1,8 +1,10 @@
 package com.dape.api.cucumber;
 
+import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
+import com.dape.api.domain.enums.BetStatusEnum;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
@@ -87,10 +89,14 @@ public class BetStatusUpdateSteps {
     private ResponseEntity<BetResponse> generateResponseEntityForThePatchRequest(String betStatus, int idtBet) {
         if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        BetStatusRequest betStatusRequest = new BetStatusRequest();
+        try {
+            betStatusRequest.setBetStatus(BetStatusEnum.valueOf(betStatus));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        String betPatchRequestJson = "{ \"bet_status\": \"" + betStatus + "\" }";
-
-        Response patchResponse = RestAssured.given().body(betPatchRequestJson).contentType(ContentType.JSON)
+        Response patchResponse = RestAssured.given().body(betStatusRequest).contentType(ContentType.JSON)
                 .pathParam("idt_bet", idtBet). when().patch("/dape/bet/{idt_bet}/status")
                 .then().extract().response();
 
