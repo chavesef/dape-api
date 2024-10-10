@@ -90,13 +90,13 @@ public class BetStatusUpdateSteps {
 
         String betPatchRequestJson = "{ \"bet_status\": \"" + betStatus + "\" }";
 
-        Response patch = RestAssured.given().body(betPatchRequestJson).contentType(ContentType.JSON)
-                    .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}/status")
-                    .then().extract().response();
+        Response patchResponse = RestAssured.given().body(betPatchRequestJson).contentType(ContentType.JSON)
+                .pathParam("idt_bet", idtBet). when().patch("/dape/bet/{idt_bet}/status")
+                .then().extract().response();
 
-        if (patch.jsonPath().get("$") instanceof List)
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        return ResponseEntity.status(patch.statusCode()).body(patch.getBody().as(BetResponse.class));
+        if (patchResponse.getStatusCode() == HttpStatus.OK.value()) {
+            return new ResponseEntity<>(patchResponse.as(BetResponse.class), HttpStatus.valueOf(patchResponse.getStatusCode()));
+        }
+        return new ResponseEntity<>(HttpStatus.valueOf(patchResponse.getStatusCode()));
     }
 }

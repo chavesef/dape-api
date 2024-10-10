@@ -78,15 +78,15 @@ public class BetRegistrationSteps {
 
     private ResponseEntity<BetResponse> generateResponseEntityForThePostRequest(double numOdd, String desBet) {
         if(serviceUnavailable)
-             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        else {
-            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
-            Response post = given().body(betPostRequestJson).contentType(ContentType.JSON).when()
-                    .post("/dape/bet");
-            if (post.jsonPath().get("$") instanceof List)
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            else
-                return ResponseEntity.status(post.statusCode()).body(post.getBody().as(BetResponse.class));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
+        Response postResponse = given().body(betPostRequestJson).contentType(ContentType.JSON).when()
+                .post("/dape/bet").then().extract().response();
+
+        if (postResponse.getStatusCode() == HttpStatus.OK.value()) {
+            return new ResponseEntity<>(postResponse.as(BetResponse.class), HttpStatus.valueOf(postResponse.getStatusCode()));
         }
+        return new ResponseEntity<>(HttpStatus.valueOf(postResponse.getStatusCode()));
     }
 }
