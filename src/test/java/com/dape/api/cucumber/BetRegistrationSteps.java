@@ -1,5 +1,6 @@
 package com.dape.api.cucumber;
 
+import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static io.restassured.RestAssured.baseURI;
@@ -80,8 +82,9 @@ public class BetRegistrationSteps {
         if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
-        Response postResponse = given().body(betPostRequestJson).contentType(ContentType.JSON).when()
+        final BetRequest betRequest = new BetRequest(new BigDecimal(numOdd), desBet);
+
+        Response postResponse = given().body(betRequest).contentType(ContentType.JSON).when()
                 .post("/dape/bet").then().extract().response();
 
         if (postResponse.getStatusCode() == HttpStatus.OK.value()) {

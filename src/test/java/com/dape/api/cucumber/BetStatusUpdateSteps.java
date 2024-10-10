@@ -89,7 +89,8 @@ public class BetStatusUpdateSteps {
     private ResponseEntity<BetResponse> generateResponseEntityForThePatchRequest(String betStatus, int idtBet) {
         if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        BetStatusRequest betStatusRequest = new BetStatusRequest();
+
+        final BetStatusRequest betStatusRequest = new BetStatusRequest();
         try {
             betStatusRequest.setBetStatus(BetStatusEnum.valueOf(betStatus));
         } catch (IllegalArgumentException e) {

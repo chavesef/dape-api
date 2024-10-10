@@ -1,5 +1,6 @@
 package com.dape.api.cucumber;
 
+import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -88,8 +90,9 @@ public class BetUpdateSteps {
         if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        String betPatchRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
-        Response patchResponse = RestAssured.given().body(betPatchRequestJson).contentType(ContentType.JSON)
+        final BetRequest betRequest = new BetRequest(new BigDecimal(numOdd), desBet);
+
+        Response patchResponse = RestAssured.given().body(betRequest).contentType(ContentType.JSON)
                 .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}")
                 .then().extract().response();
 
