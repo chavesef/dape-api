@@ -63,14 +63,14 @@ public class BetService {
             throw new InvalidStatusForUpdateException("Condições inválidas para atualização da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
     }
 
+    private boolean betIsNotUpdatable(Bet betToUpdate) {
+        return betToUpdate.getFlgSelected() == IS_SELECTED || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
+    }
+
     private void updateBetFields(Bet betToUpdate, BetRequest betRequest){
         betToUpdate.setDesBet(betRequest.getDesBet());
         betToUpdate.setNumOdd(betRequest.getNumOdd());
         betToUpdate.setDatUpdated(LocalDateTime.now());
-    }
-
-    private boolean betIsNotUpdatable(Bet betToUpdate) {
-        return betToUpdate.getFlgSelected() == IS_SELECTED || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 
     private void validateBetStatusRequest(BetStatusRequest betStatusRequest) {
