@@ -6,8 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features",
-        glue = "com.dape.api.cucumber",
-        tags = "@CadastroAposta or @AtualizacaoAposta")
+        glue = "com.dape.api.cucumber")
 public class CucumberRunner {
 
 }
