@@ -84,10 +84,10 @@ public class BetRegistrationSteps {
 
         final BetRequest betRequest = new BetRequest(new BigDecimal(numOdd), desBet);
 
-        Response postResponse = given().body(betRequest).contentType(ContentType.JSON).when()
+        final Response postResponse = given().body(betRequest).contentType(ContentType.JSON).when()
                 .post("/dape/bet").then().extract().response();
 
-        if (postResponse.getStatusCode() == HttpStatus.OK.value()) {
+        if (postResponse.getStatusCode() == HttpStatus.CREATED.value()) {
             return new ResponseEntity<>(postResponse.as(BetResponse.class), HttpStatus.valueOf(postResponse.getStatusCode()));
         }
         return new ResponseEntity<>(HttpStatus.valueOf(postResponse.getStatusCode()));

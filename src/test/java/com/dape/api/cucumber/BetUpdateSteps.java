@@ -7,7 +7,6 @@ import com.dape.api.domain.entity.Bet;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.baseURI;
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.port;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -92,7 +92,7 @@ public class BetUpdateSteps {
 
         final BetRequest betRequest = new BetRequest(new BigDecimal(numOdd), desBet);
 
-        Response patchResponse = RestAssured.given().body(betRequest).contentType(ContentType.JSON)
+        final Response patchResponse = given().body(betRequest).contentType(ContentType.JSON)
                 .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}")
                 .then().extract().response();
 
