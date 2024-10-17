@@ -35,7 +35,7 @@ public enum BetStatusEnum {
 
     public static BetStatusEnum fromRequest(BetStatusRequest betStatusRequest) {
         for (BetStatusEnum betStatusEnum : BetStatusEnum.values())
-            if (Objects.equals(betStatusEnum.getDesBetStatus(), betStatusRequest.getBetStatus()))
+            if (Objects.equals(betStatusEnum.toString(), betStatusRequest.getBetStatus()))
                 return betStatusEnum;
         throw new InvalidStatusForUpdateException("Descrição de aposta inválida: " + betStatusRequest.getBetStatus());
     }
