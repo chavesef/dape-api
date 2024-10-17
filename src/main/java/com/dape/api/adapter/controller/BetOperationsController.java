@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dape")
+@RequestMapping("/dape/bet")
 public class BetOperationsController {
 
     private final BetService betService;
@@ -28,21 +28,21 @@ public class BetOperationsController {
         this.betService = betService;
     }
 
-    @PostMapping("/bet")
+    @PostMapping
     public ResponseEntity<BetResponse> registerBet(@Valid @RequestBody BetRequest betRequest){
         LOGGER.info("m=registerBet, msg=Método POST chamado para cadastrar uma nova aposta com descrição={} e odd={}", betRequest.getDesBet(), betRequest.getNumOdd());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(BetResponseFactory.createBetResponse(betService.registerBet(betRequest)));
     }
 
-    @PatchMapping("/bet/{idtBet}")
+    @PatchMapping("/{idtBet}")
     public ResponseEntity<BetResponse> updateBet(@PathVariable Long idtBet, @Valid @RequestBody BetRequest betRequest){
         LOGGER.info("m=updateBet, msg=Método PATCH chamado para atualizar uma aposta com id={} e descrição={} e odd={}", idtBet, betRequest.getDesBet(), betRequest.getNumOdd());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BetResponseFactory.createBetResponse(betService.updateBet(idtBet, betRequest)));
     }
 
-    @PatchMapping("bet/{idtBet}/status")
+    @PatchMapping("/{idtBet}/status")
     public ResponseEntity<BetResponse> updateBetStatus(@PathVariable Long idtBet, @RequestBody BetStatusRequest betStatusRequest){
         LOGGER.info("m=updateBetStatus, msg=Método PATCH chamado para atualizar o status de uma aposta para: {}", betStatusRequest.getBetStatus());
         return ResponseEntity.status(HttpStatus.OK)
