@@ -4,7 +4,6 @@ import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
-import com.dape.api.domain.enums.BetStatusEnum;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
@@ -91,11 +90,8 @@ public class BetStatusUpdateSteps {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         final BetStatusRequest betStatusRequest = new BetStatusRequest();
-        try {
-            betStatusRequest.setBetStatus(BetStatusEnum.valueOf(betStatus));
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+        betStatusRequest.setBetStatus(betStatus);
 
         final Response patchResponse = given().body(betStatusRequest).contentType(ContentType.JSON)
                 .pathParam("idt_bet", idtBet). when().patch("/dape/bet/{idt_bet}/status")

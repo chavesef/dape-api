@@ -107,7 +107,7 @@ class BetServiceTest {
         when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
 
         final Long idtBet = 1L;
-        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build());
+        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus("GREEN").build());
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
@@ -120,14 +120,14 @@ class BetServiceTest {
         when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
 
         final Long idtBet = 1L;
-        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.RED).build());
+        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus("RED").build());
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
 
     @Test
     void updateBetStatusInexistentBetExpectException(){
-        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus("GREEN").build();
 
         final Long idtBet = 2L;
         final String expectedMessage = "Aposta com id " + idtBet + " não existe no banco de dados";
@@ -153,7 +153,7 @@ class BetServiceTest {
 
     @Test
     void updateWhenNotInStatusPendingExpectException(){
-        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus("GREEN").build();
 
         when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build()));
 

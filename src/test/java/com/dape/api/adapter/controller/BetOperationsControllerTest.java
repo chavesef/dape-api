@@ -60,7 +60,7 @@ class BetOperationsControllerTest {
     void updateBetStatus(){
         when(betService.updateBetStatus(anyLong(), any(BetStatusRequest.class))).thenReturn(BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build());
 
-        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus(BetStatusEnum.GREEN).build();
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus("GREEN").build();
         final ResponseEntity<BetResponse> actualBet = betOperationsController.updateBetStatus(IDT_BET, betStatusRequest);
         final ResponseEntity<BetResponse> expectedBet = ResponseEntity.status(HttpStatusCode.valueOf(200))
                 .body(BetResponseStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build());

@@ -1,13 +1,12 @@
 package com.dape.api.stub;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
-import com.dape.api.domain.enums.BetStatusEnum;
 
 public class BetStatusRequestStub {
-    private BetStatusEnum betStatus;
+    private String betStatus;
 
     private BetStatusRequestStub(){
-        this.betStatus = BetStatusEnum.PENDING;
+        this.betStatus = "PENDING";
     }
 
     public static BetStatusRequestStub builder() {
@@ -21,7 +20,7 @@ public class BetStatusRequestStub {
         return betStatusRequest;
     }
 
-    public BetStatusRequestStub withBetStatus(BetStatusEnum betStatus) {
+    public BetStatusRequestStub withBetStatus(String betStatus) {
         this.betStatus = betStatus;
         return this;
     }
