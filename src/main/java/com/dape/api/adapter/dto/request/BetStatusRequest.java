@@ -1,6 +1,5 @@
 package com.dape.api.adapter.dto.request;
 
-import com.dape.api.domain.enums.BetStatusEnum;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
@@ -9,13 +8,13 @@ import jakarta.validation.constraints.NotBlank;
 public class BetStatusRequest {
 
     @NotBlank
-    private BetStatusEnum betStatus;
+    private String betStatus;
 
-    public BetStatusEnum getBetStatus() {
+    public String getBetStatus() {
         return betStatus;
     }
 
-    public void setBetStatus(BetStatusEnum betStatus) {
+    public void setBetStatus(String betStatus) {
         this.betStatus = betStatus;
     }
 }

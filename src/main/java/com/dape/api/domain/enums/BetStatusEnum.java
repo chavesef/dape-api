@@ -1,5 +1,10 @@
 package com.dape.api.domain.enums;
 
+import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
+
+import java.util.Objects;
+
 public enum BetStatusEnum {
     PENDING(1, "Aposta pendente"),
     GREEN(2, "Aposta vencida"),
@@ -22,11 +27,16 @@ public enum BetStatusEnum {
     }
 
     public static BetStatusEnum fromCode(int codBetStatus) {
-        for (BetStatusEnum betStatusEnum : BetStatusEnum.values()) {
-            if (betStatusEnum.getCodBetStatus() == codBetStatus) {
+        for (BetStatusEnum betStatusEnum : BetStatusEnum.values())
+            if (betStatusEnum.getCodBetStatus() == codBetStatus)
                 return betStatusEnum;
-            }
-        }
         throw new UnsupportedOperationException("Unsupported bet status code: " + codBetStatus);
+    }
+
+    public static BetStatusEnum fromRequest(BetStatusRequest betStatusRequest) {
+        for (BetStatusEnum betStatusEnum : BetStatusEnum.values())
+            if (Objects.equals(betStatusEnum.getDesBetStatus(), betStatusRequest.getBetStatus()))
+                return betStatusEnum;
+        throw new InvalidStatusForUpdateException("Descrição de aposta inválida: " + betStatusRequest.getBetStatus());
     }
 }

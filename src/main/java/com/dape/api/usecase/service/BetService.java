@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
+
 @Service
 public class BetService {
 
@@ -42,13 +44,15 @@ public class BetService {
     }
 
     public Bet updateBetStatus(Long idtBet, BetStatusRequest betStatusRequest) {
-        validateBetStatusRequest(betStatusRequest);
+        final BetStatusEnum betStatus = fromRequest(betStatusRequest);
+
+        validateBetStatusRequest(betStatus);
 
         final Bet betToUpdate = getBetById(idtBet);
 
         validateBetToUpdateStatus(betToUpdate);
 
-        updateBetStatusAndDatUpdatedFields(betToUpdate, betStatusRequest);
+        updateBetStatusAndDatUpdatedFields(betToUpdate, betStatus);
 
         LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta com id:{} para: {}", idtBet, betToUpdate.getBetStatusEnum());
         return betRepository.save(betToUpdate);
@@ -73,8 +77,8 @@ public class BetService {
         betToUpdate.setDatUpdated(LocalDateTime.now());
     }
 
-    private void validateBetStatusRequest(BetStatusRequest betStatusRequest) {
-        if(betStatusRequest.getBetStatus() == BetStatusEnum.PENDING)
+    private void validateBetStatusRequest(BetStatusEnum betStatus) {
+        if(betStatus == BetStatusEnum.PENDING)
             throw new InvalidStatusForUpdateException("Não é permitido atualizar o status de uma aposta para PENDING");
     }
 
@@ -83,8 +87,8 @@ public class BetService {
             throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum());
     }
 
-    private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusRequest betStatusRequest) {
-            betToUpdate.setBetStatusEnum(betStatusRequest.getBetStatus());
+    private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusEnum betStatus) {
+            betToUpdate.setBetStatusEnum(betStatus);
             betToUpdate.setDatUpdated(LocalDateTime.now());
     }
 }
