@@ -5,7 +5,7 @@ info:
   description: DAPE API contract - Declaração de Apostas Esportivas
   contact:
     email: efchaves@uolinc.com
-  version: 1.0.1
+  version: 1.0.2
 
 servers:
   - url: http://localhost:8080/dape
@@ -38,7 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BetCreateResponse'
+                $ref: '#/components/schemas/BetResponse'
         '400':
           description: Bad Request, Dados inválidos
           content:
@@ -128,7 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StatusUpdateResponse'
+                $ref: '#/components/schemas/BetResponse'
         '400':
           description: Bad Request, Status inválido
           content:
@@ -170,7 +170,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BetUpdateResponse'
+                $ref: '#/components/schemas/BetResponse'
         '400':
           description: Bad Request, Dados inválidos
           content:
@@ -320,8 +320,22 @@ components:
       xml:
         name: BetCreateRequest
 
-    BetCreateResponse:
-      type: object
+    BetUpdateRequest:
+      required:
+        - num_odd
+        - des_bet
+      properties:
+        num_odd:
+          type: number
+          format: double
+          example: 1.90
+        des_bet:
+          type: string
+          example: "Vitória do Botafogo"
+      xml:
+        name: BetUpdateRequest
+
+    BetResponse:
       properties:
         idt_bet:
           type: integer
@@ -349,43 +363,6 @@ components:
           format: int32
           example: 0
       xml:
-        name: BetCreateRequest
-
-    BetUpdateRequest:
-      required:
-        - num_odd
-        - des_bet
-      properties:
-        num_odd:
-          type: number
-          format: double
-          example: 1.90
-        des_bet:
-          type: string
-          example: "Vitória do Botafogo"
-      xml:
-        name: BetUpdateRequest
-
-    BetUpdateResponse:
-      properties:
-        num_odd:
-          type: number
-          format: double
-          example: 1.90
-        des_bet:
-          type: string
-          example: "Vitória do Botafogo"
-        dat_created:
-          type: string
-          format: date-time
-          example: "2025-07-21T15:16:10.877543705"
-        dat_updated:
-          type: string
-          format: date-time
-          example: "2025-07-21T15:16:10.877543705"
-        bet_status:
-          $ref: '#/components/schemas/StatusEnum'
-      xml:
         name: BetUpdateResponse
 
     StatusUpdateRequest:
@@ -395,28 +372,6 @@ components:
           $ref: '#/components/schemas/StatusEnum'
       xml:
         name: StatusUpdateRequest
-
-    StatusUpdateResponse:
-      properties:
-        num_odd:
-          type: number
-          format: double
-          example: 1.90
-        des_bet:
-          type: string
-          example: "Vitória do Botafogo"
-        bet_status:
-          $ref: '#/components/schemas/StatusEnum'
-        dat_created:
-          type: string
-          format: date-time
-          example: "2025-07-21T15:16:10.877543705"
-        dat_updated:
-          type: string
-          format: date-time
-          example: "2025-07-21T15:16:10.877543705"
-      xml:
-        name: StatusUpdateResponse
 
     BetListResponse:
       type: object
@@ -611,13 +566,13 @@ components:
     ErrorResponse:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          example: 400
         message:
           type: string
           example: "Mensagem de erro"
+        errorCode:
+          type: integer
+          format: int32
+          example: 400
       xml:
         name: ErrorResponse
 

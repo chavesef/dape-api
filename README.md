@@ -18,6 +18,8 @@ ou 'perdida'(red).
   - [Migração e versionamento com Flyway](#migração-e-versionamento-com-flyway)
 - [Utilização](#utilização)
   - [Cadastro de uma nova aposta](#cadastro-de-uma-nova-aposta)
+  - [Atualização de uma aposta](#atualização-de-uma-aposta)
+  - [Atualização do status de uma aposta](#atualização-do-status-de-uma-aposta)
 
 
 ## Arquitetura
@@ -82,7 +84,7 @@ para a odd final do bilhete de apostas.
 
 ## Utilização
 
-O projeto possui um documento de contrato de endpoints disponibilizado ([dape-api-contract.yml](src/main/resources/dape-api-contract.yml)), no qual
+O projeto possui um documento de contrato de endpoints disponibilizado ([dape-api-contract.yml](src/main/resources/static/dape-api-contract.yml)), no qual
 são definidas as regras de requisições e respostas para cada endpoint.
 
 ### Cadastro de uma nova aposta
@@ -101,11 +103,64 @@ A resposta deverá ser como a seguinte:
 - Status Code: 201 - CREATED
 ```json
 {
-  "bet_status": "PENDING",
-  "idt_bet": 2,
-  "num_odd": 2.19,
+  "idt_bet": 4,
   "des_bet": "Vitória do Botafogo",
-  "dat_created": "2025-07-21"
+  "num_odd": 2.19,
+  "dat_created": "2025-07-21T15:16:10.877543705",
+  "dat_updated": "2025-07-21T15:16:10.877543705",
+  "bet_status": "PENDING",
+  "flg_selected": 0
+}
+```
+
+### Atualização de uma aposta
+Para atualizar uma aposta no banco de dados rode o comando a seguir no terminal:
+```sh
+curl -X PATCH \
+     --location 'localhost:8080/dape/bet/1' \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "num_odd": 2.45,
+           "des_bet": "Vitória do Bahia"
+         }' 
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 200 - OK
+```json
+{
+  "idt_bet": 1,
+  "des_bet": "Vitória do Bahia",
+  "num_odd": 2.45,
+  "dat_created": "2025-07-21T15:16:10.877543705",
+  "dat_updated": "2025-07-21T15:24:23.877543705",
+  "bet_status": "PENDING",
+  "flg_selected": 0
+}
+```
+
+### Atualização do status de uma aposta
+Para atualizar o status de uma aposta no banco de dados rode o comando a seguir no terminal:
+```sh
+curl -X PATCH \
+     --location 'localhost:8080/dape/bet/1/status' \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "bet_status": "GREEN"
+         }' 
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 200 - OK
+```json
+{
+  "idt_bet": 1,
+  "des_bet": "Vitória do São Paulo",
+  "num_odd": 2.13,
+  "dat_created": "2025-07-21T15:16:10.877543705",
+  "dat_updated": "2025-07-21T15:26:23.877543705",
+  "bet_status": "GREEN",
+  "flg_selected": 0
 }
 ```
 

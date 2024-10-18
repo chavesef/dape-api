@@ -1,5 +1,6 @@
 package com.dape.api.cucumber;
 
+import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static io.restassured.RestAssured.baseURI;
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BetRegistrationSteps {
     private final BetRepository betRepository;
-    private ResponseEntity<BetResponse> cadastroResponseEntity;
+    private ResponseEntity<BetResponse> registrationResponseEntity;
 
     private boolean serviceUnavailable;
 
@@ -49,12 +51,12 @@ public class BetRegistrationSteps {
 
     @Quando("uma requisição de criação de aposta for realizada com odd {double} e descrição {string}")
     public void aBetPostRequestIsCalled(double numOdd, String desBet) {
-        cadastroResponseEntity = generateResponseEntityForThePostRequest(numOdd, desBet);
+        registrationResponseEntity = generateResponseEntityForThePostRequest(numOdd, desBet);
     }
 
     @Entao("o serviço de cadastro de apostas deve retornar o status code {int} - {string}")
     public void theBetRegistrationServiceShouldReturnStatusCode(int expectedStatusCode, String expectedCodeDescription) {
-        assertEquals(expectedStatusCode, cadastroResponseEntity.getStatusCode().value());
+        assertEquals(expectedStatusCode, registrationResponseEntity.getStatusCode().value());
         assertEquals(expectedCodeDescription, HttpStatus.valueOf(expectedStatusCode).getReasonPhrase());
     }
 
@@ -78,15 +80,16 @@ public class BetRegistrationSteps {
 
     private ResponseEntity<BetResponse> generateResponseEntityForThePostRequest(double numOdd, String desBet) {
         if(serviceUnavailable)
-             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        else {
-            String betPostRequestJson = "{ \"numOdd\": " + numOdd + ", \"desBet\": \"" + desBet + "\" }";
-            Response post = given().body(betPostRequestJson).contentType(ContentType.JSON).when()
-                    .post("/dape/bet");
-            if (post.jsonPath().get("$") instanceof List)
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            else
-                return ResponseEntity.status(post.statusCode()).body(post.getBody().as(BetResponse.class));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        final BetRequest betRequest = new BetRequest(new BigDecimal(numOdd), desBet);
+
+        final Response postResponse = given().body(betRequest).contentType(ContentType.JSON).when()
+                .post("/dape/bet").then().extract().response();
+
+        if (postResponse.getStatusCode() == HttpStatus.CREATED.value()) {
+            return new ResponseEntity<>(postResponse.as(BetResponse.class), HttpStatus.valueOf(postResponse.getStatusCode()));
         }
+        return new ResponseEntity<>(HttpStatus.valueOf(postResponse.getStatusCode()));
     }
 }

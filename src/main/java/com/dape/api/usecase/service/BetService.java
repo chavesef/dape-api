@@ -1,6 +1,7 @@
 package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetRequest;
+import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
 
 @Service
 public class BetService {
@@ -36,7 +39,22 @@ public class BetService {
 
         updateBetFields(betToUpdate, betRequest);
 
-        LOGGER.info("m=updateBet, msg=Atualizando aposta com descrição: {} e odd: {}", betToUpdate.getDesBet(), betToUpdate.getNumOdd());
+        LOGGER.info("m=updateBet, msg=Atualizando aposta com id:{}, descrição: {} e odd: {}", idtBet, betToUpdate.getDesBet(), betToUpdate.getNumOdd());
+        return betRepository.save(betToUpdate);
+    }
+
+    public Bet updateBetStatus(Long idtBet, BetStatusRequest betStatusRequest) {
+        final BetStatusEnum betStatus = fromRequest(betStatusRequest);
+
+        validateBetStatusRequest(betStatus);
+
+        final Bet betToUpdate = getBetById(idtBet);
+
+        validateBetToUpdateStatus(betToUpdate);
+
+        updateBetStatusAndDatUpdatedFields(betToUpdate, betStatus);
+
+        LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta com id:{} para: {}", idtBet, betToUpdate.getBetStatusEnum());
         return betRepository.save(betToUpdate);
     }
 
@@ -46,7 +64,11 @@ public class BetService {
 
     private void validateBetToUpdate(Bet betToUpdate){
         if(betIsNotUpdatable(betToUpdate))
-            throw new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
+            throw new InvalidStatusForUpdateException("Condições inválidas para atualização da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
+    }
+
+    private boolean betIsNotUpdatable(Bet betToUpdate) {
+        return betToUpdate.getFlgSelected() == IS_SELECTED || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
     }
 
     private void updateBetFields(Bet betToUpdate, BetRequest betRequest){
@@ -55,7 +77,18 @@ public class BetService {
         betToUpdate.setDatUpdated(LocalDateTime.now());
     }
 
-    private boolean betIsNotUpdatable(Bet betToUpdate) {
-        return betToUpdate.getFlgSelected() == IS_SELECTED || betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING;
+    private void validateBetStatusRequest(BetStatusEnum betStatus) {
+        if(betStatus == BetStatusEnum.PENDING)
+            throw new InvalidStatusForUpdateException("Não é permitido atualizar o status de uma aposta para PENDING");
+    }
+
+    private void validateBetToUpdateStatus(Bet betToUpdate) {
+        if(betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING)
+            throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum());
+    }
+
+    private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusEnum betStatus) {
+            betToUpdate.setBetStatusEnum(betStatus);
+            betToUpdate.setDatUpdated(LocalDateTime.now());
     }
 }

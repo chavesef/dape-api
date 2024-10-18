@@ -1,6 +1,8 @@
 package com.dape.api.usecase.service;
 
+import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.stub.BetRequestStub;
+import com.dape.api.stub.BetStatusRequestStub;
 import com.dape.api.stub.BetStub;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.repository.BetRepository;
@@ -18,6 +20,8 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 class BetServiceTest {
@@ -27,13 +31,11 @@ class BetServiceTest {
 
     @Test
     void registerBet() {
-        final BetRequest betRequest = BetRequestStub.builder().build();
-
         final Bet expectedBet = BetStub.builder().build();
 
-        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
 
-        final Bet actualBet = betService.registerBet(betRequest);
+        final Bet actualBet = betService.registerBet(BetRequestStub.builder().build());
 
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
     }
@@ -42,12 +44,11 @@ class BetServiceTest {
     void updateBet(){
         final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        final Bet existentBet = BetStub.builder().build();
         final Bet expectedBet = BetStub.builder().withDesBet(betRequest.getDesBet()).withNumOdd(betRequest.getNumOdd()).build();
 
         final Long idtBet = 1L;
-        when(betRepository.save(Mockito.any(Bet.class))).thenReturn(expectedBet);
-        when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(idtBet)).thenReturn(Optional.of(BetStub.builder().build()));
 
         final Bet actualBet = betService.updateBet(idtBet, betRequest);
 
@@ -70,13 +71,12 @@ class BetServiceTest {
     void updatedBetSelectedExpectException(){
         final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        Bet existentBet = BetStub.builder().build();
-        existentBet.setFlgSelected(1);
+        Bet existentBet = BetStub.builder().withFlgSelected(1).build();
 
         final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        final String expectedMessage = "Condições inválidas para atualização: BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
+        final String expectedMessage = "Condições inválidas para atualização da aposta com id: " + existentBet.getIdtBet() + " - BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
 
         InvalidStatusForUpdateException invalidStatusForUpdateException =
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
@@ -87,16 +87,82 @@ class BetServiceTest {
     void updatedBetResolvedExpectException(){
         final BetRequest betRequest = BetRequestStub.builder().withDesBet("Vitória do Boca Juniors").withNumOdd(new BigDecimal("2.43")).build();
 
-        Bet existentBet = BetStub.builder().build();
-        existentBet.setBetStatusEnum(BetStatusEnum.GREEN);
+        Bet existentBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
 
         final Long idtBet = 1L;
         when(betRepository.findById(idtBet)).thenReturn(Optional.of(existentBet));
 
-        final String expectedMessage = "Condições inválidas para atualização: BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
+        final String expectedMessage = "Condições inválidas para atualização da aposta com id: " + existentBet.getIdtBet() + " - BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
 
         InvalidStatusForUpdateException invalidStatusForUpdateException =
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
         assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
+    }
+
+    @Test
+    void updateBetStatusToGreen(){
+        final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
+
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
+
+        final Long idtBet = 1L;
+        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus("GREEN").build());
+
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
+    }
+
+    @Test
+    void updateBetStatusToRed(){
+        final Bet expectedBet = BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build();
+
+        when(betRepository.save(any(Bet.class))).thenReturn(expectedBet);
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
+
+        final Long idtBet = 1L;
+        final Bet actualBet = betService.updateBetStatus(idtBet, BetStatusRequestStub.builder().withBetStatus("RED").build());
+
+        assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
+    }
+
+    @Test
+    void updateBetStatusInexistentBetExpectException(){
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus("GREEN").build();
+
+        final Long idtBet = 2L;
+        final String expectedMessage = "Aposta com id " + idtBet + " não existe no banco de dados";
+
+        BetNotExistentException betNotExistentException =
+                assertThrows(BetNotExistentException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, betNotExistentException.getMessage());
+    }
+
+    @Test
+    void updateWithInvalidStatusExpectException(){
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().build();
+
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().build()));
+
+        final String expectedMessage = "Não é permitido atualizar o status de uma aposta para PENDING";
+
+        final Long idtBet = 1L;
+        InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
+    }
+
+    @Test
+    void updateWhenNotInStatusPendingExpectException(){
+        final BetStatusRequest betStatusRequest = BetStatusRequestStub.builder().withBetStatus("GREEN").build();
+
+        when(betRepository.findById(anyLong())).thenReturn(Optional.of(BetStub.builder().withBetStatusEnum(BetStatusEnum.RED).build()));
+
+        final Long idtBet = 1L;
+        final String expectedMessage = "Condições inválidas para atualização do status da aposta com id: " +  idtBet + " - BetStatus=" + BetStatusEnum.RED;
+
+        InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
+
     }
 }
