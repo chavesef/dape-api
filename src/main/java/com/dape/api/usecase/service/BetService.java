@@ -10,11 +10,15 @@ import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.usecase.factory.BetFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
+import static com.dape.api.domain.enums.BetStatusEnum.valueOf;
 
 @Service
 public class BetService {
@@ -58,6 +62,15 @@ public class BetService {
         return betRepository.save(betToUpdate);
     }
 
+    public Page<Bet> getBetList(Integer page, Integer limit, String betStatus, String datCreated, String datUpdated) {
+        LOGGER.info("m=getBetList, msg=Buscando apostas cadastradas no banco de dados");
+        Pageable pageable = PageRequest.of(page, limit);
+
+        Integer codBetStatus = getCodBetStatus(betStatus);
+
+        return betRepository.findAllWithFilters(pageable, codBetStatus, datCreated, datUpdated);
+    }
+
     private Bet getBetById(Long idtBet) {
         return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
@@ -90,5 +103,13 @@ public class BetService {
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusEnum betStatus) {
             betToUpdate.setBetStatusEnum(betStatus);
             betToUpdate.setDatUpdated(LocalDateTime.now());
+    }
+
+    private Integer getCodBetStatus(String betStatus) {
+        if(betStatus != null){
+            BetStatusEnum betStatusEnum = valueOf(betStatus);
+            return betStatusEnum.getCodBetStatus();
+        }
+        return null;
     }
 }
