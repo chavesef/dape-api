@@ -2,6 +2,7 @@ package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.adapter.dto.request.GetBetsRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -62,13 +63,13 @@ public class BetService {
         return betRepository.save(betToUpdate);
     }
 
-    public Page<Bet> getBetList(Integer page, Integer limit, String betStatus, String datCreated, String datUpdated) {
+    public Page<Bet> getBetList(GetBetsRequest getBetsRequest) {
         LOGGER.info("m=getBetList, msg=Buscando apostas cadastradas no banco de dados");
-        Pageable pageable = PageRequest.of(page, limit);
+        Pageable pageable = PageRequest.of(getBetsRequest.getPage(), getBetsRequest.getSize());
 
-        Integer codBetStatus = getCodBetStatus(betStatus);
+        Integer codBetStatus = getCodBetStatus(getBetsRequest.getBetStatus());
 
-        return betRepository.findAllWithFilters(pageable, codBetStatus, datCreated, datUpdated);
+        return betRepository.findAllWithFilters(pageable, codBetStatus, getBetsRequest.getDatCreated(), getBetsRequest.getDatUpdated());
     }
 
     private Bet getBetById(Long idtBet) {

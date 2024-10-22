@@ -2,6 +2,7 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.adapter.dto.request.GetBetsRequest;
 import com.dape.api.adapter.dto.response.BetListResponse;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.domain.entity.Bet;
@@ -56,12 +57,12 @@ public class BetOperationsController {
     }
 
     @GetMapping
-    public ResponseEntity<BetListResponse> getBet(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size,
+    public ResponseEntity<BetListResponse> getBets(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size,
                                                   @RequestParam(required = false, name = "bet_status") String betStatus,
                                                   @RequestParam(required = false, name = "dat_created") String datCreated,
                                                   @RequestParam(required = false, name = "dat_updated") String datUpdated){
         LOGGER.info("m=getBet, msg=Método GET chamado para listar apostas cadastradas");
-        Page<Bet> betPage = betService.getBetList(page, size, betStatus, datCreated, datUpdated);
+        Page<Bet> betPage = betService.getBetList(new GetBetsRequest(page, size, betStatus, datCreated, datUpdated));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BetListResponseFactory.createBetListResponse(betPage));
