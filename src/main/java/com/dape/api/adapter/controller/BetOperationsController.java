@@ -2,19 +2,25 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.adapter.dto.response.BetListResponse;
 import com.dape.api.adapter.dto.response.BetResponse;
+import com.dape.api.domain.entity.Bet;
+import com.dape.api.usecase.factory.BetListResponseFactory;
 import com.dape.api.usecase.factory.BetResponseFactory;
 import com.dape.api.usecase.service.BetService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -47,5 +53,17 @@ public class BetOperationsController {
         LOGGER.info("m=updateBetStatus, msg=Método PATCH chamado para atualizar o status de uma aposta para: {}", betStatusRequest.getBetStatus());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BetResponseFactory.createBetResponse(betService.updateBetStatus(idtBet, betStatusRequest)));
+    }
+
+    @GetMapping
+    public ResponseEntity<BetListResponse> getBet(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit,
+                                                  @RequestParam(required = false, name = "bet_status") String betStatus,
+                                                  @RequestParam(required = false, name = "dat_created") String datCreated,
+                                                  @RequestParam(required = false, name = "dat_updated") String datUpdated){
+        LOGGER.info("m=getBet, msg=Método GET chamado para listar apostas cadastradas");
+        Page<Bet> betPage = betService.getBetList(page, limit, betStatus, datCreated, datUpdated);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(BetListResponseFactory.createBetListResponse(betPage.getContent(), page, limit));
     }
 }
