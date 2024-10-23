@@ -1,6 +1,8 @@
 package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.adapter.dto.request.GetBetsRequest;
+import com.dape.api.domain.exception.GetBetsInvalidStatusException;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetStatusRequestStub;
 import com.dape.api.stub.BetStub;
@@ -10,11 +12,17 @@ import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
+import com.dape.api.stub.GetBetsRequestStub;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -164,5 +172,31 @@ class BetServiceTest {
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
         assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
 
+    }
+
+    @Test
+    void getBets(){
+        final Pageable pageable = PageRequest.of(0, 10);
+        final Page<Bet> expectedBetPage = new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
+
+        when(betRepository.findAllWithFilters(any(), any(), any(), any())).thenReturn(expectedBetPage);
+
+        final Page<Bet> actualBetPage = betService.getBetList(GetBetsRequestStub.builder().build());
+
+        assertThat(actualBetPage).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBetPage);
+    }
+
+    @Test
+    void getBetsWithInvalidStatusExpectException(){
+        when(betRepository.findAllWithFilters(any(), any(), any(), any()))
+                .thenReturn(new PageImpl<>(Collections.singletonList(BetStub.builder().build()), PageRequest.of(0, 10), 1));
+
+        final String betStatus = "VENCIDA";
+        final String expectedMessage = "Status não existente: " + betStatus;
+        final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withBetStatus(betStatus).build();
+
+        GetBetsInvalidStatusException getBetsInvalidStatusException =
+                assertThrows(GetBetsInvalidStatusException.class, () -> betService.getBetList(getBetsRequest));
+        assertEquals(expectedMessage, getBetsInvalidStatusException.getMessage());
     }
 }
