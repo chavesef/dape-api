@@ -187,6 +187,18 @@ class BetServiceTest {
     }
 
     @Test
+    void getBetsWithNullBetStatus(){
+        final Pageable pageable = PageRequest.of(0, 10);
+        final Page<Bet> expectedBetPage = new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
+
+        when(betRepository.findAllWithFilters(any(), any(), any(), any())).thenReturn(expectedBetPage);
+
+        final Page<Bet> actualBetPage = betService.getBetList(GetBetsRequestStub.builder().withBetStatus(null).build());
+
+        assertThat(actualBetPage).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBetPage);
+    }
+
+    @Test
     void getBetsWithInvalidStatusExpectException(){
         when(betRepository.findAllWithFilters(any(), any(), any(), any()))
                 .thenReturn(new PageImpl<>(Collections.singletonList(BetStub.builder().build()), PageRequest.of(0, 10), 1));
