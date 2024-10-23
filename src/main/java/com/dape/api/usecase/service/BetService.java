@@ -7,6 +7,7 @@ import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
+import com.dape.api.domain.exception.GetBetsInvalidStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.usecase.factory.BetFactory;
 import org.slf4j.Logger;
@@ -110,7 +111,7 @@ public class BetService {
             try {
                 return BetStatusEnum.valueOf(betStatus).getCodBetStatus();
             } catch (IllegalArgumentException e) {
-                throw new InvalidStatusForUpdateException("Status não existente: " + betStatus);
+                throw new GetBetsInvalidStatusException("Status não existente: " + betStatus);
             }
         }
         return null;
