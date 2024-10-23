@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
-import static com.dape.api.domain.enums.BetStatusEnum.valueOf;
 
 @Service
 public class BetService {
@@ -108,8 +107,11 @@ public class BetService {
 
     private Integer getCodBetStatus(String betStatus) {
         if(betStatus != null){
-            BetStatusEnum betStatusEnum = valueOf(betStatus);
-            return betStatusEnum.getCodBetStatus();
+            try {
+                return BetStatusEnum.valueOf(betStatus).getCodBetStatus();
+            } catch (IllegalArgumentException e) {
+                throw new InvalidStatusForUpdateException("Status não existente: " + betStatus);
+            }
         }
         return null;
     }
