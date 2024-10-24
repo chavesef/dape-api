@@ -2,16 +2,23 @@ package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.adapter.dto.request.GetBetsRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
+import com.dape.api.domain.exception.GetBetsInvalidStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.usecase.factory.BetFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
@@ -58,6 +65,17 @@ public class BetService {
         return betRepository.save(betToUpdate);
     }
 
+    public Page<Bet> getBetList(GetBetsRequest getBetsRequest) {
+        final Pageable pageable = PageRequest.of(getBetsRequest.getPage(), getBetsRequest.getSize());
+
+        final Integer codBetStatus = getCodBetStatus(getBetsRequest.getBetStatus());
+
+        validateDatesParameters(getBetsRequest);
+
+        LOGGER.info("m=getBetList, msg=Buscando apostas cadastradas no banco de dados");
+        return betRepository.findAllWithFilters(pageable, codBetStatus, getBetsRequest.getDatCreated(), getBetsRequest.getDatUpdated());
+    }
+
     private Bet getBetById(Long idtBet) {
         return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
@@ -90,5 +108,35 @@ public class BetService {
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusEnum betStatus) {
             betToUpdate.setBetStatusEnum(betStatus);
             betToUpdate.setDatUpdated(LocalDateTime.now());
+    }
+
+    private Integer getCodBetStatus(String betStatus) {
+        if(betStatus != null){
+            try {
+                return BetStatusEnum.valueOf(betStatus).getCodBetStatus();
+            } catch (IllegalArgumentException e) {
+                throw new GetBetsInvalidStatusException("Status não existente: " + betStatus);
+            }
+        }
+        return null;
+    }
+
+    private void validateDatesParameters(GetBetsRequest getBetsRequest) {
+        if(getBetsRequest.getDatCreated() != null){
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                getBetsRequest.setDatCreated(sdf.format(sdf.parse(getBetsRequest.getDatCreated())));
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Formato de data inválido.");
+            }
+        }
+        if(getBetsRequest.getDatUpdated() != null){
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                getBetsRequest.setDatUpdated(sdf.format(sdf.parse(getBetsRequest.getDatUpdated())));
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Formato de data inválido.");
+            }
+        }
     }
 }

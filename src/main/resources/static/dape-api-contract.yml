@@ -60,7 +60,7 @@ paths:
             type: integer
             format: int32
             example: 0
-        - name: limit
+        - name: size
           in: query
           required: false
           schema:
@@ -77,15 +77,15 @@ paths:
           required: false
           schema:
             type: string
-            format: date-time
-            example: "2025-07-21T15:16:10.877543705"
+            format: date
+            example: "2025-07-21"
         - name: dat_updated
           in: query
           required: false
           schema:
             type: string
-            format: date-time
-            example: "2025-07-21T15:16:10.877543705"
+            format: date
+            example: "2025-07-21"
       responses:
         '200':
           description: OK
