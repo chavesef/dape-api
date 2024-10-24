@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
@@ -68,6 +70,8 @@ public class BetService {
 
         final Integer codBetStatus = getCodBetStatus(getBetsRequest.getBetStatus());
 
+        validateDatesParameters(getBetsRequest);
+
         LOGGER.info("m=getBetList, msg=Buscando apostas cadastradas no banco de dados");
         return betRepository.findAllWithFilters(pageable, codBetStatus, getBetsRequest.getDatCreated(), getBetsRequest.getDatUpdated());
     }
@@ -115,5 +119,24 @@ public class BetService {
             }
         }
         return null;
+    }
+
+    private void validateDatesParameters(GetBetsRequest getBetsRequest) {
+        if(getBetsRequest.getDatCreated() != null){
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                getBetsRequest.setDatCreated(sdf.format(sdf.parse(getBetsRequest.getDatCreated())));
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Formato de data inválido.");
+            }
+        }
+        if(getBetsRequest.getDatUpdated() != null){
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                getBetsRequest.setDatUpdated(sdf.format(sdf.parse(getBetsRequest.getDatUpdated())));
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Formato de data inválido.");
+            }
+        }
     }
 }
