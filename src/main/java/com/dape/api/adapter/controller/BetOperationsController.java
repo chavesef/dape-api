@@ -62,7 +62,7 @@ public class BetOperationsController {
                                                   @RequestParam(required = false, name = "dat_created") String datCreated,
                                                   @RequestParam(required = false, name = "dat_updated") String datUpdated){
         LOGGER.info("m=getBet, msg=Método GET chamado para listar apostas cadastradas");
-        Page<Bet> betPage = betService.getBetList(new GetBetsRequest(page, size, betStatus, datCreated, datUpdated));
+        final Page<Bet> betPage = betService.getBetList(new GetBetsRequest(page, size, betStatus, datCreated, datUpdated));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BetListResponseFactory.createBetListResponse(betPage));

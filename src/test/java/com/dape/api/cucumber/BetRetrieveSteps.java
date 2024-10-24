@@ -93,7 +93,9 @@ public class BetRetrieveSteps {
     @Então("os seguintes dados devem ser retornados para a página {int}")
     public void theFollowingDataShouldBeReturnedToPage(int page, List<Bet> expectedBets) {
         aBetGetRequestIsCalledWithParameter("page", String.valueOf(page));
+
         final List<Bet> actualBets = generateBetList(page);
+
         assertEquals(expectedBets.size(), actualBets.size());
         assertThat(actualBets).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBets);
     }

@@ -64,11 +64,11 @@ public class BetService {
     }
 
     public Page<Bet> getBetList(GetBetsRequest getBetsRequest) {
+        final Pageable pageable = PageRequest.of(getBetsRequest.getPage(), getBetsRequest.getSize());
+
+        final Integer codBetStatus = getCodBetStatus(getBetsRequest.getBetStatus());
+
         LOGGER.info("m=getBetList, msg=Buscando apostas cadastradas no banco de dados");
-        Pageable pageable = PageRequest.of(getBetsRequest.getPage(), getBetsRequest.getSize());
-
-        Integer codBetStatus = getCodBetStatus(getBetsRequest.getBetStatus());
-
         return betRepository.findAllWithFilters(pageable, codBetStatus, getBetsRequest.getDatCreated(), getBetsRequest.getDatUpdated());
     }
 

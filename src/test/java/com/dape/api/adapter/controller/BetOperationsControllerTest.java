@@ -82,9 +82,8 @@ class BetOperationsControllerTest {
     void getBets() {
         when(betService.getBetList(any(GetBetsRequest.class))).thenReturn(getBetPage());
 
-        BetListResponse betListResponse = BetListResponseStub.builder().build();
         final ResponseEntity<BetListResponse> expectedResponse = ResponseEntity.status(HttpStatusCode.valueOf(200))
-                .body(betListResponse);
+                .body(BetListResponseStub.builder().build());
         final ResponseEntity<BetListResponse> actualResponse = betOperationsController.getBets(
                 getBetPage().getNumber(), getBetPage().getSize(), "PENDING", "2024-10-21", null);
 
