@@ -7,7 +7,6 @@ import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.GetBetsInvalidStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.usecase.factory.BetFactory;
 import org.slf4j.Logger;
@@ -22,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
+import static com.dape.api.domain.enums.BetStatusEnum.fromString;
 
 @Service
 public class BetService {
@@ -68,7 +68,7 @@ public class BetService {
     public Page<Bet> getBetList(GetBetsRequest getBetsRequest) {
         final Pageable pageable = PageRequest.of(getBetsRequest.getPage(), getBetsRequest.getSize());
 
-        final Integer codBetStatus = getCodBetStatus(getBetsRequest.getBetStatus());
+        final Integer codBetStatus = fromString(getBetsRequest.getBetStatus());
 
         validateDatesParameters(getBetsRequest);
 
@@ -108,17 +108,6 @@ public class BetService {
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusEnum betStatus) {
             betToUpdate.setBetStatusEnum(betStatus);
             betToUpdate.setDatUpdated(LocalDateTime.now());
-    }
-
-    private Integer getCodBetStatus(String betStatus) {
-        if(betStatus != null){
-            try {
-                return BetStatusEnum.valueOf(betStatus).getCodBetStatus();
-            } catch (IllegalArgumentException e) {
-                throw new GetBetsInvalidStatusException("Status não existente: " + betStatus);
-            }
-        }
-        return null;
     }
 
     private void validateDatesParameters(GetBetsRequest getBetsRequest) {
