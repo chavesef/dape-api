@@ -176,8 +176,7 @@ class BetServiceTest {
 
     @Test
     void getBets(){
-        final Pageable pageable = PageRequest.of(0, 10);
-        final Page<Bet> expectedBetPage = new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
+        final Page<Bet> expectedBetPage = createPage();
 
         when(betRepository.findAllWithFilters(any(), any(), any(), any())).thenReturn(expectedBetPage);
 
@@ -188,8 +187,7 @@ class BetServiceTest {
 
     @Test
     void getBetsWithNullBetStatus(){
-        final Pageable pageable = PageRequest.of(0, 10);
-        final Page<Bet> expectedBetPage = new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
+        final Page<Bet> expectedBetPage = createPage();
 
         when(betRepository.findAllWithFilters(any(), any(), any(), any())).thenReturn(expectedBetPage);
 
@@ -201,7 +199,7 @@ class BetServiceTest {
     @Test
     void getBetsWithInvalidStatusExpectException(){
         when(betRepository.findAllWithFilters(any(), any(), any(), any()))
-                .thenReturn(new PageImpl<>(Collections.singletonList(BetStub.builder().build()), PageRequest.of(0, 10), 1));
+                .thenReturn(createPage());
 
         final String betStatus = "VENCIDA";
         final String expectedMessage = "Status não existente: " + betStatus;
@@ -215,7 +213,7 @@ class BetServiceTest {
     @Test
     void getBetsWithInvalidDatCreatedExpectException(){
         when(betRepository.findAllWithFilters(any(), any(), any(), any()))
-                .thenReturn(new PageImpl<>(Collections.singletonList(BetStub.builder().build()), PageRequest.of(0, 10), 1));
+                .thenReturn(createPage());
 
         final String expectedMessage = "Formato de data inválido.";
         final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatCreated("A2024-10-21").build();
@@ -228,7 +226,7 @@ class BetServiceTest {
     @Test
     void getBetsWithInvalidDatUpdatedExpectException(){
         when(betRepository.findAllWithFilters(any(), any(), any(), any()))
-                .thenReturn(new PageImpl<>(Collections.singletonList(BetStub.builder().build()), PageRequest.of(0, 10), 1));
+                .thenReturn(createPage());
 
         final String expectedMessage = "Formato de data inválido.";
         final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatUpdated("A2024-10-21").build();
@@ -236,5 +234,10 @@ class BetServiceTest {
         IllegalArgumentException illegalArgumentException =
                 assertThrows(IllegalArgumentException.class, () -> betService.getBetList(getBetsRequest));
         assertEquals(expectedMessage, illegalArgumentException.getMessage());
+    }
+
+    private Page<Bet> createPage(){
+        final Pageable pageable = PageRequest.of(0, 10);
+        return new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
     }
 }
