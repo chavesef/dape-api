@@ -2,7 +2,7 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.GetBetsInvalidStatusException;
+import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -91,7 +91,7 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleInvalidStatusForGetBets(){
-        final GetBetsInvalidStatusException exception = new GetBetsInvalidStatusException("Status não existente: VENCIDA" );
+        final InvalidBetStatusException exception = new InvalidBetStatusException("Status não existente: VENCIDA" );
 
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
 

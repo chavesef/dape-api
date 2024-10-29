@@ -2,7 +2,7 @@ package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.request.GetBetsRequest;
-import com.dape.api.domain.exception.GetBetsInvalidStatusException;
+import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetStatusRequestStub;
 import com.dape.api.stub.BetStub;
@@ -205,9 +205,9 @@ class BetServiceTest {
         final String expectedMessage = "Status não existente: " + betStatus;
         final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withBetStatus(betStatus).build();
 
-        GetBetsInvalidStatusException getBetsInvalidStatusException =
-                assertThrows(GetBetsInvalidStatusException.class, () -> betService.getBetList(getBetsRequest));
-        assertEquals(expectedMessage, getBetsInvalidStatusException.getMessage());
+        InvalidBetStatusException invalidBetStatusException =
+                assertThrows(InvalidBetStatusException.class, () -> betService.getBetList(getBetsRequest));
+        assertEquals(expectedMessage, invalidBetStatusException.getMessage());
     }
 
     @Test
