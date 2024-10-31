@@ -13,6 +13,7 @@ import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.stub.GetBetsRequestStub;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
@@ -178,7 +179,7 @@ class BetServiceTest {
     void getBets(){
         final Page<Bet> expectedBetPage = createPage();
 
-        when(betRepository.findAllWithFilters(any(), any(), any(), any())).thenReturn(expectedBetPage);
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(expectedBetPage);
 
         final Page<Bet> actualBetPage = betService.getBetList(GetBetsRequestStub.builder().build());
 
@@ -189,7 +190,7 @@ class BetServiceTest {
     void getBetsWithNullBetStatus(){
         final Page<Bet> expectedBetPage = createPage();
 
-        when(betRepository.findAllWithFilters(any(), any(), any(), any())).thenReturn(expectedBetPage);
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(expectedBetPage);
 
         final Page<Bet> actualBetPage = betService.getBetList(GetBetsRequestStub.builder().withBetStatus(null).build());
 
@@ -198,8 +199,8 @@ class BetServiceTest {
 
     @Test
     void getBetsWithInvalidStatusExpectException(){
-        when(betRepository.findAllWithFilters(any(), any(), any(), any()))
-                .thenReturn(createPage());
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
+
 
         final String betStatus = "VENCIDA";
         final String expectedMessage = "Status não existente: " + betStatus;
@@ -212,8 +213,8 @@ class BetServiceTest {
 
     @Test
     void getBetsWithInvalidDatCreatedExpectException(){
-        when(betRepository.findAllWithFilters(any(), any(), any(), any()))
-                .thenReturn(createPage());
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
+
 
         final String expectedMessage = "Formato de data inválido.";
         final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatCreated("A2024-10-21").build();
@@ -225,8 +226,8 @@ class BetServiceTest {
 
     @Test
     void getBetsWithInvalidDatUpdatedExpectException(){
-        when(betRepository.findAllWithFilters(any(), any(), any(), any()))
-                .thenReturn(createPage());
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
+
 
         final String expectedMessage = "Formato de data inválido.";
         final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatUpdated("A2024-10-21").build();

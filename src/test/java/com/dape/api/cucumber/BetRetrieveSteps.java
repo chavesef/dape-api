@@ -127,7 +127,6 @@ public class BetRetrieveSteps {
     private ResponseEntity<BetListResponse> generateResponseEntityForTheGetRequest() {
         if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        System.out.println(params);
         final Response getResponse = given().params(params).when()
                 .get("/dape/bet").then().extract().response();
 
