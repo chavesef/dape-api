@@ -9,6 +9,8 @@ import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.usecase.factory.BetFactory;
+import com.dape.api.usecase.factory.GetBetRequestPredicateFactory;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
-import static com.dape.api.domain.enums.BetStatusEnum.fromString;
+import static com.dape.api.domain.enums.BetStatusEnum.validateFromString;
 
 @Service
 public class BetService {
@@ -68,12 +70,14 @@ public class BetService {
     public Page<Bet> getBetList(GetBetsRequest getBetsRequest) {
         final Pageable pageable = PageRequest.of(getBetsRequest.getPage(), getBetsRequest.getSize());
 
-        final Integer codBetStatus = fromString(getBetsRequest.getBetStatus());
-
         validateDatesParameters(getBetsRequest);
 
+        validateFromString(getBetsRequest.getBetStatus());
+
+        final BooleanExpression predicate = GetBetRequestPredicateFactory.createBetPredicate(getBetsRequest);
+
         LOGGER.info("m=getBetList, msg=Buscando apostas cadastradas no banco de dados");
-        return betRepository.findAllWithFilters(pageable, codBetStatus, getBetsRequest.getDatCreated(), getBetsRequest.getDatUpdated());
+        return betRepository.findAll(predicate, pageable);
     }
 
     private Bet getBetById(Long idtBet) {

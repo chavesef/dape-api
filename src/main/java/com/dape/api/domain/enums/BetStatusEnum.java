@@ -41,14 +41,13 @@ public enum BetStatusEnum {
         throw new InvalidStatusForUpdateException("Descrição de aposta inválida: " + betStatusRequest.getBetStatus());
     }
 
-    public static Integer fromString(String betStatus){
+    public static void validateFromString(String betStatus){
         if(betStatus != null){
             try {
-                return BetStatusEnum.valueOf(betStatus).getCodBetStatus();
+                BetStatusEnum.valueOf(betStatus);
             } catch (IllegalArgumentException e) {
                 throw new InvalidBetStatusException("Status não existente: " + betStatus);
             }
         }
-        return null;
     }
 }
