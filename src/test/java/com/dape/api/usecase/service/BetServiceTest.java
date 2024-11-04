@@ -1,6 +1,8 @@
 package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.adapter.dto.request.GetBetsRequest;
+import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetStatusRequestStub;
 import com.dape.api.stub.BetStub;
@@ -10,11 +12,18 @@ import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
+import com.dape.api.stub.GetBetsRequestStub;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -164,5 +173,72 @@ class BetServiceTest {
                 assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
         assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
 
+    }
+
+    @Test
+    void getBets(){
+        final Page<Bet> expectedBetPage = createPage();
+
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(expectedBetPage);
+
+        final Page<Bet> actualBetPage = betService.getBetList(GetBetsRequestStub.builder().build());
+
+        assertThat(actualBetPage).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBetPage);
+    }
+
+    @Test
+    void getBetsWithNullBetStatus(){
+        final Page<Bet> expectedBetPage = createPage();
+
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(expectedBetPage);
+
+        final Page<Bet> actualBetPage = betService.getBetList(GetBetsRequestStub.builder().withBetStatus(null).build());
+
+        assertThat(actualBetPage).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBetPage);
+    }
+
+    @Test
+    void getBetsWithInvalidStatusExpectException(){
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
+
+
+        final String betStatus = "VENCIDA";
+        final String expectedMessage = "Status não existente: " + betStatus;
+        final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withBetStatus(betStatus).build();
+
+        InvalidBetStatusException invalidBetStatusException =
+                assertThrows(InvalidBetStatusException.class, () -> betService.getBetList(getBetsRequest));
+        assertEquals(expectedMessage, invalidBetStatusException.getMessage());
+    }
+
+    @Test
+    void getBetsWithInvalidDatCreatedExpectException(){
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
+
+
+        final String expectedMessage = "Formato de data inválido.";
+        final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatCreated("A2024-10-21").build();
+
+        IllegalArgumentException illegalArgumentException =
+                assertThrows(IllegalArgumentException.class, () -> betService.getBetList(getBetsRequest));
+        assertEquals(expectedMessage, illegalArgumentException.getMessage());
+    }
+
+    @Test
+    void getBetsWithInvalidDatUpdatedExpectException(){
+        when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
+
+
+        final String expectedMessage = "Formato de data inválido.";
+        final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatUpdated("A2024-10-21").build();
+
+        IllegalArgumentException illegalArgumentException =
+                assertThrows(IllegalArgumentException.class, () -> betService.getBetList(getBetsRequest));
+        assertEquals(expectedMessage, illegalArgumentException.getMessage());
+    }
+
+    private Page<Bet> createPage(){
+        final Pageable pageable = PageRequest.of(0, 10);
+        return new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
     }
 }

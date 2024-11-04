@@ -1,6 +1,7 @@
 package com.dape.api.domain.enums;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 
 import java.util.Objects;
@@ -38,5 +39,15 @@ public enum BetStatusEnum {
             if (Objects.equals(betStatusEnum.toString(), betStatusRequest.getBetStatus()))
                 return betStatusEnum;
         throw new InvalidStatusForUpdateException("Descrição de aposta inválida: " + betStatusRequest.getBetStatus());
+    }
+
+    public static void validateFromString(String betStatus){
+        if(betStatus != null){
+            try {
+                BetStatusEnum.valueOf(betStatus);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidBetStatusException("Status não existente: " + betStatus);
+            }
+        }
     }
 }

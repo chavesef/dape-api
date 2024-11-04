@@ -1,7 +1,11 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
+import com.dape.api.adapter.dto.request.GetBetsRequest;
+import com.dape.api.adapter.dto.response.BetListResponse;
+import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
+import com.dape.api.stub.BetListResponseStub;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetResponseStub;
 import com.dape.api.stub.BetStatusRequestStub;
@@ -11,11 +15,16 @@ import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.usecase.service.BetService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -67,5 +76,23 @@ class BetOperationsControllerTest {
 
         verify(betService).updateBetStatus(IDT_BET, betStatusRequest);
         assertThat(actualBet).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedBet);
+    }
+
+    @Test
+    void getBets() {
+        when(betService.getBetList(any(GetBetsRequest.class))).thenReturn(getBetPage());
+
+        final ResponseEntity<BetListResponse> expectedResponse = ResponseEntity.status(HttpStatusCode.valueOf(200))
+                .body(BetListResponseStub.builder().build());
+        final ResponseEntity<BetListResponse> actualResponse = betOperationsController.getBets(
+                getBetPage().getNumber(), getBetPage().getSize(), "PENDING", "2024-10-21", null);
+
+        assertThat(actualResponse).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedResponse);
+        verify(betService).getBetList(any(GetBetsRequest.class));
+    }
+
+    private Page<Bet> getBetPage() {
+        final Pageable pageable = PageRequest.of(0, 10);
+        return new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
     }
 }
