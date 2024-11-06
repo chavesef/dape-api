@@ -3,7 +3,7 @@ package com.dape.api.adapter.controller;
 import com.dape.api.adapter.dto.response.ErrorResponse;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.InvalidBetStatusException;
-import com.dape.api.domain.exception.InvalidStatusForUpdateException;
+import com.dape.api.domain.exception.InvalidConditionException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpInputMessage;
@@ -78,7 +78,7 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleBetSelectedOrResolved(){
-        final InvalidStatusForUpdateException exception = new InvalidStatusForUpdateException("Condições inválidas para atualização: BetStatus=RED, FlgSelected=0");
+        final InvalidConditionException exception = new InvalidConditionException("Condições inválidas para atualização: BetStatus=RED, FlgSelected=0");
 
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
 
