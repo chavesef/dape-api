@@ -199,7 +199,13 @@ paths:
             example: "1"
       responses:
         '200':
-          description: OK, Aposta Deletada
+          description: OK, Aposta excluída
+        '400':
+          description: Bad Request, Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Not found, Aposta não encontrada
           content:
