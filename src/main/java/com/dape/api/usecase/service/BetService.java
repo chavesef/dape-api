@@ -7,7 +7,7 @@ import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.InvalidStatusForUpdateException;
+import com.dape.api.domain.exception.InvalidConditionException;
 import com.dape.api.usecase.factory.BetFactory;
 import com.dape.api.usecase.factory.GetBetRequestPredicateFactory;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -80,13 +80,22 @@ public class BetService {
         return betRepository.findAll(predicate, pageable);
     }
 
+    public void deleteBet(Long idtBet) {
+        Bet betToDelete = getBetById(idtBet);
+
+        validateBetToDelete(betToDelete);
+
+        LOGGER.info("m=deleteBet, msg=Excluindo aposta com id:{}",idtBet);
+        betRepository.delete(betToDelete);
+    }
+
     private Bet getBetById(Long idtBet) {
         return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
 
     private void validateBetToUpdate(Bet betToUpdate){
         if(betIsNotUpdatable(betToUpdate))
-            throw new InvalidStatusForUpdateException("Condições inválidas para atualização da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
+            throw new InvalidConditionException("Condições inválidas para atualização da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum() + ", FlgSelected=" + betToUpdate.getFlgSelected());
     }
 
     private boolean betIsNotUpdatable(Bet betToUpdate) {
@@ -101,12 +110,12 @@ public class BetService {
 
     private void validateBetStatusRequest(BetStatusEnum betStatus) {
         if(betStatus == BetStatusEnum.PENDING)
-            throw new InvalidStatusForUpdateException("Não é permitido atualizar o status de uma aposta para PENDING");
+            throw new InvalidConditionException("Não é permitido atualizar o status de uma aposta para PENDING");
     }
 
     private void validateBetToUpdateStatus(Bet betToUpdate) {
         if(betToUpdate.getBetStatusEnum() != BetStatusEnum.PENDING)
-            throw new InvalidStatusForUpdateException("Condições inválidas para atualização do status da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum());
+            throw new InvalidConditionException("Condições inválidas para atualização do status da aposta com id: " + betToUpdate.getIdtBet() + " - BetStatus=" + betToUpdate.getBetStatusEnum());
     }
 
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusEnum betStatus) {
@@ -131,5 +140,10 @@ public class BetService {
                 throw new IllegalArgumentException("Formato de data inválido.");
             }
         }
+    }
+
+    private void validateBetToDelete(Bet betToDelete) {
+        if(betToDelete.getFlgSelected() == IS_SELECTED)
+            throw new InvalidConditionException("Aposta já selecionada, não é possível deletá-la");
     }
 }
