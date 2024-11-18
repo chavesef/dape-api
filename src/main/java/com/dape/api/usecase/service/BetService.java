@@ -81,7 +81,7 @@ public class BetService {
     }
 
     public void deleteBet(Long idtBet) {
-        Bet betToDelete = getBetById(idtBet);
+        final Bet betToDelete = getBetById(idtBet);
 
         validateBetToDelete(betToDelete);
 

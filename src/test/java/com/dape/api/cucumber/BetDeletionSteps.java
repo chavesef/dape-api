@@ -76,9 +76,6 @@ public class BetDeletionSteps {
 
         final Response deleteResponse = given().pathParam("idt_bet", idtBet).when().delete("/dape/bet/{idt_bet}")
                 .then().extract().response();
-        System.out.println(deleteResponse.body());
-        System.out.println(deleteResponse.asString());
-        System.out.println(deleteResponse.getStatusCode());
 
         if (deleteResponse.getStatusCode() == HttpStatus.OK.value()) {
             return new ResponseEntity<>(deleteResponse.asString(), HttpStatus.valueOf(deleteResponse.getStatusCode()));
