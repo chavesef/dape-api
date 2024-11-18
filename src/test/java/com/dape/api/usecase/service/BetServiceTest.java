@@ -2,6 +2,7 @@ package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.request.GetBetsRequest;
+import com.dape.api.domain.exception.BetSelectedException;
 import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.stub.BetRequestStub;
 import com.dape.api.stub.BetStatusRequestStub;
@@ -11,7 +12,7 @@ import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
-import com.dape.api.domain.exception.InvalidConditionException;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.stub.GetBetsRequestStub;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.Test;
@@ -88,9 +89,9 @@ class BetServiceTest {
 
         final String expectedMessage = "Condições inválidas para atualização da aposta com id: " + existentBet.getIdtBet() + " - BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
 
-        final InvalidConditionException invalidConditionException =
-                assertThrows(InvalidConditionException.class, () -> betService.updateBet(idtBet, betRequest));
-        assertEquals(expectedMessage, invalidConditionException.getMessage());
+        final InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
     }
 
     @Test
@@ -104,9 +105,9 @@ class BetServiceTest {
 
         final String expectedMessage = "Condições inválidas para atualização da aposta com id: " + existentBet.getIdtBet() + " - BetStatus=" + existentBet.getBetStatusEnum() + ", FlgSelected=" + existentBet.getFlgSelected();
 
-        final InvalidConditionException invalidConditionException =
-                assertThrows(InvalidConditionException.class, () -> betService.updateBet(idtBet, betRequest));
-        assertEquals(expectedMessage, invalidConditionException.getMessage());
+        final InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBet(idtBet, betRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
     }
 
     @Test
@@ -156,9 +157,9 @@ class BetServiceTest {
         final String expectedMessage = "Não é permitido atualizar o status de uma aposta para PENDING";
 
         final Long idtBet = 1L;
-        final InvalidConditionException invalidConditionException =
-                assertThrows(InvalidConditionException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
-        assertEquals(expectedMessage, invalidConditionException.getMessage());
+        final InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
     }
 
     @Test
@@ -170,9 +171,9 @@ class BetServiceTest {
         final Long idtBet = 1L;
         final String expectedMessage = "Condições inválidas para atualização do status da aposta com id: " +  idtBet + " - BetStatus=" + BetStatusEnum.RED;
 
-        final InvalidConditionException invalidConditionException =
-                assertThrows(InvalidConditionException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
-        assertEquals(expectedMessage, invalidConditionException.getMessage());
+        final InvalidStatusForUpdateException invalidStatusForUpdateException =
+                assertThrows(InvalidStatusForUpdateException.class, () -> betService.updateBetStatus(idtBet, betStatusRequest));
+        assertEquals(expectedMessage, invalidStatusForUpdateException.getMessage());
 
     }
 
@@ -267,11 +268,11 @@ class BetServiceTest {
         when(betRepository.findById(anyLong())).thenReturn(Optional.of(existingBet));
 
         final Long idtBet = 1L;
-        final InvalidConditionException invalidConditionException = assertThrows(InvalidConditionException.class, () -> betService.deleteBet(idtBet));
+        final BetSelectedException betSelectedException = assertThrows(BetSelectedException.class, () -> betService.deleteBet(idtBet));
 
         final String expectedMessage = "Aposta já selecionada, não é possível deletá-la";
 
-        assertEquals(expectedMessage, invalidConditionException.getMessage());
+        assertEquals(expectedMessage, betSelectedException.getMessage());
         verify(betRepository).findById(idtBet);
 
     }
