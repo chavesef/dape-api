@@ -7,6 +7,7 @@ import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
+import com.dape.api.domain.exception.BetSelectedException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.usecase.factory.BetFactory;
 import com.dape.api.usecase.factory.GetBetRequestPredicateFactory;
@@ -80,6 +81,15 @@ public class BetService {
         return betRepository.findAll(predicate, pageable);
     }
 
+    public void deleteBet(Long idtBet) {
+        final Bet betToDelete = getBetById(idtBet);
+
+        validateBetToDelete(betToDelete);
+
+        LOGGER.info("m=deleteBet, msg=Excluindo aposta com id:{}",idtBet);
+        betRepository.delete(betToDelete);
+    }
+
     private Bet getBetById(Long idtBet) {
         return betRepository.findById(idtBet).orElseThrow(() -> new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados"));
     }
@@ -131,5 +141,10 @@ public class BetService {
                 throw new IllegalArgumentException("Formato de data inválido.");
             }
         }
+    }
+
+    private void validateBetToDelete(Bet betToDelete) {
+        if(betToDelete.getFlgSelected() == IS_SELECTED)
+            throw new BetSelectedException("Aposta já selecionada, não é possível deletá-la");
     }
 }

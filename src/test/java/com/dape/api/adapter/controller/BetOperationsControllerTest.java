@@ -95,4 +95,14 @@ class BetOperationsControllerTest {
         final Pageable pageable = PageRequest.of(0, 10);
         return new PageImpl<>(Collections.singletonList(BetStub.builder().build()), pageable, 1);
     }
+
+    @Test
+    void deleteBets(){
+        final ResponseEntity<String> expectedResponse = ResponseEntity.status(HttpStatusCode.valueOf(200))
+                .body("Aposta excluída");
+        final ResponseEntity<String> actualResponse = betOperationsController.deleteBet(IDT_BET);
+
+        assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectedResponse);
+        verify(betService).deleteBet(anyLong());
+    }
 }

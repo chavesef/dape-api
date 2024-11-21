@@ -20,6 +20,8 @@ ou 'perdida'(red).
   - [Cadastro de uma nova aposta](#cadastro-de-uma-nova-aposta)
   - [Atualização de uma aposta](#atualização-de-uma-aposta)
   - [Atualização do status de uma aposta](#atualização-do-status-de-uma-aposta)
+  - [Visualização de apostas cadastradas](#visualização-de-apostas-cadastradas)
+  - [Exclusão de uma aposta cadastrada](#exclusão-de-uma-aposta-cadastrada)
 
 
 ## Arquitetura
@@ -163,6 +165,95 @@ A resposta deverá ser como a seguinte:
   "flg_selected": 0
 }
 ```
+
+### Visualização de apostas cadastradas
+Para visualizar as apostas cadastradas no banco de dados rode o seguinte comando no terminal:
+```sh
+curl -X 'GET' \
+  'http://localhost:8080/dape/bet' \
+  -H 'accept: application/json'
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 200 - OK
+```json
+{
+  "page": 0,
+  "size": 10,
+  "totalPages": 1,
+  "totalElements": 3,
+  "betResponseList": [
+    {
+      "idt_bet": 1,
+      "des_bet": "Vitória do São Paulo",
+      "num_odd": 2.13,
+      "dat_created": "2024-10-29T15:01:34.928002",
+      "dat_updated": "2024-10-31T14:47:58.561104",
+      "bet_status_enum": "GREEN",
+      "flg_selected": 0
+    },
+    {
+      "idt_bet": 2,
+      "des_bet": "Vitória do Flamengo",
+      "num_odd": 1.32,
+      "dat_created": "2024-10-29T15:01:34.929608",
+      "dat_updated": "2024-10-29T15:01:34.929608",
+      "bet_status_enum": "PENDING",
+      "flg_selected": 1
+    },
+    {
+      "idt_bet": 3,
+      "des_bet": "Vitória do Palmeiras",
+      "num_odd": 1.45,
+      "dat_created": "2024-10-29T15:01:34.931167",
+      "dat_updated": "2024-10-29T15:01:34.931167",
+      "bet_status_enum": "RED",
+      "flg_selected": 0
+    }
+  ]
+}
+```
+
+É possível realizar a consulta filtrando as apostas pela data de criação e atualização e pelo status. Um exemplo de consulta
+com filtro de status e data de criação seria:
+```sh
+curl -X 'GET' \
+  'http://localhost:8080/dape/bet?bet_status=PENDING&dat_created=2024-10-29' \
+  -H 'accept: application/json'
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 200 - OK
+```json
+{
+  "page": 0,
+  "size": 10,
+  "totalPages": 1,
+  "totalElements": 1,
+  "betResponseList": [
+    {
+      "idt_bet": 2,
+      "des_bet": "Vitória do Flamengo",
+      "num_odd": 1.32,
+      "dat_created": "2024-10-29T15:01:34.929608",
+      "dat_updated": "2024-10-29T15:01:34.929608",
+      "bet_status_enum": "PENDING",
+      "flg_selected": 1
+    }
+  ]
+}
+```
+### Exclusão de uma aposta cadastrada
+Para excluir uma aposta cadastrada no banco de dados rode o seguinte comando no terminal:
+```sh
+curl -X 'DELETE' \
+  'http://localhost:8080/dape/bet/1' \
+  -H 'accept: */*'
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 200 - OK
+Aposta excluída
 
 
 
