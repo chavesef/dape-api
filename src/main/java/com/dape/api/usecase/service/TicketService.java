@@ -3,6 +3,7 @@ package com.dape.api.usecase.service;
 import com.dape.api.adapter.dto.request.TicketRequest;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.adapter.repository.ClientRepository;
+import com.dape.api.adapter.repository.TicketBetRepository;
 import com.dape.api.adapter.repository.TicketRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.entity.Client;
@@ -10,6 +11,7 @@ import com.dape.api.domain.entity.Ticket;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.ClientNotExistentException;
 import com.dape.api.domain.exception.UnavailableBalanceException;
+import com.dape.api.usecase.factory.TicketBetFactory;
 import com.dape.api.usecase.factory.TicketFactory;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +24,13 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final BetRepository betRepository;
     private final ClientRepository clientRepository;
+    private final TicketBetRepository ticketBetRepository;
 
-    public TicketService(TicketRepository ticketRepository, BetRepository betRepository, ClientRepository clientRepository) {
+    public TicketService(TicketRepository ticketRepository, BetRepository betRepository, ClientRepository clientRepository, TicketBetRepository ticketBetRepository) {
         this.ticketRepository = ticketRepository;
         this.betRepository = betRepository;
         this.clientRepository = clientRepository;
+        this.ticketBetRepository = ticketBetRepository;
     }
 
     public Ticket registerTicket(TicketRequest ticketRequest) {
@@ -38,7 +42,18 @@ public class TicketService {
         updateOddsFromSelectedBets(ticketRequest);
         updateClientBalance(client, ticketRequest);
 
-        return ticketRepository.save(TicketFactory.createTicket(ticketRequest, numFinalOdd, client));
+        Ticket ticket = ticketRepository.save(TicketFactory.createTicket(ticketRequest, numFinalOdd, client));
+
+        saveRelationTicketBet(ticket, ticketRequest);
+
+        return ticket;
+    }
+
+    private void saveRelationTicketBet(Ticket ticket, TicketRequest ticketRequest) {
+        for (Long idtBet : ticketRequest.getIdtBets()){
+            Optional<Bet> bet = betRepository.findById(idtBet);
+            ticketBetRepository.save(TicketBetFactory.createTicketBet(ticket, bet.get()));
+        }
     }
 
     private void verifyClientBalance(Client client, TicketRequest ticketRequest) {
