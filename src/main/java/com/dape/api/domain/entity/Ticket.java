@@ -44,6 +44,9 @@ public class Ticket {
     @Convert(converter = TicketStatusEnumConverter.class)
     private TicketStatusEnum ticketStatusEnum;
 
+    @Column(name = "NUM_FINAL_ODD", nullable = false)
+    private BigDecimal numFinalOdd;
+
     @ManyToOne
     @JoinColumn(name = "IDT_CLIENT", nullable = false)
     private Client client;
@@ -94,6 +97,14 @@ public class Ticket {
 
     public void setTicketStatusEnum(TicketStatusEnum codTicketStatus) {
         this.ticketStatusEnum = codTicketStatus;
+    }
+
+    public BigDecimal getNumFinalOdd() {
+        return numFinalOdd;
+    }
+
+    public void setNumFinalOdd(BigDecimal numFinalOdd) {
+        this.numFinalOdd = numFinalOdd;
     }
 
     public Client getClient() {
