@@ -21,7 +21,7 @@ public class TicketResponseFactory {
         ticketResponse.setIdtTicket(ticket.getIdtTicket());
         ticketResponse.setTicketStatus(ticket.getTicketStatusEnum());
         ticketResponse.setTicketType(ticket.getTicketTypeEnum());
-        ticketResponse.setNumAmount(ticket.getNumAmmount());
+        ticketResponse.setNumAmount(ticket.getNumAmount());
         ticketResponse.setDatCreated(ticket.getDatCreated());
         ticketResponse.setNumFinalOdd(ticket.getNumFinalOdd());
         ticketResponse.setClientResponse(clientResponse);

@@ -14,7 +14,7 @@ public class TicketFactory {
 
     public static Ticket createTicket(TicketRequest ticketRequest, BigDecimal numFinalOdd, Client client) {
         Ticket ticket = new Ticket();
-        ticket.setNumAmmount(ticketRequest.getNumAmount());
+        ticket.setNumAmount(ticketRequest.getNumAmount());
         ticket.setTicketStatusEnum(TicketStatusEnum.PENDING);
         ticket.setDatCreated(LocalDateTime.now());
         ticket.setDatUpdated(LocalDateTime.now());
