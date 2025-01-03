@@ -73,4 +73,11 @@ tasks.jacocoTestReport {
 		csv.required.set(false)
 		html.outputLocation.set(layout.buildDirectory.dir('jacocoHtml'))
 	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/dape/api/domain/entity/*"
+			])
+		}))
+	}
 }
