@@ -49,26 +49,6 @@ public class TicketService {
         return ticket;
     }
 
-    private void saveRelationTicketBet(Ticket ticket, TicketRequest ticketRequest) {
-        for (Long idtBet : ticketRequest.getIdtBets()){
-            Optional<Bet> bet = betRepository.findById(idtBet);
-            ticketBetRepository.save(TicketBetFactory.createTicketBet(ticket, bet.get()));
-        }
-    }
-
-    private void verifyClientBalance(Client client, TicketRequest ticketRequest) {
-        if(ticketRequest.getNumAmount().compareTo(client.getNumBalance()) > 0)
-            throw new UnavailableBalanceException("O saldo da conta (" + client.getNumBalance() + ") é menor do que o valor a ser apostado (" + ticketRequest.getNumAmount() + ")");
-    }
-
-    private Client getClient(TicketRequest ticketRequest) {
-        try {
-            return clientRepository.findById(ticketRequest.getIdtClient()).get();
-        } catch (Exception e) {
-            throw new ClientNotExistentException("O cliente com id " + ticketRequest.getIdtClient() + " não existe");
-        }
-    }
-
     private BigDecimal calculateFinalOdd(TicketRequest ticketRequest) {
         BigDecimal numFinalOdd = BigDecimal.ONE;
 
@@ -84,16 +64,27 @@ public class TicketService {
         return numFinalOdd;
     }
 
+    private Client getClient(TicketRequest ticketRequest) {
+        try {
+            return clientRepository.findById(ticketRequest.getIdtClient()).get();
+        } catch (Exception e) {
+            throw new ClientNotExistentException("O cliente com id " + ticketRequest.getIdtClient() + " não existe");
+        }
+    }
+
+    private void verifyClientBalance(Client client, TicketRequest ticketRequest) {
+        if(ticketRequest.getNumAmount().compareTo(client.getNumBalance()) > 0)
+            throw new UnavailableBalanceException("O saldo da conta (" + client.getNumBalance() + ") é menor do que o valor a ser apostado (" + ticketRequest.getNumAmount() + ")");
+    }
+
     private void updateOddsFromSelectedBets(TicketRequest ticketRequest) {
         for (Long idtBet : ticketRequest.getIdtBets()){
             Optional<Bet> optionalBet = betRepository.findById(idtBet);
-            if (optionalBet.isPresent()) {
-                Bet bet = optionalBet.get();
-                bet.setNumOdd(bet.getNumOdd().subtract(BigDecimal.valueOf(0.05)).compareTo(BigDecimal.ONE) <= 0 ? BigDecimal.valueOf(1.01) : bet.getNumOdd().subtract(BigDecimal.valueOf(0.05)));
-                bet.setFlgSelected(1);
-                bet.setDatUpdated(LocalDateTime.now());
-                betRepository.save(bet);
-            }
+            Bet bet = optionalBet.get();
+            bet.setNumOdd(bet.getNumOdd().subtract(BigDecimal.valueOf(0.05)).compareTo(BigDecimal.ONE) <= 0 ? BigDecimal.valueOf(1.01) : bet.getNumOdd().subtract(BigDecimal.valueOf(0.05)));
+            bet.setFlgSelected(1);
+            bet.setDatUpdated(LocalDateTime.now());
+            betRepository.save(bet);
         }
     }
 
@@ -103,4 +94,10 @@ public class TicketService {
         clientRepository.save(client);
     }
 
+    private void saveRelationTicketBet(Ticket ticket, TicketRequest ticketRequest) {
+        for (Long idtBet : ticketRequest.getIdtBets()){
+            Optional<Bet> bet = betRepository.findById(idtBet);
+            ticketBetRepository.save(TicketBetFactory.createTicketBet(ticket, bet.get()));
+        }
+    }
 }
