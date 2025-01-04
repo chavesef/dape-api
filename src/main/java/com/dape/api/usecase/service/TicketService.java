@@ -8,8 +8,10 @@ import com.dape.api.adapter.repository.TicketRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.entity.Client;
 import com.dape.api.domain.entity.Ticket;
+import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.ClientNotExistentException;
+import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.domain.exception.UnavailableBalanceException;
 import com.dape.api.usecase.factory.TicketBetFactory;
 import com.dape.api.usecase.factory.TicketFactory;
@@ -56,12 +58,18 @@ public class TicketService {
             Optional<Bet> optionalBet = betRepository.findById(idtBet);
             if (optionalBet.isPresent()) {
                 Bet bet = optionalBet.get();
+                verifyBetStatus(bet);
                 numFinalOdd = numFinalOdd.multiply(bet.getNumOdd());
             } else
                 throw new BetNotExistentException("Aposta com id " + idtBet + " não existe no banco de dados");
         }
 
         return numFinalOdd;
+    }
+
+    private void verifyBetStatus(Bet bet) {
+        if (bet.getBetStatusEnum() != BetStatusEnum.PENDING)
+            throw new InvalidBetStatusException("Não é permitido criar bilhetes com apostas resolvidas");
     }
 
     private Client getClient(TicketRequest ticketRequest) {

@@ -12,6 +12,7 @@ import com.dape.api.domain.enums.BetStatusEnum;
 import com.dape.api.domain.enums.TicketTypeEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.ClientNotExistentException;
+import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.domain.exception.UnavailableBalanceException;
 import com.dape.api.stub.BetStub;
 import com.dape.api.stub.ClientStub;
@@ -91,6 +92,20 @@ class TicketServiceTest {
 
         final String expectedMessage = "Aposta com id " + ticketRequest.getIdtBets().get(0) + " não existe no banco de dados";
         assertEquals(expectedMessage, betNotExistentException.getMessage());
+    }
+
+    @Test
+    void selectBetResolvedExpectException() {
+        final Bet bet = BetStub.builder().withBetStatusEnum(BetStatusEnum.GREEN).build();
+
+        when(betRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bet));
+
+        final TicketRequest ticketRequest = TicketRequestStub.builder().build();
+        final InvalidBetStatusException invalidBetStatusException =
+                assertThrows(InvalidBetStatusException.class, () -> ticketService.registerTicket(ticketRequest));
+
+        final String expectedMessage = "Não é permitido criar bilhetes com apostas resolvidas";
+        assertEquals(expectedMessage, invalidBetStatusException.getMessage());
     }
 
     @Test
