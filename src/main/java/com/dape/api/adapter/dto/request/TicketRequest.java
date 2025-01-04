@@ -18,6 +18,12 @@ public class TicketRequest {
     private Long idtClient;
     private List<Long> idtBets;
 
+    public TicketRequest(BigDecimal numAmount, Long idtClient, List<Long> idtBets) {
+        this.numAmount = numAmount;
+        this.idtClient = idtClient;
+        this.idtBets = idtBets;
+    }
+
     public BigDecimal getNumAmount() {
         return numAmount;
     }

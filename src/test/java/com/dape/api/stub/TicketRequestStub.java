@@ -22,12 +22,7 @@ public class TicketRequestStub {
     }
 
     public TicketRequest build(){
-        TicketRequest ticketRequest = new TicketRequest();
-        ticketRequest.setNumAmount(numAmount);
-        ticketRequest.setIdtClient(idtClient);
-        ticketRequest.setIdtBets(idtBets);
-
-        return ticketRequest;
+        return new TicketRequest(this.numAmount, this.idtClient, this.idtBets);
     }
 
     public TicketRequestStub withNumAmount(BigDecimal numAmount){
