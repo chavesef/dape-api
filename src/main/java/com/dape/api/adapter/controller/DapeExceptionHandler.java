@@ -1,7 +1,12 @@
 package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
-import com.dape.api.domain.exception.*;
+import com.dape.api.domain.exception.BetNotExistentException;
+import com.dape.api.domain.exception.BetSelectedException;
+import com.dape.api.domain.exception.ClientNotExistentException;
+import com.dape.api.domain.exception.InvalidBetStatusException;
+import com.dape.api.domain.exception.InvalidStatusForUpdateException;
+import com.dape.api.domain.exception.UnavailableBalanceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
