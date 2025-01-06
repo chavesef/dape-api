@@ -65,9 +65,9 @@ public class TicketRegistrationSteps {
         clientRepository.saveAll(clients);
     }
 
-    @Quando("uma requisição de criação de bilhetes for realizada com num_ammount {double} e idt_client {int} e idt_bet [{int}]")
-    public void umaRequisiçãoDeCriaçãoDeBilhetesForRealizadaComNum_ammountEIdt_clientEIdt_bet(double numAmmount, int idtClient, int idtBet) {
-        registrationResponseEntity = generateResponseEntityForThePostRequest(numAmmount, idtClient, List.of((long) idtBet));
+    @Quando("uma requisição de criação de bilhetes for realizada com num_amount {double} e idt_client {int} e idt_bet [{int}]")
+    public void umaRequisiçãoDeCriaçãoDeBilhetesForRealizadaComnum_amountEIdt_clientEIdt_bet(double numAmount, int idtClient, int idtBet) {
+        registrationResponseEntity = generateResponseEntityForThePostRequest(numAmount, idtClient, List.of((long) idtBet));
     }
 
     @Entao("o serviço de cadastro de bilhetes deve retornar o status code {int} - {string}")
@@ -90,9 +90,9 @@ public class TicketRegistrationSteps {
         assertEquals(ticketBet.getIdtTicketBet(), actualTicketBets.get(actualTicketBets.size()-1).getIdtTicketBet());
     }
 
-    @Quando("uma requisição de criação de bilhetes for realizada com num_ammount {double} e idt_client {int} e idt_bet [{int}, {int}, {int}]")
-    public void umaRequisiçãoDeCriaçãoDeBilhetesForRealizadaComNum_ammountEIdt_clientEIdt_bet(double numAmmount, int idtClient, int idtBetOne, int idtBetTwo, int idtBetThree) {
-        registrationResponseEntity = generateResponseEntityForThePostRequest(numAmmount, idtClient, List.of((long) idtBetOne, (long) idtBetTwo, (long) idtBetThree));
+    @Quando("uma requisição de criação de bilhetes for realizada com num_amount {double} e idt_client {int} e idt_bet [{int}, {int}, {int}]")
+    public void umaRequisiçãoDeCriaçãoDeBilhetesForRealizadaComnum_amountEIdt_clientEIdt_bet(double numAmount, int idtClient, int idtBetOne, int idtBetTwo, int idtBetThree) {
+        registrationResponseEntity = generateResponseEntityForThePostRequest(numAmount, idtClient, List.of((long) idtBetOne, (long) idtBetTwo, (long) idtBetThree));
     }
 
     @Entao("os seguintes dados devem ser cadastrados na tabela ticket_bet")
@@ -114,11 +114,11 @@ public class TicketRegistrationSteps {
         serviceUnavailable = true;
     }
 
-    private ResponseEntity<TicketResponse> generateResponseEntityForThePostRequest(double numAmmount, int idtClient, List<Long> idtBets) {
+    private ResponseEntity<TicketResponse> generateResponseEntityForThePostRequest(double numAmount, int idtClient, List<Long> idtBets) {
         if(serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        final TicketRequest ticketRequest= new TicketRequest(BigDecimal.valueOf(numAmmount), (long) idtClient, idtBets);
+        final TicketRequest ticketRequest= new TicketRequest(BigDecimal.valueOf(numAmount), (long) idtClient, idtBets);
 
         final Response postResponse = given().body(ticketRequest).contentType(ContentType.JSON).when()
                 .post("/dape/ticket").then().extract().response();

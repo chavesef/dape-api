@@ -39,7 +39,7 @@ public class DataTableConverter {
         ticket.setIdtTicket(Long.parseLong(map.get("idt_ticket")));
         ticket.setDatCreated(LocalDate.parse(map.get("dat_created")).atStartOfDay());
         ticket.setDatUpdated(LocalDate.parse(map.get("dat_updated")).atStartOfDay());
-        ticket.setNumAmount(new BigDecimal(map.get("num_ammount")));
+        ticket.setNumAmount(new BigDecimal(map.get("num_amount")));
         Client client = new Client();
         client.setIdtClient(Long.parseLong(map.get("idt_client")));
         ticket.setClient(client);
