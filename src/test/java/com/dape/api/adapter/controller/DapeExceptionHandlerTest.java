@@ -2,8 +2,10 @@ package com.dape.api.adapter.controller;
 
 import com.dape.api.adapter.dto.response.ErrorResponse;
 import com.dape.api.domain.exception.BetNotExistentException;
+import com.dape.api.domain.exception.ClientNotExistentException;
 import com.dape.api.domain.exception.InvalidBetStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
+import com.dape.api.domain.exception.UnavailableBalanceException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpInputMessage;
@@ -97,6 +99,32 @@ class DapeExceptionHandlerTest {
 
         final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
+
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());
+    }
+
+    @Test
+    void handleUnavailableBalance(){
+        final UnavailableBalanceException exception = new UnavailableBalanceException("O saldo da conta (10) é menor do que o valor a ser apostado (100)");
+
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
+
+        final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
+
+        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
+        assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());
+    }
+
+    @Test
+    void handleClientInexistent(){
+        final ClientNotExistentException exception = new ClientNotExistentException("O cliente com id 6 não existe");
+
+        final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleBetNotExistException(exception);
+
+        final ResponseEntity<ErrorResponse> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage()));
 
         assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
         assertEquals(expectedResponse.getBody().getMessage(), actualResponse.getBody().getMessage());

@@ -28,7 +28,7 @@ public class Ticket {
     private Long idtTicket;
 
     @Column(name = "NUM_AMOUNT", nullable = false)
-    private BigDecimal numAmmount;
+    private BigDecimal numAmount;
 
     @Column(name = "DAT_CREATED", nullable = false)
     private LocalDateTime datCreated;
@@ -44,16 +44,19 @@ public class Ticket {
     @Convert(converter = TicketStatusEnumConverter.class)
     private TicketStatusEnum ticketStatusEnum;
 
+    @Column(name = "NUM_FINAL_ODD", nullable = false)
+    private BigDecimal numFinalOdd;
+
     @ManyToOne
     @JoinColumn(name = "IDT_CLIENT", nullable = false)
     private Client client;
 
-    public BigDecimal getNumAmmount() {
-        return numAmmount;
+    public BigDecimal getNumAmount() {
+        return numAmount;
     }
 
-    public void setNumAmmount(BigDecimal numAmmount) {
-        this.numAmmount = numAmmount;
+    public void setNumAmount(BigDecimal numAmount) {
+        this.numAmount = numAmount;
     }
 
     public LocalDateTime getDatCreated() {
@@ -94,6 +97,14 @@ public class Ticket {
 
     public void setTicketStatusEnum(TicketStatusEnum codTicketStatus) {
         this.ticketStatusEnum = codTicketStatus;
+    }
+
+    public BigDecimal getNumFinalOdd() {
+        return numFinalOdd;
+    }
+
+    public void setNumFinalOdd(BigDecimal numFinalOdd) {
+        this.numFinalOdd = numFinalOdd;
     }
 
     public Client getClient() {
