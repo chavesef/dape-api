@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -27,6 +28,7 @@ import static io.restassured.RestAssured.port;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Transactional
 public class BetRetrieveSteps {
     private final BetRepository betRepository;
     private ResponseEntity<BetListResponse> registrationResponseEntity;

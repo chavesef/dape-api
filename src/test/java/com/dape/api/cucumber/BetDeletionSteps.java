@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -20,6 +21,7 @@ import static io.restassured.RestAssured.port;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Transactional
 public class BetDeletionSteps {
     private final BetRepository betRepository;
     private ResponseEntity<String> registrationResponseEntity;

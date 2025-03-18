@@ -16,12 +16,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.port;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Transactional
 public class BetRegistrationSteps {
     private final BetRepository betRepository;
     private ResponseEntity<BetResponse> registrationResponseEntity;
