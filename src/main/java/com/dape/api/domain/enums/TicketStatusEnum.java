@@ -1,5 +1,7 @@
 package com.dape.api.domain.enums;
 
+import com.dape.api.domain.exception.InvalidStatusException;
+
 public enum TicketStatusEnum {
     PENDING(1, "Bilhete pendente"),
     GREEN(2, "Bilhete vencido"),
@@ -28,5 +30,15 @@ public enum TicketStatusEnum {
             }
         }
         throw new UnsupportedOperationException("Unsupported ticket status code: " + codTicketStatus);
+    }
+
+    public static void validateFromString(String betStatus){
+        if(betStatus != null){
+            try {
+                TicketStatusEnum.valueOf(betStatus);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidStatusException("Status não existente: " + betStatus);
+            }
+        }
     }
 }
