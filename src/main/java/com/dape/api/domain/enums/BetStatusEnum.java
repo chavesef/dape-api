@@ -1,7 +1,7 @@
 package com.dape.api.domain.enums;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
-import com.dape.api.domain.exception.InvalidBetStatusException;
+import com.dape.api.domain.exception.InvalidStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 
 import java.util.Objects;
@@ -46,7 +46,7 @@ public enum BetStatusEnum {
             try {
                 BetStatusEnum.valueOf(betStatus);
             } catch (IllegalArgumentException e) {
-                throw new InvalidBetStatusException("Status não existente: " + betStatus);
+                throw new InvalidStatusException("Status não existente: " + betStatus);
             }
         }
     }

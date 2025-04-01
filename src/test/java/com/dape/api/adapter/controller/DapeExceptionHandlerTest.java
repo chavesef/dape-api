@@ -3,7 +3,7 @@ package com.dape.api.adapter.controller;
 import com.dape.api.adapter.dto.response.ErrorResponse;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.ClientNotExistentException;
-import com.dape.api.domain.exception.InvalidBetStatusException;
+import com.dape.api.domain.exception.InvalidStatusException;
 import com.dape.api.domain.exception.InvalidStatusForUpdateException;
 import com.dape.api.domain.exception.UnavailableBalanceException;
 import org.junit.jupiter.api.Test;
@@ -93,7 +93,7 @@ class DapeExceptionHandlerTest {
 
     @Test
     void handleInvalidStatusForGetBets(){
-        final InvalidBetStatusException exception = new InvalidBetStatusException("Status não existente: VENCIDA" );
+        final InvalidStatusException exception = new InvalidStatusException("Status não existente: VENCIDA" );
 
         final ResponseEntity<ErrorResponse> actualResponse = exceptionHandler.handleInvalidRequestDataExceptions(exception);
 
