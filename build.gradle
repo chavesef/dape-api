@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'jacoco'
-	id("org.springframework.boot") version "3.4.3"
+	id("org.springframework.boot") version "3.3.2"
 	id("io.spring.dependency-management") version "1.1.6"
 }
 
@@ -20,7 +20,7 @@ repositories {
 
 def h2Version = '2.3.230'
 def cucumberVersion = '7.18.1'
-def springDocVersion = '2.8.5'
+def springDocVersion = '2.6.0'
 def jacksonVersion = '2.17.2'
 def restAssuredVersion = '5.5.0'
 def junitVintageVersion = '5.11.0'
