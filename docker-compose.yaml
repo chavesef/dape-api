@@ -1,9 +1,9 @@
 services:
   dape-oracledb:
-    image: gvenzl/oracle-xe
+    image: gvenzl/oracle-free
     container_name: dape-oracledb
     ports:
-      - 1521:1521
+      - "1521:1521"
     environment:
       ORACLE_PASSWORD: admin
       APP_USER: DAPE_ADM
