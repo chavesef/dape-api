@@ -256,7 +256,7 @@ paths:
             type: integer
             format: int32
             example: 0
-        - name: limit
+        - name: size
           in: query
           required: false
           schema:
