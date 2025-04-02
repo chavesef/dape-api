@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "UpdateBetEvent",
+  "namespace": "com.dape.api.adapter.dto",
+  "doc": "Arquivo para atualização de bilhetes de apostas",
+  "fields": [
+    {
+      "name": "idt_bet",
+      "type": "long",
+      "doc": "[PK] ID gerado para cada aposta cadastrada"
+    },
+    {
+      "name": "bet_status",
+      "type": "int",
+      "doc": "Status da aposta atualizada"
+    }
+  ]
+}

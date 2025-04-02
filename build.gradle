@@ -3,6 +3,7 @@ plugins {
 	id 'jacoco'
 	id("org.springframework.boot") version "3.3.2"
 	id("io.spring.dependency-management") version "1.1.6"
+	id "com.github.davidmc24.gradle.plugin.avro" version "1.9.1"
 }
 
 group = "com.dape"
@@ -31,6 +32,7 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
+	implementation "org.apache.avro:avro:1.11.3"
 	runtimeOnly group: 'com.oracle.database.jdbc', name: 'ojdbc11'
 	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: restAssuredVersion
 	testImplementation group: 'com.h2database', name: 'h2', version: h2Version
@@ -80,4 +82,9 @@ tasks.jacocoTestReport {
 			])
 		}))
 	}
+}
+
+generateAvroJava {
+	source("src/main/avro")
+	outputDir = file("src/main/java")
 }
