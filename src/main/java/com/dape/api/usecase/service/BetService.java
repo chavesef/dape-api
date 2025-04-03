@@ -1,8 +1,10 @@
 package com.dape.api.usecase.service;
 
+import com.dape.api.adapter.dto.UpdateBetProducerEvent;
 import com.dape.api.adapter.dto.request.BetRequest;
 import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.request.GetBetsRequest;
+import com.dape.api.adapter.producer.UpdateBetProducer;
 import com.dape.api.adapter.repository.BetRepository;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.enums.BetStatusEnum;
@@ -25,16 +27,19 @@ import java.time.LocalDateTime;
 
 import static com.dape.api.domain.enums.BetStatusEnum.fromRequest;
 import static com.dape.api.domain.enums.BetStatusEnum.validateFromString;
+import static com.dape.api.usecase.factory.UpdateBetProducerEventFactory.createUpdateBetProducerEvent;
 
 @Service
 public class BetService {
 
     public static final int IS_SELECTED = 1;
     private final BetRepository betRepository;
+    private final UpdateBetProducer updateBetProducer;
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
 
-    public BetService(BetRepository betRepository) {
+    public BetService(BetRepository betRepository, UpdateBetProducer updateBetProducer) {
         this.betRepository = betRepository;
+        this.updateBetProducer = updateBetProducer;
     }
 
     public Bet registerBet(BetRequest betRequest) {
@@ -63,6 +68,10 @@ public class BetService {
         validateBetToUpdateStatus(betToUpdate);
 
         updateBetStatusAndDatUpdatedFields(betToUpdate, betStatus);
+
+        LOGGER.info("m=updateBetStatus, msg=Enviando evento para o kafka com o status da aposta com id: {} e status: {}", idtBet, betStatus.getCodBetStatus());
+        final UpdateBetProducerEvent updateBetProducerEvent = createUpdateBetProducerEvent(idtBet, betStatus.getCodBetStatus());
+        updateBetProducer.produceUpdateBetEvent(updateBetProducerEvent);
 
         LOGGER.info("m=updateBetStatus, msg=Atualizando status da aposta com id:{} para: {}", idtBet, betToUpdate.getBetStatusEnum());
         return betRepository.save(betToUpdate);
@@ -120,8 +129,8 @@ public class BetService {
     }
 
     private void updateBetStatusAndDatUpdatedFields(Bet betToUpdate, BetStatusEnum betStatus) {
-            betToUpdate.setBetStatusEnum(betStatus);
-            betToUpdate.setDatUpdated(LocalDateTime.now());
+        betToUpdate.setBetStatusEnum(betStatus);
+        betToUpdate.setDatUpdated(LocalDateTime.now());
     }
 
     private void validateDatesParameters(GetBetsRequest getBetsRequest) {
