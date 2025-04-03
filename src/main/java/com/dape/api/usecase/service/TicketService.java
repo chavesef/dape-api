@@ -10,6 +10,8 @@ import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.entity.Client;
 import com.dape.api.domain.entity.Ticket;
 import com.dape.api.domain.enums.BetStatusEnum;
+import com.dape.api.domain.enums.TicketStatusEnum;
+import com.dape.api.domain.enums.TicketTypeEnum;
 import com.dape.api.domain.exception.BetNotExistentException;
 import com.dape.api.domain.exception.ClientNotExistentException;
 import com.dape.api.domain.exception.InvalidStatusException;
@@ -20,6 +22,8 @@ import com.dape.api.usecase.factory.TicketFactory;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -76,6 +80,24 @@ public class TicketService {
 
         LOGGER.info("m=getTicketList, msg=Buscando apostas cadastradas no banco de dados");
         return ticketRepository.findAll(predicate, pageable);
+    }
+
+    public void updateTicketStatus(Long idtBet, int betStatus) {
+        List<Long> ticketsWithBetToUpdate = ticketRepository.updateTicketStatusByBetId(idtBet);
+        for (Long ticketId : ticketsWithBetToUpdate) {
+            Ticket ticketToUpdate = ticketRepository.findById(ticketId).get();
+
+            if(betStatus == BetStatusEnum.RED.getCodBetStatus())
+                updateTicket(ticketToUpdate, TicketStatusEnum.RED);
+            else {
+                if(ticketToUpdate.getTicketTypeEnum() == TicketTypeEnum.SIMPLE)
+                    updateTicket(ticketToUpdate, TicketStatusEnum.GREEN);
+                else {
+                    updateTypeMultipleTicketStatusIfNeeded(ticketId, ticketToUpdate, idtBet);
+                }
+            }
+            ticketRepository.save(ticketToUpdate);
+        }
     }
 
     private BigDecimal calculateFinalOdd(TicketRequest ticketRequest) {
@@ -153,5 +175,37 @@ public class TicketService {
                 throw new IllegalArgumentException("Formato de data inválido.");
             }
         }
+    }
+
+    private void updateTypeMultipleTicketStatusIfNeeded(Long ticketId, Ticket ticketToUpdate, Long idtBet) {
+        if(ticketToUpdate.getTicketStatusEnum() == TicketStatusEnum.PENDING){
+            List<Long> betsByTicket = ticketBetRepository.findBetsByTicketId(ticketId);
+            for (Long betId : betsByTicket) {
+                if(!Objects.equals(betId, idtBet)){
+                    Bet bet = betRepository.findById(betId).get();
+                    if(bet.getBetStatusEnum() == BetStatusEnum.PENDING)
+                        return;
+                }
+            }
+            updateTicket(ticketToUpdate, TicketStatusEnum.GREEN);
+        }
+    }
+
+    private void updateTicket(Ticket ticketToUpdate, TicketStatusEnum ticketStatusEnum) {
+        LOGGER.info("m=updateTicket, msg=Atualizando status do bilhete com id:{} para: {}", ticketToUpdate.getIdtTicket(), ticketStatusEnum);
+        ticketToUpdate.setTicketStatusEnum(ticketStatusEnum);
+        ticketToUpdate.setDatUpdated(LocalDateTime.now());
+
+        if (ticketStatusEnum == TicketStatusEnum.GREEN)
+            updateClientBalanceAfterGreen(ticketToUpdate);
+    }
+
+    private void updateClientBalanceAfterGreen(Ticket ticketToUpdate) {
+        Client client = ticketToUpdate.getClient();
+
+        LOGGER.info("m=updateClientBalanceAfterGreen, msg=Atualizando saldo do cliente com id:{}", client.getIdtClient());
+        client.setNumBalance(client.getNumBalance().add(ticketToUpdate.getNumAmount().multiply(ticketToUpdate.getNumFinalOdd())));
+        client.setDatUpdated(LocalDateTime.now());
+        clientRepository.save(client);
     }
 }
