@@ -11,5 +11,26 @@ services:
     volumes:
       - dape-oradata:/opt/oracle/oradata
 
+  dape-kafka:
+    container_name: dape-kafka
+    hostname: localhost
+    image: landoop/fast-data-dev
+    ports:
+      - "9092:9092"
+      - "8081:8081"
+      - "8082:8082"
+      - "8083:8083"
+      - "2181:2181"
+      - "3030:3030"
+      - "9581:9581"
+      - "9582:9582"
+      - "9583:9583"
+      - "9584:9584"
+    networks:
+      - dape-network
+
 volumes:
   dape-oradata:
+networks:
+  dape-network:
+    driver: bridge
