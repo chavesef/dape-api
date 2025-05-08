@@ -54,6 +54,9 @@ dependencies {
 	testImplementation group: 'io.cucumber', name: 'cucumber-java', version: cucumberVersion
 	testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: cucumberVersion
 	testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: cucumberVersion
+	testImplementation group: 'org.testcontainers', name: 'junit-jupiter'
+	testImplementation group: 'org.testcontainers', name: 'kafka'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
 	compileOnly "org.projectlombok:lombok"
 	annotationProcessor "org.projectlombok:lombok"
