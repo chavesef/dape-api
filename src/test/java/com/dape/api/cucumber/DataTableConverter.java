@@ -1,5 +1,6 @@
 package com.dape.api.cucumber;
 
+import com.dape.api.adapter.dto.UpdateBetEvent;
 import com.dape.api.domain.entity.Bet;
 import com.dape.api.domain.entity.Client;
 import com.dape.api.domain.entity.Ticket;
@@ -39,7 +40,7 @@ public class DataTableConverter {
         ticket.setIdtTicket(Long.parseLong(map.get("idt_ticket")));
         ticket.setDatCreated(LocalDate.parse(map.get("dat_created")).atStartOfDay());
         ticket.setDatUpdated(LocalDate.parse(map.get("dat_updated")).atStartOfDay());
-        ticket.setNumAmount(new BigDecimal(map.get("num_amount")));
+        ticket.setNumAmount(new BigDecimal(map.get("num_ammount")));
         Client client = new Client();
         client.setIdtClient(Long.parseLong(map.get("idt_client")));
         ticket.setClient(client);
@@ -74,5 +75,14 @@ public class DataTableConverter {
         ticketBet.setIdtTicketBet(Long.parseLong(map.get("idt_ticket_bet")));
 
         return ticketBet;
+    }
+
+    @DataTableType
+    public UpdateBetEvent updateBetEvent(Map<String, String> map){
+        UpdateBetEvent updateBetEvent = new UpdateBetEvent();
+        updateBetEvent.setIdtBet(Long.parseLong(map.get("idt_bet")));
+        updateBetEvent.setBetStatus(BetStatusEnum.valueOf(map.get("bet_status")).getCodBetStatus());
+
+        return updateBetEvent;
     }
 }

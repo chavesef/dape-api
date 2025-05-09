@@ -58,47 +58,47 @@ public class TicketRegistrationSteps {
     }
 
     @Dado("que existam as seguintes apostas cadastradas no banco de dados para criar bilhetes")
-    public void queExistamAsSeguintesApostasCadastradasNoBancoDeDadosParaCriarBilhetes(List<Bet> bets) {
+    public void theFollowingBetsAreRegisteredInTheDatabase(List<Bet> bets) {
         betRepository.saveAll(bets);
     }
 
     @Dado("os seguintes clientes cadastrados no banco de dados")
-    public void osSeguintesClientesCadastradosNoBancoDeDados(List<Client> clients) {
+    public void theFollowingClientsRegisteredInTheDatabase(List<Client> clients) {
         clientRepository.saveAll(clients);
     }
 
-    @Quando("uma requisição de criação de bilhetes for realizada com num_amount {double} e idt_client {int} e idt_bet [{int}]")
-    public void umaRequisiçãoDeCriaçãoDeBilhetesForRealizadaComnum_amountEIdt_clientEIdt_bet(double numAmount, int idtClient, int idtBet) {
+    @Quando("uma requisição de criação de bilhetes for realizada com num_ammount {double} e idt_client {int} e idt_bet [{int}]")
+    public void aSimpleTicketPostRequestIsCalledWithParameters(double numAmount, int idtClient, int idtBet) {
         registrationResponseEntity = generateResponseEntityForThePostRequest(numAmount, idtClient, List.of((long) idtBet));
     }
 
     @Entao("o serviço de cadastro de bilhetes deve retornar o status code {int} - {string}")
-    public void oServiçoDeCadastroDeBilhetesDeveRetornarOStatusCode(int expectedStatusCode, String expectedCodeDescription) {
+    public void theTicketRegistrationServiceShouldReturnStatusCode(int expectedStatusCode, String expectedCodeDescription) {
         assertEquals(expectedStatusCode, registrationResponseEntity.getStatusCode().value());
         assertEquals(expectedCodeDescription, HttpStatus.valueOf(expectedStatusCode).getReasonPhrase());
     }
 
     @Entao("o seguinte bilhete deve ser cadastrado no banco de dados")
-    public void oSeguinteBilheteDeveSerCadastradoNoBancoDeDados(List<Ticket> tickets) {
+    public void theFollowingTicketShouldBeRegisteredInTheDatabase(List<Ticket> tickets) {
         final List<Ticket> actualTickets = ticketRepository.findAll();
         final Ticket ticket = tickets.get(0);
         assertEquals(ticket.getIdtTicket(), actualTickets.get(actualTickets.size()-1).getIdtTicket());
     }
 
     @Entao("o seguinte dado deve ser cadastrado na tabela ticket_bet")
-    public void oSeguinteDadoDeveSerCadastradoNaTabelaTicket_bet(List<TicketBet> ticketBets) {
+    public void theFollowingDataShouldBeRegisteredInTheTicketBetTable(List<TicketBet> ticketBets) {
         final List<TicketBet> actualTicketBets = ticketBetRepository.findAll();
         final TicketBet ticketBet = ticketBets.get(0);
         assertEquals(ticketBet.getIdtTicketBet(), actualTicketBets.get(actualTicketBets.size()-1).getIdtTicketBet());
     }
 
-    @Quando("uma requisição de criação de bilhetes for realizada com num_amount {double} e idt_client {int} e idt_bet [{int}, {int}, {int}]")
-    public void umaRequisiçãoDeCriaçãoDeBilhetesForRealizadaComnum_amountEIdt_clientEIdt_bet(double numAmount, int idtClient, int idtBetOne, int idtBetTwo, int idtBetThree) {
+    @Quando("uma requisição de criação de bilhetes for realizada com num_ammount {double} e idt_client {int} e idt_bet [{int}, {int}, {int}]")
+    public void aMultipleTicketPostRequestIsCalledWithParameters(double numAmount, int idtClient, int idtBetOne, int idtBetTwo, int idtBetThree) {
         registrationResponseEntity = generateResponseEntityForThePostRequest(numAmount, idtClient, List.of((long) idtBetOne, (long) idtBetTwo, (long) idtBetThree));
     }
 
     @Entao("os seguintes dados devem ser cadastrados na tabela ticket_bet")
-    public void osSeguintesDadosDevemSerCadastradosNaTabelaTicket_bet(List<TicketBet> ticketBets) {
+    public void theFollowingRegistersShouldBeRegisteredInTheTicketBetTable(List<TicketBet> ticketBets) {
         final List<TicketBet> actualTicketBets = ticketBetRepository.findAll();
 
         assertEquals(ticketBets.get(0).getIdtTicketBet(), actualTicketBets.get(actualTicketBets.size()-3).getIdtTicketBet());
@@ -107,12 +107,12 @@ public class TicketRegistrationSteps {
     }
 
     @Entao("o bilhete não deve ser cadastrado")
-    public void oBilheteNãoDeveSerCadastrado() {
+    public void theTicketShouldNotBeRegistered() {
         assertEquals(0, ticketRepository.findAll().size());
     }
 
     @Dado("que o serviço de cadastro esteja indisponível")
-    public void queOServiçoDeCadastroEstejaIndisponível() {
+    public void theServiceIsUnavailable() {
         serviceUnavailable = true;
     }
 

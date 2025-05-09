@@ -25,7 +25,7 @@ public class GetTicketRequestPredicateFactory {
             predicate = predicate.and(QTicket.ticket.client.idtClient.eq(getTicketsRequest.getIdtClient()));
 
         if(getTicketsRequest.getDatCreated() != null)
-            predicate = predicate.and(QTicket.ticket.datCreated.between(LocalDate.parse(getTicketsRequest.getDatCreated()).atStartOfDay(), LocalDate.parse(getTicketsRequest.getDatCreated()).atStartOfDay().plusDays(1)));
+            predicate = predicate.and(QTicket.ticket.datCreated.between(LocalDate.parse(getTicketsRequest.getDatCreated()).atStartOfDay(), LocalDate.parse(getTicketsRequest.getDatCreated()).atTime(LocalTime.MAX)));
 
         if(getTicketsRequest.getDatUpdated() != null)
             predicate = predicate.and(QTicket.ticket.datUpdated.between(LocalDate.parse(getTicketsRequest.getDatUpdated()).atStartOfDay(), LocalDate.parse(getTicketsRequest.getDatUpdated()).atTime(LocalTime.MAX)));

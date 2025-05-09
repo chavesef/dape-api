@@ -17,6 +17,10 @@ java {
 
 repositories {
 	mavenCentral()
+	maven {
+		name 'proxy'
+		url "https://packages.confluent.io/maven/"
+	}
 }
 
 def h2Version = '2.3.230'
@@ -26,13 +30,17 @@ def jacksonVersion = '2.17.2'
 def restAssuredVersion = '5.5.0'
 def junitVintageVersion = '5.11.0'
 def queryDslVersion ='5.0.0'
+def avroVersion = '1.11.3'
+def confluentAvroVersion = '7.9.0'
 
 dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
-	implementation "org.apache.avro:avro:1.11.3"
+	implementation group: 'org.apache.avro', name: 'avro', version: avroVersion
+	implementation group: 'org.springframework.kafka', name: 'spring-kafka'
+	implementation group: 'io.confluent', name: 'kafka-avro-serializer', version: confluentAvroVersion
 	runtimeOnly group: 'com.oracle.database.jdbc', name: 'ojdbc11'
 	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: restAssuredVersion
 	testImplementation group: 'com.h2database', name: 'h2', version: h2Version
@@ -46,6 +54,9 @@ dependencies {
 	testImplementation group: 'io.cucumber', name: 'cucumber-java', version: cucumberVersion
 	testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: cucumberVersion
 	testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: cucumberVersion
+	testImplementation group: 'org.testcontainers', name: 'junit-jupiter'
+	testImplementation group: 'org.testcontainers', name: 'kafka'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
 	compileOnly "org.projectlombok:lombok"
 	annotationProcessor "org.projectlombok:lombok"

@@ -2,6 +2,7 @@ package com.dape.api.usecase.service;
 
 import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.request.GetBetsRequest;
+import com.dape.api.adapter.producer.UpdateBetProducer;
 import com.dape.api.domain.exception.BetSelectedException;
 import com.dape.api.domain.exception.InvalidStatusException;
 import com.dape.api.stub.BetRequestStub;
@@ -38,7 +39,8 @@ import static org.mockito.Mockito.when;
 class BetServiceTest {
 
     private final BetRepository betRepository = Mockito.mock(BetRepository.class);
-    private final BetService betService = new BetService(betRepository);
+    private final UpdateBetProducer updateBetProducer = Mockito.mock(UpdateBetProducer.class);
+    private final BetService betService = new BetService(betRepository, updateBetProducer);
 
     @Test
     void registerBet() {
@@ -217,7 +219,6 @@ class BetServiceTest {
     void getBetsWithInvalidDatCreatedExpectException(){
         when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
 
-
         final String expectedMessage = "Formato de data inválido.";
         final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatCreated("A2024-10-21").build();
 
@@ -229,7 +230,6 @@ class BetServiceTest {
     @Test
     void getBetsWithInvalidDatUpdatedExpectException(){
         when(betRepository.findAll(any(BooleanExpression.class), any(Pageable.class))).thenReturn(createPage());
-
 
         final String expectedMessage = "Formato de data inválido.";
         final GetBetsRequest getBetsRequest = GetBetsRequestStub.builder().withDatUpdated("A2024-10-21").build();
