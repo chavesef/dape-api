@@ -32,12 +32,12 @@ public enum TicketStatusEnum {
         throw new UnsupportedOperationException("Unsupported ticket status code: " + codTicketStatus);
     }
 
-    public static void validateFromString(String betStatus){
-        if(betStatus != null){
+    public static void validateFromString(String ticketStatus){
+        if(ticketStatus != null){
             try {
-                TicketStatusEnum.valueOf(betStatus);
+                TicketStatusEnum.valueOf(ticketStatus);
             } catch (IllegalArgumentException e) {
-                throw new InvalidStatusException("Status não existente: " + betStatus);
+                throw new InvalidStatusException("Status não existente: " + ticketStatus);
             }
         }
     }

@@ -4,10 +4,12 @@ import com.dape.api.adapter.dto.UpdateBetEvent;
 import com.dape.api.usecase.service.TicketService;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("!test")
 public class UpdateBetConsumer {
 
     private final TicketService ticketService;

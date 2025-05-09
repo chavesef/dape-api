@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -20,6 +21,7 @@ import org.springframework.kafka.core.ProducerFactory;
 
 @EnableKafka
 @Configuration
+@Profile("!test")
 public class KafkaConfig {
 
     private final KafkaProperties kafkaProperties;
@@ -37,9 +39,9 @@ public class KafkaConfig {
 
     @Bean
     public Map<String, Object> producerConfigs() {
-        final Map<String, Object> props = kafkaProperties.getProducer().buildProperties(null);
+        Map<String, Object> props = kafkaProperties.buildProducerProperties(null);
         props.put("schema.registry.url", schemaRegistryUrl);
-        props.put("bootstrap.servers", "localhost:9092");
+
         return props;
     }
 
@@ -53,9 +55,9 @@ public class KafkaConfig {
 
     @Bean
     public Map<String, Object> consumerConfigs() {
-        final Map<String, Object> props = kafkaProperties.getConsumer().buildProperties(null);
+        final Map<String, Object> props = kafkaProperties.buildConsumerProperties(null);
         props.put("schema.registry.url", schemaRegistryUrl);
-        props.put("bootstrap.servers", "localhost:9092");
+
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);

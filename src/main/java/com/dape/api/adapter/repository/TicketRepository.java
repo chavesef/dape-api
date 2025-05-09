@@ -9,5 +9,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 public interface TicketRepository extends JpaRepository<Ticket, Long>, QuerydslPredicateExecutor<Ticket> {
 
     @Query(value = "select idt_ticket from ticket_bet where idt_bet = :idtBet", nativeQuery = true)
-    List<Long> updateTicketStatusByBetId(Long idtBet);
+    List<Long> getTicketByBetId(Long idtBet);
 }
