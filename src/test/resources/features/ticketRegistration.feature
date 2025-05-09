@@ -34,10 +34,10 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
 
   @CadastroBilheteSimplesSucesso
   Cenario: Cadastrar um novo bilhete simples com sucesso
-    Quando uma requisição de criação de bilhetes for realizada com num_amount 99,99 e idt_client 3 e idt_bet [2]
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 99,99 e idt_client 3 e idt_bet [2]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 201 - "Created"
     E o seguinte bilhete deve ser cadastrado no banco de dados
-      | idt_ticket | num_amount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
+      | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 1          | 99.99       | 2024-08-21  | 2024-08-21  | SIMPLE      | PENDING           | 3          | 4.12          |
     E o seguinte dado deve ser cadastrado na tabela ticket_bet
       | idt_ticket_bet | idt_ticket | idt_bet |
@@ -45,10 +45,10 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
 
   @CadastroBilheteMultiploSucesso
   Cenario: Cadastrar um novo bilhete múltiplo com sucesso
-    Quando uma requisição de criação de bilhetes for realizada com num_amount 100,01 e idt_client 1 e idt_bet [1, 2, 3]
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 100,01 e idt_client 1 e idt_bet [1, 2, 3]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 201 - "Created"
     E o seguinte bilhete deve ser cadastrado no banco de dados
-      | idt_ticket | num_amount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
+      | idt_ticket | num_ammount | dat_created | dat_updated | ticket_type | cod_ticket_status | idt_client | num_final_odd |
       | 1          | 100.01      | 2024-08-21  | 2024-08-21  | MULTIPLE    | PENDING           | 1          | 4.08          |
     E os seguintes dados devem ser cadastrados na tabela ticket_bet
       | idt_ticket_bet | idt_ticket | idt_bet |
@@ -57,38 +57,38 @@ Funcionalidade: Cadastro de bilhetes de aposta no banco de dados
       | 3              | 1          | 3       |
 
   @CadastroBilheteValorApostaInvalida
-  Cenario: Cadastrar um novo bilhete com num_amount inválido
-    Quando uma requisição de criação de bilhetes for realizada com num_amount -99,99 e idt_client 3 e idt_bet [4]
+  Cenario: Cadastrar um novo bilhete com num_ammount inválido
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount -99,99 e idt_client 3 e idt_bet [4]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 400 - "Bad Request"
     E o bilhete não deve ser cadastrado
 
   @CadastroBilheteClienteInexistente
   Cenario: Cadastrar um novo bilhete com idt_client inexistente
-    Quando uma requisição de criação de bilhetes for realizada com num_amount 99,99 e idt_client 15 e idt_bet [4]
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 99,99 e idt_client 15 e idt_bet [4]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 400 - "Bad Request"
     E o bilhete não deve ser cadastrado
 
   @CadastroBilheteApostaInexistente
   Cenario: Cadastrar um novo bilhete com idt_bet inexistente
-    Quando uma requisição de criação de bilhetes for realizada com num_amount 99,99 e idt_client 1 e idt_bet [8, 9, 2024]
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 99,99 e idt_client 1 e idt_bet [8, 9, 2024]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 404 - "Not Found"
     E o bilhete não deve ser cadastrado
 
   @CadastroBilheteSaldoInsuficiente
     Cenario: Cadastrar um novo bilhete com saldo insuficiente
-    Quando uma requisição de criação de bilhetes for realizada com num_amount 9999,99 e idt_client 1 e idt_bet [1]
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 9999,99 e idt_client 1 e idt_bet [1]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 400 - "Bad Request"
     E o bilhete não deve ser cadastrado
 
   @CadastroBilheteApostaResolvida
     Cenario: Cadastrar um novo bilhete selecionando aposta resolvida
-    Quando uma requisição de criação de bilhetes for realizada com num_amount 99,99 e idt_client 3 e idt_bet [4]
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 99,99 e idt_client 3 e idt_bet [4]
     Entao o serviço de cadastro de bilhetes deve retornar o status code 400 - "Bad Request"
     E o bilhete não deve ser cadastrado
 
   @CadastroBilheteServicoIndisponivel
   Cenário: Cadastrar um novo bilhete com serviço indisponível
     Dado que o serviço de cadastro esteja indisponível
-    Quando uma requisição de criação de bilhetes for realizada com num_amount 99,99 e idt_client 3 e idt_bet [4]
+    Quando uma requisição de criação de bilhetes for realizada com num_ammount 99,99 e idt_client 3 e idt_bet [4]
     Então o serviço de cadastro de bilhetes deve retornar o status code 500 - "Internal Server Error"
     E o bilhete não deve ser cadastrado

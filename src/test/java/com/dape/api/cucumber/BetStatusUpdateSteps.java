@@ -1,22 +1,23 @@
 package com.dape.api.cucumber;
 
+import com.dape.api.adapter.dto.UpdateBetEvent;
 import com.dape.api.adapter.dto.request.BetStatusRequest;
 import com.dape.api.adapter.dto.response.BetResponse;
 import com.dape.api.adapter.repository.BetRepository;
+import com.dape.api.cucumber.consumer.KafkaUpdateBetEventConsumer;
 import com.dape.api.domain.entity.Bet;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.baseURI;
@@ -30,11 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class BetStatusUpdateSteps {
     private final BetRepository betRepository;
     private ResponseEntity<BetResponse> statusUpdateResponseEntity;
+    private final KafkaUpdateBetEventConsumer kafkaConsumer;
 
     private boolean serviceUnavailable;
 
-    public BetStatusUpdateSteps(BetRepository betRepository) {
+    public BetStatusUpdateSteps(BetRepository betRepository, KafkaUpdateBetEventConsumer kafkaConsumer) {
         this.betRepository = betRepository;
+        this.kafkaConsumer = kafkaConsumer;
     }
 
     @BeforeAll
@@ -60,7 +63,7 @@ public class BetStatusUpdateSteps {
     }
 
     @Entao("o serviço de atualização de status deve retornar o status code {int} - {string}")
-    public void theBetStatusUpdateServiceShouldReturnStatusCode(int expectedStatusCode, String expectedCodeDescription){
+    public void theBetStatusUpdateServiceShouldReturnStatusCode(int expectedStatusCode, String expectedCodeDescription) {
         assertEquals(expectedStatusCode, statusUpdateResponseEntity.getStatusCode().value());
         assertEquals(expectedCodeDescription, HttpStatus.valueOf(expectedStatusCode).getReasonPhrase());
     }
@@ -88,7 +91,7 @@ public class BetStatusUpdateSteps {
     }
 
     private ResponseEntity<BetResponse> generateResponseEntityForThePatchRequest(String betStatus, int idtBet) {
-        if(serviceUnavailable)
+        if (serviceUnavailable)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         final BetStatusRequest betStatusRequest = new BetStatusRequest();
@@ -96,12 +99,19 @@ public class BetStatusUpdateSteps {
         betStatusRequest.setBetStatus(betStatus);
 
         final Response patchResponse = given().body(betStatusRequest).contentType(ContentType.JSON)
-                .pathParam("idt_bet", idtBet). when().patch("/dape/bet/{idt_bet}/status")
+                .pathParam("idt_bet", idtBet).when().patch("/dape/bet/{idt_bet}/status")
                 .then().extract().response();
 
         if (patchResponse.getStatusCode() == HttpStatus.OK.value()) {
             return new ResponseEntity<>(patchResponse.as(BetResponse.class), HttpStatus.valueOf(patchResponse.getStatusCode()));
         }
         return new ResponseEntity<>(HttpStatus.valueOf(patchResponse.getStatusCode()));
+    }
+
+    @Entao("deve ter sido enviada uma mensagem ao Kafka")
+    public void aMessageMustHaveBeenSentToKafka(List<UpdateBetEvent> expectedEvents) {
+        final List<UpdateBetEvent> actualEvents = kafkaConsumer.consumeUpdateBetEvents();
+
+        assertThat(actualEvents).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expectedEvents);
     }
 }
