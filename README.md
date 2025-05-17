@@ -51,18 +51,17 @@ uma instância do banco de dados Oracle, simplificando o processo de configuraç
 
 - [Baixar e Instalar Docker](https://docs.docker.com/get-docker/)
 - [Instalar Docker Compose](https://docs.docker.com/compose/install/)
-- Para criar uma instância do banco de dados Oracle execute o
-  comando `docker-compose up`
+- Execute o comando `docker-compose up` para criar uma instância do banco de dados Oracle e inicializar o servidor Kafka local
 - Ao aparecer a mensagem `DATABASE IS READY TO USE!` significa que
   a instância do Oracle está em execução e pronta para ser utilizada
 
 ### Conexão com o banco de dados
 Caso deseje acessar o banco de dados, utilize um software de gestão de banco
 de dados de sua escolha e realize a conexão com as seguintes propriedades:
-- URL: jdbc:oracle:thin:@//localhost:1521/XEPDB1
+- URL: jdbc:oracle:thin:@//localhost:1521/FREEPDB1
 - Host: localhost
 - Port: 1521
-- Service: XEPDB1
+- Service: FREEPDB1
 - User: DAPE_ADM
 - Password: pesippar24
 
@@ -83,6 +82,11 @@ Ao executar a aplicação pela primeira vez, o Flyway será responsável por cri
 popular o banco de dados usando o arquivo [V1.2__INSERTING_DATA_RG_8483.sql](src/main/resources/db/migration/V1.2__INSERTING_DATA_RG_8483.sql). Posteriormente foi 
 adicionado o arquivo [V1.3__ALTERING_TICKET_TABLE_RG_8484.sql](src/main/resources/db/migration/V1.3__ALTERING_TICKET_TABLE_RG_8484.sql) para adicionar uma coluna
 para a odd final do bilhete de apostas.
+
+### Acesso à interface do Kafka local
+Para acessar a interface do Kafka local, utilize o seguinte link: 
+[http://localhost:3030](http://localhost:3030)
+Pela interface é possível visualizar os tópicos criados, mensagens publicadas e consumidas e o schema registrado para o evento a ser produzido/consumido.
 
 ## Utilização
 
@@ -165,6 +169,9 @@ A resposta deverá ser como a seguinte:
   "flg_selected": 0
 }
 ```
+A atualização do status de uma aposta produz um evento no tópico `com.dape.update-bet`. Essa mensagem é consumida e dá início ao processo de 
+atualização do status dos bilhetes que estão vinculados a essa aposta. O status dos bilhetes é atualizado para GREEN ou RED, dependendo
+de determinadas condições, como o status da aposta e o tipo do bilhete.
 
 ### Visualização de apostas cadastradas
 Para visualizar as apostas cadastradas no banco de dados rode o seguinte comando no terminal:
@@ -255,5 +262,166 @@ A resposta deverá ser como a seguinte:
 - Status Code: 200 - OK
 Aposta excluída
 
+### Cadastro de um novo bilhete simples
+Para cadastrar um novo bilhete simples no banco de dados rode o comando a seguir no terminal:
+```sh
+curl -X 'POST' \
+      'http://localhost:8080/dape/ticket' \
+      -H 'accept: application/json' \
+      -H 'Content-Type: application/json' \
+      -d '{
+      "num_amount": 149.99,
+      "idt_client": 8,
+      "idt_bets": [1]
+}'
+```
 
+A resposta deverá ser como a seguinte:
+- Status Code: 201 - CREATED
+```json
+{
+  "ticketStatus": "PENDING",
+  "idtTicket": 62,
+  "numAmount": 149.99,
+  "ticketType": "SIMPLE",
+  "numFinalOdd": 2.08,
+  "datCreated": "2025-05-17T17:11:39.255908594",
+  "clientResponse": {
+    "idtClient": 8,
+    "namClient": "Leslie Higgins",
+    "numDocument": "989.767.545-33",
+    "numBalance": 0.01
+  }
+}
+```
 
+### Cadastro de um novo bilhete múltiplo
+Para cadastrar um novo bilhete múltiplo no banco de dados rode o comando a seguir no terminal:
+```sh
+curl -X 'POST' \
+      'http://localhost:8080/dape/ticket' \
+      -H 'accept: application/json' \
+      -H 'Content-Type: application/json' \
+      -d '{
+      "num_amount": 19.99,
+      "idt_client": 10,
+      "idt_bets": [1,11,21]
+}'
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 201 - CREATED
+```json
+{
+  "ticketStatus": "PENDING",
+  "idtTicket": 63,
+  "numAmount": 19.99,
+  "ticketType": "MULTIPLE",
+  "numFinalOdd": 15.946462,
+  "datCreated": "2025-05-17T17:14:31.780129032",
+  "clientResponse": {
+    "idtClient": 10,
+    "namClient": "Dani Rojas",
+    "numDocument": "989.898.989-11",
+    "numBalance": 2806.3
+  }
+}
+```
+
+### Visualização de bilhetes cadastrados
+Para visualizar os bilhetes cadastrados no banco de dados rode o seguinte comando no terminal:
+```sh
+curl -X 'GET' \
+  'http://localhost:8080/dape/ticket?page=1&size=3' \
+  -H 'accept: application/json'
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 200 - OK
+```json
+{
+  "page": 1,
+  "size": 3,
+  "totalPages": 5,
+  "totalElements": 13,
+  "ticketResponseList": [
+    {
+      "ticketStatus": "PENDING",
+      "idtTicket": 41,
+      "numAmount": 6.88,
+      "ticketType": "SIMPLE",
+      "numFinalOdd": 2.74,
+      "datCreated": "2025-04-01T19:55:19.278518",
+      "clientResponse": {
+        "idtClient": 6,
+        "namClient": "Jamie Tartt",
+        "numDocument": "999.888.777-66",
+        "numBalance": 736.66
+      }
+    },
+    {
+      "ticketStatus": "GREEN",
+      "idtTicket": 62,
+      "numAmount": 149.99,
+      "ticketType": "SIMPLE",
+      "numFinalOdd": 2.08,
+      "datCreated": "2025-05-17T17:11:39.255909",
+      "clientResponse": {
+        "idtClient": 8,
+        "namClient": "Leslie Higgins",
+        "numDocument": "989.767.545-33",
+        "numBalance": 311.99
+      }
+    },
+    {
+      "ticketStatus": "RED",
+      "idtTicket": 63,
+      "numAmount": 19.99,
+      "ticketType": "MULTIPLE",
+      "numFinalOdd": 15.95,
+      "datCreated": "2025-05-17T17:14:31.780129",
+      "clientResponse": {
+        "idtClient": 10,
+        "namClient": "Dani Rojas",
+        "numDocument": "989.898.989-11",
+        "numBalance": 2806.3
+      }
+    }
+  ]
+}
+```
+
+É possível realizar a consulta filtrando os bilhetes pela data de criação e atualização, status, tipo e clientes. Um exemplo de consulta
+com filtro de tipo e status seria:
+```sh
+curl -X 'GET' \
+  'http://localhost:8080/dape/ticket?page=0&size=3&ticket_status=RED&ticket_type=MULTIPLE' \
+  -H 'accept: application/json'
+```
+
+A resposta deverá ser como a seguinte:
+- Status Code: 200 - OK
+```json
+{
+  "page": 0,
+  "size": 3,
+  "totalPages": 1,
+  "totalElements": 1,
+  "ticketResponseList": [
+    {
+      "ticketStatus": "RED",
+      "idtTicket": 63,
+      "numAmount": 19.99,
+      "ticketType": "MULTIPLE",
+      "numFinalOdd": 15.95,
+      "datCreated": "2025-05-17T17:14:31.780129",
+      "clientResponse": {
+        "idtClient": 10,
+        "namClient": "Dani Rojas",
+        "numDocument": "989.898.989-11",
+        "numBalance": 2806.3
+      }
+    }
+  ]
+}
+```
