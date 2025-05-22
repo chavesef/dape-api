@@ -1,6 +1,6 @@
 # DAPE-API (Declaração de Apostas Esportivas)
 
-Essa API REST lida com transações realizadas simulando casa de apostas.
+Essa API REST lida com transações realizadas simulando uma casa de apostas.
 Ela lida com informações como tipo da aposta, status da aposta, valor apostado,
 informações do cliente, entre outros, registrando essas informações  em um 
 banco de dados. O tipo da aposta pode ser definido como 'simples' ou 'múltipla',
@@ -22,6 +22,9 @@ ou 'perdida'(red).
   - [Atualização do status de uma aposta](#atualização-do-status-de-uma-aposta)
   - [Visualização de apostas cadastradas](#visualização-de-apostas-cadastradas)
   - [Exclusão de uma aposta cadastrada](#exclusão-de-uma-aposta-cadastrada)
+  - [Cadastro de um novo bilhete simples](#cadastro-de-um-novo-bilhete-simples)
+  - [Cadastro de um novo bilhete múltiplo](#cadastro-de-um-novo-bilhete-múltiplo)
+  - [Visualização de bilhetes cadastrados](#visualização-de-bilhetes-cadastrados)
 
 
 ## Arquitetura
